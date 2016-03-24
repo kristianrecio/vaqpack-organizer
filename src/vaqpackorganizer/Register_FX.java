@@ -56,16 +56,8 @@ public class Register_FX extends Application {
         String name = Fname.getText().toLowerCase();
         String pass = Fpass.getText();
         String confirm = Fconfirm.getText();
-        boolean noError = true;
         
-        if(name.equals("")){LeName.setVisible(true); noError = false;}
-        else{LeName.setVisible(false);}
-        if(pass.equals("")){LePass.setVisible(true); noError = false;}
-        else{LePass.setVisible(false);}
-        if(!pass.equals(confirm)){LeMatch.setVisible(true); noError = false;}
-        else{LeMatch.setVisible(false);}
-        
-        if(noError){
+        if(checkErrors(name, pass, confirm)){
             try{
                 String sql = "INSERT INTO user (username,password)" +
                     "VALUES (?,?)";
@@ -82,6 +74,17 @@ public class Register_FX extends Application {
                 Fn.showError(e);
             }
         }
+    }
+    
+    public boolean checkErrors(String name, String pass, String confirm){
+        boolean x = true;
+        if(name.equals("")){LeName.setVisible(true); x = false;}
+        else{LeName.setVisible(false);}
+        if(pass.equals("")){LePass.setVisible(true); x = false;}
+        else{LePass.setVisible(false);}
+        if(!pass.equals(confirm)){LeMatch.setVisible(true); x = false;}
+        else{LeMatch.setVisible(false);}
+        return x;
     }
     
 }
