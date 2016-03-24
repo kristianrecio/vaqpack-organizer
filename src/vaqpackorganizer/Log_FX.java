@@ -30,11 +30,12 @@ public class Log_FX extends Application {
     private Button Blog = Fn.setButton(8,96,"Log in");
     private Button Bregister = Fn.setButton(200,96,"Register");
     Stage Register = new Stage();
-    private Register_FX Register_FX = new Register_FX(conn,Register);
+    private Register_FX Register_FX;
     
     @Override
     public void start(Stage primaryStage) {
-        conn =  Fn.get(conn);
+        conn = Fn.get(conn);
+        Register_FX = new Register_FX(conn,Register);
         Blog.setOnAction((ActionEvent event) -> {
             startBlog();
         });
