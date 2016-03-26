@@ -40,6 +40,29 @@ public class Main_FX extends Application {
     @Override
     public void start(Stage primaryStage) {
         
+        MIout.setOnAction((ActionEvent event) -> { 
+            startMIout(primaryStage);
+        });
+        MIclose.setOnAction((ActionEvent event) -> { 
+            primaryStage.close();
+        });
+        
+        AnchorPane Main = setMain();
+        Scene scene = new Scene(Main, Main.getPrefWidth(), Main.getPrefHeight());
+        primaryStage.setTitle("VaqPack");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+    
+    public void startMIout(Stage Current){
+        Current.hide();
+        Stage New = new Stage();
+        Log_FX Login = new Log_FX();
+        Login.start(New);
+        Current.close();
+    }
+    
+    public AnchorPane setMain(){
         AnchorPane Main = new AnchorPane();
         Main.setPrefHeight(400);
         Main.setPrefWidth(600);
@@ -68,11 +91,7 @@ public class Main_FX extends Application {
         Main.setLeftAnchor(Bpane,0.0);
         Main.setRightAnchor(Bpane,0.0);
         Main.getChildren().add(Bpane);
-        
-        Scene scene = new Scene(Main, Main.getPrefWidth(), Main.getPrefHeight());
-        primaryStage.setTitle("VaqPack");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        return Main;
     }
     
 }

@@ -1,3 +1,7 @@
+/*
+*   This class is for all general functions.
+*/
+
 package vaqpackorganizer;
 
 import java.sql.Connection;
@@ -9,7 +13,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 
@@ -19,6 +22,7 @@ import javafx.scene.paint.Paint;
  */
 public class Fn {
     
+    //displays an error message
     public static void showError(Exception e){
         Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
         alert.showAndWait();
@@ -41,36 +45,38 @@ public class Fn {
         return connection;
     }
     
-    public static TextField setTextField(double x, double y, String pText){
+    public static TextField setTextField(double LayoutX, double LayoutY, String pText){
         TextField Fname = new TextField();
-        Fname.setLayoutX(x);
-        Fname.setLayoutY(y);
+        Fname.setLayoutX(LayoutX);
+        Fname.setLayoutY(LayoutY);
         Fname.setPromptText(pText);
         return Fname;
     }
     
-    public static PasswordField setPasswordField(double x, double y, String pText){
+    public static PasswordField setPasswordField(double LayoutX, double LayoutY, String pText){
         PasswordField Fpass = new PasswordField();
-        Fpass.setLayoutX(x);
-        Fpass.setLayoutY(y);
+        Fpass.setLayoutX(LayoutX);
+        Fpass.setLayoutY(LayoutY);
         Fpass.setPromptText(pText);
         return Fpass;
     }
-    public static Button setButton(double x, double y, String text){
-        Button Blog = new Button();
-        Blog.setLayoutX(x);
-        Blog.setLayoutY(y);
-        Blog.setText(text);
-        Blog.setMnemonicParsing(false);
-        return Blog;
+    
+    public static Button setButton(double LayoutX, double LayoutY, String text){
+        Button button = new Button();
+        button.setLayoutX(LayoutX);
+        button.setLayoutY(LayoutY);
+        button.setText(text);
+        button.setMnemonicParsing(false);
+        return button;
     }
-    public static Label setLabel(double x,double y, String text, boolean vis,String color){
+    
+    public static Label setLabel(double LayoutX,double LayoutY, String text, boolean visible,String color){
         Label label = new Label();
-        label.setLayoutX(x);
-        label.setLayoutY(y);
+        label.setLayoutX(LayoutX);
+        label.setLayoutY(LayoutY);
         label.setText(text);
         label.setTextFill(Paint.valueOf(color));
-        label.setVisible(vis);
+        label.setVisible(visible);
         return label;
     }
     
@@ -80,5 +86,6 @@ public class Fn {
         Mitem.setText(Text);
         return Mitem;
     }
+    
     
 }
