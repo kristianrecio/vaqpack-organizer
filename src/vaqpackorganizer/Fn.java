@@ -25,6 +25,7 @@ public class Fn {
     //displays an error message
     public static void showError(Exception e){
         Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+        alert.setHeaderText("Error");
         alert.showAndWait();
     }
     
