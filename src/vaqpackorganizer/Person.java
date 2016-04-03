@@ -1,27 +1,21 @@
 package vaqpackorganizer;
 
+import java.util.ArrayList;
+
 public class Person {
-    private String fName;
-    private String lName;
+    private String name;
     private String id;
     private String semester;
+    private ArrayList<Course> courses;
 
-    public String getFName() {
-        return fName;
+    public String getName() {
+        return name;
     }
 
-    public void setFName(String fName) {
-        this.fName = fName;
+    public void setName(String name) {
+        this.name = name;
     }
     
-    public String getLName() {
-        return lName;
-    }
-
-    public void setLName(String lName) {
-        this.lName = lName;
-    }
-
     public String getId() {
         return id;
     }
@@ -36,5 +30,13 @@ public class Person {
 
     public void setSemester(String semester) {
         this.semester = semester;
+    }
+    
+    public ArrayList getCourses() {
+        return courses;
+    }
+    
+    public void setCourses(ArrayList<Course> courses) {
+        this.courses = courses;
     }
 }

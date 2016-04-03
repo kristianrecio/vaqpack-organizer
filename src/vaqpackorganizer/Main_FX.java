@@ -19,6 +19,7 @@ import javafx.stage.Stage;
  * @author Carlos
  */
 public class Main_FX extends Application {
+    public static Person person = new Person();
     private Tab setTSchedule(){
         Tab TSchedule = new Tab();
         TSchedule.setText("Schedule");
