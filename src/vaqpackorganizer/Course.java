@@ -8,6 +8,27 @@ public class Course {
     private String days;
     private String startTime;
     private String endTime;
+    
+    public Course() {}
+    
+    public Course(String prefix, String number, String description,
+            String location, String days, String startTime, String endTime) {
+        this.prefix = prefix;
+        this.number = number;
+        this.description = description;
+        this.location = location;
+        this.days = days;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+    
+    public String getTableInfo() {
+        return prefix + " " + number + " " + location;
+    }
+    
+    public String getListInfo() {
+        return prefix + "-" + number + " " + description;
+    }
 
     public String getPrefix() {
         return prefix;
