@@ -4,7 +4,6 @@ import java.sql.Connection;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -19,7 +18,6 @@ import javafx.stage.Stage;
  * @author Carlos
  */
 public class Main_FX extends Application {
-    public static Person person = new Person();
     private Tab setTSchedule(){
         Tab TSchedule = new Tab();
         TSchedule.setText("Schedule");
@@ -28,12 +26,15 @@ public class Main_FX extends Application {
     private Tab TSchedule = setTSchedule();
     private MenuItem MIout = Fn.setMenuItem("Log out");
     private MenuItem MIclose = Fn.setMenuItem("Close");
+    private MenuItem MIedit = Fn.setMenuItem("Edit user information");
     private final int id;
     private final Connection conn;
+    public static Person person;
     
     public Main_FX(int id, Connection conn,Stage primaryStage){
         this.id = id;
         this.conn = conn;
+        person = new Person(id,conn);
         start(primaryStage);
         System.out.println(this.id);
     }
@@ -46,6 +47,10 @@ public class Main_FX extends Application {
         });
         MIclose.setOnAction((ActionEvent event) -> { 
             primaryStage.close();
+        });
+        MIedit.setOnAction((ActionEvent event) -> {
+            Stage Userinfo = new Stage();
+            Userinfo_FX edit = new Userinfo_FX(conn,person,Userinfo);
         });
         
         AnchorPane Main = setMain();
@@ -75,7 +80,7 @@ public class Main_FX extends Application {
         MenuBar Mbar = new MenuBar();
         Menu Moptions = new Menu();
         Moptions.setText("Options");
-        Moptions.getItems().addAll(MIout,MIclose);
+        Moptions.getItems().addAll(MIout,MIclose, MIedit);
         Mbar.getMenus().add(Moptions);
         Bpane.setTop(Mbar);
         
