@@ -12,7 +12,7 @@ public class Course {
     public Course() {}
     
     public Course(String prefix, String number, String description,
-            String location, String days, String startTime, String endTime) {
+            String location, String days, String startTime, String endTime){
         this.prefix = prefix;
         this.number = number;
         this.description = description;
