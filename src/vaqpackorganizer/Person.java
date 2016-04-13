@@ -20,7 +20,7 @@ public class Person {
     private String password;
     private String username;
     private String profile_url;
-    private ArrayList<Course> courses;
+    private ArrayList<Course> courses = new ArrayList<Course>();
     
     public Person(int id, Connection conn){
         user_id = id;
@@ -33,6 +33,25 @@ public class Person {
         password = get("password");
         username = get("username");
         profile_url = get("profile_url");
+        generateCourses();
+    }
+    
+    public void generateCourses(){
+        try{
+                String sql_get = "SELECT * FROM course WHERE user_id = ?";
+                ps = conn.prepareStatement(sql_get);
+                ps.setInt(1, user_id);
+                rs = ps.executeQuery();
+                while(rs.next()){
+                Course c = new Course(rs.getString("prefix"),rs.getString("number"),
+                            rs.getString("description"),rs.getString("location"),
+                        rs.getString("days"),rs.getString("time_from"),rs.getString("time_to"));
+                    System.out.println(c.getNumber());
+                    courses.add(c);
+                }
+        }catch(SQLException e){
+            Fn.showError(e);
+        }
     }
     
     public String get(String Parameter){

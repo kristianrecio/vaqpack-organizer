@@ -18,12 +18,13 @@ import javafx.stage.Stage;
  * @author Carlos
  */
 public class Main_FX extends Application {
-    private Tab setTSchedule(){
-        Tab TSchedule = new Tab();
-        TSchedule.setText("Schedule");
-        return TSchedule;
+    private void setTSchedule(){
+        WeeklySchedule s = new WeeklySchedule(); 
+        s.setTheTab();
+        TSchedule = s.getTab();
     }
-    private Tab TSchedule = setTSchedule();
+    
+    private Tab TSchedule;
     private MenuItem MIout = Fn.setMenuItem("Log out");
     private MenuItem MIclose = Fn.setMenuItem("Close");
     private MenuItem MIedit = Fn.setMenuItem("Edit user information");
@@ -35,6 +36,7 @@ public class Main_FX extends Application {
         this.id = id;
         this.conn = conn;
         person = new Person(id,conn);
+        setTSchedule();
         start(primaryStage);
         System.out.println(this.id);
     }
