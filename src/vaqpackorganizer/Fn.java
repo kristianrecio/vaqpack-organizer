@@ -25,6 +25,7 @@ public class Fn {
     //displays an error message
     public static void showError(Exception e){
         Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+        alert.setHeaderText("Error");
         alert.showAndWait();
     }
     
@@ -32,7 +33,7 @@ public class Fn {
         try{
             Class.forName("com.mysql.jdbc.Driver");
             return DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/vaqpack", "root", "Kr7909!?");
+            "jdbc:mysql://localhost:3306/vaqpack", "root", "root");
         }catch (ClassNotFoundException | SQLException e) {
             return null;
         }

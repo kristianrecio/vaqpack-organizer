@@ -26,7 +26,7 @@ public class WeeklySchedule {
     private Tab tab;
     private BorderPane pane;
     private Label name;
-    private Label id;
+    private Label id_num;
     private Label semester;
     private ArrayList<Label> coursesList;
     private ArrayList<Course> courses;
@@ -57,15 +57,15 @@ public class WeeklySchedule {
         
         // Top border parts
         name = new Label();
-        id = new Label();
+        id_num = new Label();
         semester = new Label();
         
         name.setText(Main_FX.person.getName());
-        id.setText(Main_FX.person.getId());
+        id_num.setText(Main_FX.person.getId_num());
         semester.setText(Main_FX.person.getSemester());
         
         top = new VBox();
-        top.getChildren().addAll(name, id, semester);
+        top.getChildren().addAll(name, id_num, semester);
         top.setAlignment(Pos.CENTER);
         
         pane.setTop(top);
