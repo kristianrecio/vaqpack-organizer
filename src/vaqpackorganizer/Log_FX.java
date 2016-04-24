@@ -83,6 +83,7 @@ public class Log_FX extends Application {
     public void startBregister(){
         Register.show();
     }
+    
     public static void main(String[] args) {
         launch(args);
     }

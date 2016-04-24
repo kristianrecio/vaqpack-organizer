@@ -20,7 +20,7 @@ public class Person {
     private String password;
     private String username;
     private String profile_url;
-    private ArrayList<Course> courses = new ArrayList<Course>();
+    private ArrayList<Course> courses = new ArrayList<>();
     
     public Person(int id, Connection conn){
         user_id = id;
