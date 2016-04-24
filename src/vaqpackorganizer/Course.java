@@ -9,8 +9,6 @@ public class Course {
     private String startTime;
     private String endTime;
     
-    public Course() {}
-    
     public Course(String prefix, String number, String description,
             String location, String days, String startTime, String endTime){
         this.prefix = prefix;

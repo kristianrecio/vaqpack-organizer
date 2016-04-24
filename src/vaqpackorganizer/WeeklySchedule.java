@@ -355,6 +355,10 @@ public class WeeklySchedule {
     }
     
     public void deleteCourse() {        
+        Dialog<Course> dialog = new Dialog<>();
+        dialog.setTitle("Delete course");
+        dialog.setHeaderText("Choose a course to delete");
         
+        GridPane grid = new GridPane();
     }
 }
