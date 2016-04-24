@@ -24,6 +24,13 @@ public class MonthlySchedule extends Application{
         
         try {
             HBox rootPane = new HBox(2);
+            //dimensions for rootPane
+            rootPane.setMinWidth(400);
+            rootPane.setMaxWidth(400);
+            rootPane.setMinHeight(400);
+            rootPane.setMaxHeight(400);
+            //end
+            
             VBox TextFields = new VBox();
             Scene scene = new Scene(rootPane, 1080, 720);
             
@@ -55,24 +62,16 @@ public class MonthlySchedule extends Application{
             Label reminderLabel = new Label("Would you like to set a reminder?");
             ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList("Yes", "No"));
             cb.setTooltip(new Tooltip("Select Yes or No"));
+            //end
             
             //add textfields and labels to TextFields Pane
             TextFields.getChildren().addAll(nameLabel, eventName, timeLabel, eventTime, placeLabel, eventPlace,reminderLabel, cb, eventBtn);
             
-            //dimensions for rootPane
-            rootPane.setMinWidth(400);
-            rootPane.setMaxWidth(400);
-            rootPane.setMinHeight(400);
-            rootPane.setMaxHeight(400);
-            //end
-            
             //add calendar, button and textfields pane
             rootPane.getChildren().addAll(popupContent, TextFields);
             
-           
-
             monthlyStage.setScene(scene);
-            monthlyStage.setTitle("MonthlyCalendar");
+            monthlyStage.setTitle("Monthly Calendar");
             monthlyStage.show();
             
         }catch(Exception monthlySchedule) {
