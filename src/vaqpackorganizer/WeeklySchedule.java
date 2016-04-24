@@ -270,9 +270,8 @@ public class WeeklySchedule {
             return;
         for (int i = 0; i < Main_FX.person.getCourses().size(); i++) {
             course = courses.get(i);
-            string = course.getPrefix() + "-" + course.getNumber() + " " +
-                   course.getDescription();
-           coursesList.add(new Label(string));
+            string = course.getListInfo();
+            coursesList.add(new Label(string));
        }
     }
     
@@ -360,5 +359,17 @@ public class WeeklySchedule {
         dialog.setHeaderText("Choose a course to delete");
         
         GridPane grid = new GridPane();
+    }
+    
+    public void modifyCourse() {
+        
+    }
+    
+    public void changeInterval() {
+        
+    }
+    
+    public void changeTheme() {
+        
     }
 }
