@@ -1,5 +1,9 @@
 package vaqpackorganizer;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
@@ -41,11 +45,15 @@ public class WeeklySchedule {
     private Button intervalChange;
     private Button changeTheme;
     private Schedule schedule;
+    private Connection conn;
+    private PreparedStatement ps;
+    private String sql;
     
     public WeeklySchedule() {
     }
     
     public void setTheTab() {
+        conn = Fn.get(conn);
         tab = new Tab();
         tab.setText("Weekly Schedule");
         setPane();
@@ -84,6 +92,7 @@ public class WeeklySchedule {
             addCourse();
             setTheTable();
             pane.setCenter(table);
+            updateDatabaseCourse();
         });
         
         deleteCourse.setOnAction(e -> {
@@ -98,7 +107,7 @@ public class WeeklySchedule {
         
         // Right border parts
         intervalChange = new Button("Change Interval");
-        changeTheme = new Button("Add A New Course");
+        changeTheme = new Button("Change Theme");
         intervalChange.setMinWidth(buttonSize);
         changeTheme.setMinWidth(buttonSize);
         
@@ -371,5 +380,37 @@ public class WeeklySchedule {
     
     public void changeTheme() {
         
+    }
+    
+    public void updateDatabaseCourse() {
+        int num = courses.size() - 1;
+        Course course = courses.get(num);
+        
+        String prefix = course.getPrefix();
+        String number = course.getNumber();
+        String description = course.getDescription();
+        String location = course.getLocation();
+        String days = course.getDays();
+        String startTime = course.getStartTime();
+        String endTime = course.getEndTime();
+        
+        String user_id = Integer.toString(Main_FX.person.getUserId());
+        
+        try {
+            sql = "INSERT INTO course (user_id, prefix, number, startTime, endTime, description, location, days)"
+                    + "VALUES (?,?,?,?,?,?,?,?)";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, user_id);
+            ps.setString(2, prefix);
+            ps.setString(3, number);
+            ps.setString(4, startTime);
+            ps.setString(5, endTime);
+            ps.setString(6, description);
+            ps.setString(7, location);
+            ps.setString(8, days);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            Fn.showError(e);
+        }
     }
 }

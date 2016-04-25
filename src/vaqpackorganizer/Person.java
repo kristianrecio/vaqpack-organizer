@@ -45,8 +45,7 @@ public class Person {
                 while(rs.next()){
                 Course c = new Course(rs.getString("prefix"),rs.getString("number"),
                             rs.getString("description"),rs.getString("location"),
-                        rs.getString("days"),rs.getString("time_from"),rs.getString("time_to"));
-                    System.out.println(c.getNumber());
+                        rs.getString("days"),rs.getString("startTime"),rs.getString("endTime"));
                     courses.add(c);
                 }
         }catch(SQLException e){
@@ -87,6 +86,10 @@ public class Person {
                 Fn.showError(e);
             }
         }
+    }
+    
+    public int getUserId() {
+        return user_id;
     }
     
     public String getName() {

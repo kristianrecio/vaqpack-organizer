@@ -38,7 +38,6 @@ public class Main_FX extends Application {
         person = new Person(id,conn);
         setTSchedule();
         start(primaryStage);
-        System.out.println(this.id);
     }
     
     @Override
@@ -72,8 +71,8 @@ public class Main_FX extends Application {
     
     public AnchorPane setMain(){
         AnchorPane Main = new AnchorPane();
-        Main.setPrefHeight(400);
-        Main.setPrefWidth(600);
+        Main.setPrefHeight(500);
+        Main.setPrefWidth(800);
         BorderPane Bpane = new BorderPane();
         Bpane.setPrefHeight(Main.getPrefHeight());
         Bpane.setPrefWidth(Main.getPrefWidth());
