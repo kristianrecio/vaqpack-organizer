@@ -77,6 +77,5 @@ public class MonthlySchedule extends Application{
         }catch(Exception monthlySchedule) {
             monthlySchedule.printStackTrace();
         }
-      
     }
 }
