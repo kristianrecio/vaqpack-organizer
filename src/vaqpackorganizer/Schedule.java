@@ -5,6 +5,9 @@
  */
 package vaqpackorganizer;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -19,6 +22,9 @@ public class Schedule {
     private int timeIncrement;
     private String[] timeIntervals;
     private int[][] coursesPlace;
+    private Connection conn;
+    private PreparedStatement ps;
+    private String sql;
     
     public void generateSchedule() {
         generateTimeTicks();
@@ -47,7 +53,7 @@ public class Schedule {
                                 if (getCoursesPlace()[k][0] == -1)
                                     getCoursesPlace()[k][0] = j;
                                 else {
-                                    // Conflicting Times
+                                    conflictingTimes(j);
                                     return;
                                 }
                                 break;
@@ -55,7 +61,7 @@ public class Schedule {
                                 if (getCoursesPlace()[k][1] == -1)
                                     getCoursesPlace()[k][1] = j;
                                 else {
-                                    //conflictingTimes(courses, j);
+                                    conflictingTimes(j);
                                     return;
                                 }
                                 break;
@@ -63,7 +69,7 @@ public class Schedule {
                                 if (getCoursesPlace()[k][2] == -1)
                                     getCoursesPlace()[k][2] = j;
                                 else {
-                                    //conflictingTimes(courses, j);
+                                    conflictingTimes(j);
                                     return;
                                 }
                                 break;
@@ -71,7 +77,7 @@ public class Schedule {
                                 if (getCoursesPlace()[k][3] == -1)
                                     getCoursesPlace()[k][3] = j;
                                 else {
-                                    //conflictingTimes(courses, j);
+                                    conflictingTimes(j);
                                     return;
                                 }
                                 break;
@@ -80,7 +86,7 @@ public class Schedule {
                                     getCoursesPlace()[k][0] = j;
                                     getCoursesPlace()[k][2] = j;
                                 } else {
-                                    //conflictingTimes(courses, j);
+                                    conflictingTimes(j);
                                     return;
                                 }
                                 break;
@@ -89,7 +95,7 @@ public class Schedule {
                                     getCoursesPlace()[k][1] = j;
                                     getCoursesPlace()[k][3] = j;
                                 } else {
-                                   // conflictingTimes(courses, j);
+                                    conflictingTimes(j);
                                     return;
                                 }
                                 break;
@@ -97,7 +103,7 @@ public class Schedule {
                                 if (getCoursesPlace()[k][4] == -1)
                                     getCoursesPlace()[k][4] = j;
                                 else {
-                                    //conflictingTimes(courses, j);
+                                    conflictingTimes(j);
                                     return;
                                 }
                                 break;
@@ -111,17 +117,29 @@ public class Schedule {
     }
     
     public void conflictingTimes(int course) {
+        Main_FX.person.getCourses().remove(course);
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Conflicting Times Alert");
         alert.setHeaderText("ERROR: Conflicting Times");
-        alert.setContentText("A courses's time has conflicted with another courses's time. It will be removed.");
-        
-        ButtonType ok = new ButtonType("OK", ButtonData.OK_DONE);
-        alert.getButtonTypes().add(ok);
+        alert.setContentText("The added course has conflicted with another courses's time. It will not be added.");
         
         alert.showAndWait();
-        Main_FX.person.getCourses().remove(course);
+        
+        conn = Fn.get(conn);
+        String user_id = Integer.toString(Main_FX.person.getUserId());
+        ArrayList<Course> courses = Main_FX.person.getCourses();
+        Course cour = courses.get(course);
+        String number = cour.getNumber();
+        sql = "DELETE FROM course WHERE user_id='" + user_id + "' AND number='" + number + "';";
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            Fn.showError(e);
+        }
+        
         generateSchedule();
+        WeeklySchedule.lastestAdd = false;
     }
     
     public void generateTimeTicks() {

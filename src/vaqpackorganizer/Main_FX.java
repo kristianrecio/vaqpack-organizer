@@ -72,7 +72,7 @@ public class Main_FX extends Application {
     public AnchorPane setMain(){
         AnchorPane Main = new AnchorPane();
         Main.setPrefHeight(500);
-        Main.setPrefWidth(800);
+        Main.setPrefWidth(1050);
         BorderPane Bpane = new BorderPane();
         Bpane.setPrefHeight(Main.getPrefHeight());
         Bpane.setPrefWidth(Main.getPrefWidth());

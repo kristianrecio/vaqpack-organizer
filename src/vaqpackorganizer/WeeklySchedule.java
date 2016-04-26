@@ -48,6 +48,7 @@ public class WeeklySchedule {
     private Connection conn;
     private PreparedStatement ps;
     private String sql;
+    public static boolean lastestAdd = true;
     
     public WeeklySchedule() {
     }
@@ -92,11 +93,15 @@ public class WeeklySchedule {
             addCourse();
             setTheTable();
             pane.setCenter(table);
-            updateDatabaseCourse();
+            if (lastestAdd)
+                updateDatabaseCourse();
+            lastestAdd = true;
         });
         
         deleteCourse.setOnAction(e -> {
-            
+            deleteCourse();
+            setTheTable();
+            pane.setCenter(table);
         });
         
         left = new VBox();
@@ -133,6 +138,8 @@ public class WeeklySchedule {
     public void setTheTable() {
         table = new TableView<>();
         
+        int dayColumnsSize = 137;
+        
         TableColumn<Row, String> timeColumn = new TableColumn<>("");
         timeColumn.setMaxWidth(60);
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
@@ -162,6 +169,9 @@ public class WeeklySchedule {
         BorderPane.setAlignment(table, Pos.TOP_CENTER);
         
         for (int i = 0; i < table.getColumns().size(); i++) {
+            if (i != 0)
+                table.getColumns().get(i).setMinWidth(dayColumnsSize);
+            table.getColumns().get(i).setStyle("-fx-alignment: CENTER;");
             table.getColumns().get(i).setSortable(false);
             table.getColumns().get(i).impl_setReorderable(false);
         }
@@ -294,6 +304,8 @@ public class WeeklySchedule {
         dialog.setHeaderText(null);
         
         GridPane dialogPane = new GridPane();
+        dialogPane.setHgap(10);
+        dialogPane.setVgap(10);
         
         Label prefixLb = new Label("Prefix: ");
         Label numberLb = new Label("Number: ");
@@ -363,11 +375,48 @@ public class WeeklySchedule {
     }
     
     public void deleteCourse() {        
-        Dialog<Course> dialog = new Dialog<>();
+        Dialog dialog = new Dialog<>();
         dialog.setTitle("Delete course");
         dialog.setHeaderText("Choose a course to delete");
         
         GridPane grid = new GridPane();
+        
+        ComboBox comboBox = new ComboBox();
+        ObservableList<String> comboBoxList = FXCollections.observableArrayList();
+        for (Label course : coursesList)
+            comboBoxList.add(course.getText());
+        comboBox.setItems(comboBoxList);
+        
+        Label coursesLb = new Label("Courses: ");
+        
+        grid.add(coursesLb, 0, 0);
+        grid.add(comboBox, 0, 1);
+        
+        ButtonType done = new ButtonType("Done", ButtonData.OK_DONE);
+        ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+        
+        dialog.getDialogPane().setContent(grid);
+        dialog.getDialogPane().getButtonTypes().addAll(done, cancel);
+        
+        dialog.setResultConverter(button -> {
+            if (button == done) {
+                return comboBox.getSelectionModel().getSelectedIndex();
+            }
+            return null;
+        });
+        
+        Optional result = dialog.showAndWait();
+        if (result.isPresent()) {
+            courses.remove(comboBox.getSelectionModel().getSelectedIndex());
+            String user_id = Integer.toString(Main_FX.person.getUserId());
+            sql = "DELETE FROM course WHERE user_id='" + user_id + "';";
+            try {
+                ps = conn.prepareStatement(sql);
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                Fn.showError(e);
+            }
+        }
     }
     
     public void modifyCourse() {
