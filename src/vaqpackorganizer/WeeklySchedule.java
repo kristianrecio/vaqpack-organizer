@@ -49,7 +49,7 @@ public class WeeklySchedule {
     private PreparedStatement ps;
     private ResultSet rs;
     private String sql;
-    public static boolean lastestAdd = true;
+    public static boolean addSuccess = true;
     
     public WeeklySchedule() {
     }
@@ -92,15 +92,22 @@ public class WeeklySchedule {
         
         addCourse.setOnAction(e -> {
             addCourse();
-            setTheTable();
-            pane.setCenter(table);
-            if (lastestAdd)
+            if (addSuccess) {
+                setTheTable();
+                pane.setCenter(table);
                 updateDatabaseCourse();
-            lastestAdd = true;
+            }
+            addSuccess = true;
         });
         
         deleteCourse.setOnAction(e -> {
             deleteCourse();
+            setTheTable();
+            pane.setCenter(table);
+        });
+        
+        modifyCourse.setOnAction(e -> {
+            modifyCourse();
             setTheTable();
             pane.setCenter(table);
         });
@@ -385,8 +392,15 @@ public class WeeklySchedule {
         });
         
         Optional<Course> result = dialog.showAndWait();
-        if (result.isPresent())
+        if (result.isPresent()) {
             Main_FX.person.getCourses().add(result.get());
+            int course = Main_FX.person.getCourses().size() - 1;
+            if (schedule.isThereATimeConflict(course)) {
+               Main_FX.person.getCourses().remove(course);
+               schedule.timeConflictAlert(0);
+               addSuccess = false;
+            }
+        }
     }
     
     public void deleteCourse() {        
