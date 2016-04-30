@@ -69,7 +69,7 @@ public class Log_FX extends Application {
                     Stage Current = (Stage) Blog.getScene().getWindow();
                     Current.hide();
                     Stage New = new Stage();
-                    Main_FX Main = new Main_FX(rs.getInt("id"),conn,New);
+                    Main_FX Main = new Main_FX(rs.getInt("id"),rs.getString("theme"),conn,New);
                     Current.close();
                 }
                 else{

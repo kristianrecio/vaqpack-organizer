@@ -74,6 +74,8 @@ public class WeeklySchedule {
         id_num.setText(Main_FX.person.getId_num());
         semester.setText(Main_FX.person.getSemester());
         
+        name.setStyle("-fx-font-size: 20;");
+        
         top = new VBox();
         top.getChildren().addAll(name, id_num, semester);
         top.setAlignment(Pos.CENTER);
@@ -134,6 +136,10 @@ public class WeeklySchedule {
             pane.setCenter(table);
         });
         
+        changeTheme.setOnAction(e -> {
+            changeTheme();
+        });
+        
         right = new VBox();
         right.getChildren().addAll(intervalChange, changeTheme);
         right.setSpacing(10);
@@ -147,6 +153,8 @@ public class WeeklySchedule {
             for (int i = 0; i < coursesList.size(); i++)
                 bottom.getChildren().add(coursesList.get(i));
         bottom.setAlignment(Pos.CENTER);
+        bottom.setPadding(new Insets(10, 10, 10, 10));
+        pane.setBottom(bottom);
         
         // Center border parts
         setTheTable();
@@ -244,11 +252,11 @@ public class WeeklySchedule {
             rows[i].setTime(schedule.getTimeIntervals()[i]);
             
             if (Main_FX.person.getCourses().isEmpty())
-                rows[i].setAllDays("none");
+                rows[i].setAllDays("");
             else
                for (int j = 0; j < 5; j++) {
                    cell = schedule.getCoursesPlace()[i][j];
-                   day = (cell == -1) ? "none" : courses.get(cell).getTableInfo();
+                   day = (cell == -1) ? "" : courses.get(cell).getTableInfo();
                    switch (j) {
                        case 0: rows[i].setMonday(day); break;
                        case 1: rows[i].setTuesday(day); break;
@@ -279,6 +287,7 @@ public class WeeklySchedule {
         Dialog<Course> dialog = new Dialog<>();
         dialog.setTitle("Add a New Course.");
         dialog.setHeaderText(null);
+        dialog.getDialogPane().getStylesheets().add(getClass().getResource(Main_FX.theme).toExternalForm());
         
         GridPane grid = new GridPane();
         grid.setHgap(10);
@@ -328,15 +337,92 @@ public class WeeklySchedule {
         grid.add(startTimeCb, 1, 5);
         grid.add(endTimeCb, 1, 6);
         
-        dialog.getDialogPane().setContent(grid);
-        
         ButtonType done = new ButtonType("Done", ButtonData.OK_DONE);
         ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
         
-        dialog.getDialogPane().getButtonTypes().addAll(cancel, done);
+        dialog.getDialogPane().setContent(grid);
+        dialog.getDialogPane().getButtonTypes().addAll(done, cancel);
+        dialog.getDialogPane().lookupButton(done).setDisable(true);
         
-        dialog.setResultConverter((ButtonType b) -> {
-            if (b == done) {
+        prefixTf.setOnKeyReleased(e -> {
+            if (prefixTf.getText().equals("") || numberTf.getText().equals("") ||
+                descriptionTf.getText().equals("") || locationTf.getText().equals("") || 
+                daysCb.getSelectionModel().getSelectedItem() == null ||
+                startTimeCb.getSelectionModel().getSelectedItem() == null ||
+                endTimeCb.getSelectionModel().getSelectedItem() == null)
+                dialog.getDialogPane().lookupButton(done).setDisable(true);
+            else
+                dialog.getDialogPane().lookupButton(done).setDisable(false);
+        });
+        
+        numberTf.setOnKeyReleased(e -> {
+            if (prefixTf.getText().equals("") || numberTf.getText().equals("") ||
+                descriptionTf.getText().equals("") || locationTf.getText().equals("") || 
+                daysCb.getSelectionModel().getSelectedItem() == null ||
+                startTimeCb.getSelectionModel().getSelectedItem() == null ||
+                endTimeCb.getSelectionModel().getSelectedItem() == null)
+                dialog.getDialogPane().lookupButton(done).setDisable(true);
+            else
+                dialog.getDialogPane().lookupButton(done).setDisable(false);
+        });
+        
+        descriptionTf.setOnKeyReleased(e -> {
+            if (prefixTf.getText().equals("") || numberTf.getText().equals("") ||
+                descriptionTf.getText().equals("") || locationTf.getText().equals("") || 
+                daysCb.getSelectionModel().getSelectedItem() == null ||
+                startTimeCb.getSelectionModel().getSelectedItem() == null ||
+                endTimeCb.getSelectionModel().getSelectedItem() == null)
+                dialog.getDialogPane().lookupButton(done).setDisable(true);
+            else
+                dialog.getDialogPane().lookupButton(done).setDisable(false);
+        });
+        
+        locationTf.setOnKeyReleased(e -> {
+            if (prefixTf.getText().equals("") || numberTf.getText().equals("") ||
+                descriptionTf.getText().equals("") || locationTf.getText().equals("") || 
+                daysCb.getSelectionModel().getSelectedItem() == null ||
+                startTimeCb.getSelectionModel().getSelectedItem() == null ||
+                endTimeCb.getSelectionModel().getSelectedItem() == null)
+                dialog.getDialogPane().lookupButton(done).setDisable(true);
+            else
+                dialog.getDialogPane().lookupButton(done).setDisable(false);
+        });
+        
+        daysCb.setOnAction(e -> {
+            if (prefixTf.getText().equals("") || numberTf.getText().equals("") ||
+                descriptionTf.getText().equals("") || locationTf.getText().equals("") || 
+                daysCb.getSelectionModel().getSelectedItem() == null ||
+                startTimeCb.getSelectionModel().getSelectedItem() == null ||
+                endTimeCb.getSelectionModel().getSelectedItem() == null)
+                dialog.getDialogPane().lookupButton(done).setDisable(true);
+            else
+                dialog.getDialogPane().lookupButton(done).setDisable(false);
+        });
+        
+        startTimeCb.setOnAction(e -> {
+            if (prefixTf.getText().equals("") || numberTf.getText().equals("") ||
+                descriptionTf.getText().equals("") || locationTf.getText().equals("") || 
+                daysCb.getSelectionModel().getSelectedItem() == null ||
+                startTimeCb.getSelectionModel().getSelectedItem() == null ||
+                endTimeCb.getSelectionModel().getSelectedItem() == null)
+                dialog.getDialogPane().lookupButton(done).setDisable(true);
+            else
+                dialog.getDialogPane().lookupButton(done).setDisable(false);
+        });
+        
+        endTimeCb.setOnAction(e -> {
+            if (prefixTf.getText().equals("") || numberTf.getText().equals("") ||
+                descriptionTf.getText().equals("") || locationTf.getText().equals("") || 
+                daysCb.getSelectionModel().getSelectedItem() == null ||
+                startTimeCb.getSelectionModel().getSelectedItem() == null ||
+                endTimeCb.getSelectionModel().getSelectedItem() == null)
+                dialog.getDialogPane().lookupButton(done).setDisable(true);
+            else
+                dialog.getDialogPane().lookupButton(done).setDisable(false);
+        });
+        
+        dialog.setResultConverter(button -> {
+            if (button == done) {
                 return new Course(prefixTf.getText(), numberTf.getText(),
                         descriptionTf.getText(), locationTf.getText(),
                         daysCb.getSelectionModel().getSelectedItem().toString(),
@@ -355,13 +441,15 @@ public class WeeklySchedule {
                schedule.timeConflictAlert(0);
                success = false;
             }
-        }
+        } else
+            success = false;
     }
     
     public void deleteCourse() {        
         Dialog dialog = new Dialog<>();
         dialog.setTitle("Delete course");
         dialog.setHeaderText("Choose a course to delete");
+        dialog.getDialogPane().getStylesheets().add(getClass().getResource(Main_FX.theme).toExternalForm());
         
         GridPane grid = new GridPane();
         
@@ -382,6 +470,11 @@ public class WeeklySchedule {
         
         dialog.getDialogPane().setContent(grid);
         dialog.getDialogPane().getButtonTypes().addAll(done, cancel);
+        dialog.getDialogPane().lookupButton(done).setDisable(true);
+        
+        comboBox.setOnAction(e -> {
+            dialog.getDialogPane().lookupButton(done).setDisable(false);
+        });
         
         dialog.setResultConverter(button -> {
             if (button == done) {
@@ -410,7 +503,7 @@ public class WeeklySchedule {
         Dialog dialog = new Dialog();
         dialog.setTitle("Modify a Course");
         dialog.setHeaderText("Select which course to modify.");
-        dialog.setContentText(null);
+        dialog.getDialogPane().getStylesheets().add(getClass().getResource(Main_FX.theme).toExternalForm());
         
         GridPane grid = new GridPane();
         grid.setHgap(10);
@@ -604,6 +697,7 @@ public class WeeklySchedule {
         Dialog dialog = new Dialog();
         dialog.setTitle("Change Time Interval");
         dialog.setHeaderText("Choose a time interval.");
+        dialog.getDialogPane().getStylesheets().add(getClass().getResource(Main_FX.theme).toExternalForm());
         
         ButtonType bt1 = new ButtonType("0");
         ButtonType bt2 = new ButtonType("15");
@@ -641,7 +735,60 @@ public class WeeklySchedule {
     }
     
     public void changeTheme() {
+        Dialog dialog = new Dialog();
+        dialog.setTitle("Themes");
+        dialog.setHeaderText("Choose a theme.");
+        dialog.getDialogPane().getStylesheets().add(getClass().getResource(Main_FX.theme).toExternalForm());
         
+        GridPane grid = new GridPane();
+        
+        ComboBox comboBox = new ComboBox();
+        ObservableList<String> comboBoxList = FXCollections.observableArrayList();
+        comboBoxList.addAll("Default Style", "Style 1", "Style 2", "Style 3");
+        comboBox.setItems(comboBoxList);
+        
+        grid.add(comboBox, 0, 0);
+        
+        ButtonType done = new ButtonType("Done", ButtonData.OK_DONE);
+        ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+        
+        dialog.getDialogPane().setContent(grid);
+        dialog.getDialogPane().getButtonTypes().addAll(done, cancel);
+        dialog.getDialogPane().lookupButton(done).setDisable(true);
+        
+        comboBox.setOnAction(e -> {
+            dialog.getDialogPane().lookupButton(done).setDisable(false);
+        });
+        
+        dialog.setResultConverter(button -> {
+            if (button == done) {
+                int index = comboBox.getSelectionModel().getSelectedIndex();
+                switch (index) {
+                    case 1: return "Style1.css";
+                    case 2: return "Style2.css";
+                    case 3: return "Style3.css";
+                    default: return "DefaultStyle.css";
+                }
+            }
+            return null;
+        });
+        
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            Main_FX.theme = result.get();
+            Main_FX.scene.getStylesheets().remove(0);
+            Main_FX.scene.getStylesheets().add(getClass().getResource(Main_FX.theme).toExternalForm());
+            
+            sql = "UPDATE user SET theme = ? WHERE id = ?";
+            try {
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, Main_FX.theme);
+                ps.setInt(2, Main_FX.person.getUserId());
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                Fn.showError(e);
+            }
+        }
     }
     
     public void addCourseToDatabase() {

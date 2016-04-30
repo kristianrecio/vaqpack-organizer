@@ -1,0 +1,15 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 30, 2016, 5:28:43 PM
+    Author     : Kristian Recio
+*/
+
+.root {
+    -fx-font-family: "Consolas";
+    -fx-base: rgb(30, 141, 33);
+    -fx-background: rgb(76, 203, 80);
+}

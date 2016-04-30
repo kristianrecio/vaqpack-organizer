@@ -31,10 +31,13 @@ public class Main_FX extends Application {
     private final int id;
     private final Connection conn;
     public static Person person;
+    public static String theme;
+    public static Scene scene;
     
-    public Main_FX(int id, Connection conn,Stage primaryStage){
+    public Main_FX(int id, String theme, Connection conn,Stage primaryStage){
         this.id = id;
         this.conn = conn;
+        this.theme = theme;
         person = new Person(id,conn);
         setTSchedule();
         start(primaryStage);
@@ -55,7 +58,8 @@ public class Main_FX extends Application {
         });
         
         AnchorPane Main = setMain();
-        Scene scene = new Scene(Main, Main.getPrefWidth(), Main.getPrefHeight());
+        scene = new Scene(Main, Main.getPrefWidth(), Main.getPrefHeight());
+        scene.getStylesheets().add(getClass().getResource(theme).toExternalForm());
         primaryStage.setTitle("VaqPack");
         primaryStage.setScene(scene);
         primaryStage.show();
