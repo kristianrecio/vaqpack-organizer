@@ -1,8 +1,8 @@
 package vaqpackorganizer;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +47,7 @@ public class WeeklySchedule {
     private Schedule schedule;
     private Connection conn;
     private PreparedStatement ps;
+    private ResultSet rs;
     private String sql;
     public static boolean lastestAdd = true;
     
@@ -180,20 +181,34 @@ public class WeeklySchedule {
     public ObservableList<Row> getTimes() {
         ObservableList rowValues = FXCollections.observableArrayList();
         schedule = new Schedule();
-        schedule.setTimeIncrement(15);
         schedule.generateSchedule();
         Row[] rows = new Row[schedule.getTimeIntervals().length];
+        int timeIncrement = 0;
         
-        switch (schedule.getTimeIncrement()) {
-            case 0: initializeRows0(schedule, rows);
+        try {
+            sql = "SELECT * FROM user WHERE id = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, Main_FX.person.getUserId());
+            rs = ps.executeQuery();
+            while (rs.next())
+                timeIncrement = Integer.parseInt(rs.getString("TimeIncrement"));
+        } catch (SQLException e) {
+            Fn.showError(e);
+        }
+        
+        switch (timeIncrement) {
+            case 0:
+                initializeRows0(schedule, rows);
                 for (int i = 0; i < rows.length; i += 4)
                     rowValues.add(rows[i]);
                 break;
-            case 15: initializeRows15(schedule, rows);
+            case 15:
+                initializeRows15(schedule, rows);
                 for (int i = 0; i < rows.length; i++)
                     rowValues.add(rows[i]);
                 break;
-            case 30: initializeRows30(schedule, rows);
+            case 30: 
+                initializeRows30(schedule, rows);
                 for (int i = 0; i < rows.length; i += 2)
                     rowValues.add(rows[i]);
                 break;
