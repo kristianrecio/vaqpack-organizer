@@ -49,7 +49,7 @@ public class WeeklySchedule {
     private PreparedStatement ps;
     private ResultSet rs;
     private String sql;
-    public static boolean addSuccess = true;
+    public static boolean success = true;
     
     public WeeklySchedule() {
     }
@@ -92,12 +92,13 @@ public class WeeklySchedule {
         
         addCourse.setOnAction(e -> {
             addCourse();
-            if (addSuccess) {
+            if (success) {
+                addCourseToDatabase();
+                Main_FX.person.generateCourses();
                 setTheTable();
-                pane.setCenter(table);
-                updateDatabaseCourse();
+                pane.setCenter(table);                
             }
-            addSuccess = true;
+            success = true;
         });
         
         deleteCourse.setOnAction(e -> {
@@ -108,8 +109,11 @@ public class WeeklySchedule {
         
         modifyCourse.setOnAction(e -> {
             modifyCourse();
-            setTheTable();
-            pane.setCenter(table);
+            if (success) {
+                setTheTable();
+                pane.setCenter(table);
+            }
+            success = true;
         });
         
         left = new VBox();
@@ -123,6 +127,12 @@ public class WeeklySchedule {
         changeTheme = new Button("Change Theme");
         intervalChange.setMinWidth(buttonSize);
         changeTheme.setMinWidth(buttonSize);
+        
+        intervalChange.setOnAction(e -> {
+            changeInterval();
+            setTheTable();
+            pane.setCenter(table);
+        });
         
         right = new VBox();
         right.getChildren().addAll(intervalChange, changeTheme);
@@ -203,85 +213,33 @@ public class WeeklySchedule {
             Fn.showError(e);
         }
         
+        initializeRows(schedule, rows, timeIncrement);
+        int inc = 0;
         switch (timeIncrement) {
-            case 0:
-                initializeRows0(schedule, rows);
-                for (int i = 0; i < rows.length; i += 4)
-                    rowValues.add(rows[i]);
-                break;
-            case 15:
-                initializeRows15(schedule, rows);
-                for (int i = 0; i < rows.length; i++)
-                    rowValues.add(rows[i]);
-                break;
-            case 30: 
-                initializeRows30(schedule, rows);
-                for (int i = 0; i < rows.length; i += 2)
-                    rowValues.add(rows[i]);
-                break;
+            case 0: inc = 4; break;
+            case 15: inc = 1; break;
+            case 30: inc = 2; break;
         }
+        
+        for (int i = 0; i < rows.length; i += inc)
+            rowValues.add(rows[i]);
         
         return rowValues;
     }
     
-    public void initializeRows0(Schedule schedule, Row[] rows) {
+    public void initializeRows(Schedule schedule, Row[] rows, int timeIncrement) {
         String day;
         int cell;
+        int inc = 1;
         courses = Main_FX.person.getCourses();
         
-        for(int i = 0; i < rows.length; i += 4) {
-            rows[i] = new Row();
-            rows[i].setTime(schedule.getTimeIntervals()[i]);
-            
-            if (Main_FX.person.getCourses().isEmpty())
-                rows[i].setAllDays("none");
-            else
-               for (int j = 0; j < 5; j++) {
-                   cell = schedule.getCoursesPlace()[i][j];
-                   day = (cell == -1) ? "none" : courses.get(cell).getTableInfo();
-                   switch (j) {
-                       case 0: rows[i].setMonday(day); break;
-                       case 1: rows[i].setTuesday(day); break;
-                       case 2: rows[i].setWednesday(day); break;
-                       case 3: rows[i].setThursday(day); break;
-                       case 4: rows[i].setFriday(day); break;
-                   }
-               }
+        switch (timeIncrement) {
+            case 0: inc = 4; break;
+            case 15: inc = 1; break;
+            case 30: inc = 2; break;
         }
-    }
-    
-    public void initializeRows15(Schedule schedule, Row[] rows) {
-        String day;
-        int cell;
-        courses = Main_FX.person.getCourses();
         
-        for(int i = 0; i < rows.length; i++) {
-            rows[i] = new Row();
-            rows[i].setTime(schedule.getTimeIntervals()[i]);
-            
-            if (Main_FX.person.getCourses().isEmpty())
-                rows[i].setAllDays("none");
-            else
-               for (int j = 0; j < 5; j++) {
-                   cell = schedule.getCoursesPlace()[i][j];
-                   day = (cell == -1) ? "none" : courses.get(cell).getTableInfo();
-                   switch (j) {
-                       case 0: rows[i].setMonday(day); break;
-                       case 1: rows[i].setTuesday(day); break;
-                       case 2: rows[i].setWednesday(day); break;
-                       case 3: rows[i].setThursday(day); break;
-                       case 4: rows[i].setFriday(day); break;
-                   }
-               }
-        }
-    }
-    
-    public void initializeRows30(Schedule schedule, Row[] rows) {
-        String day;
-        int cell;
-        courses = Main_FX.person.getCourses();
-        
-        for(int i = 0; i < rows.length; i += 2) {
+        for(int i = 0; i < rows.length; i += inc) {
             rows[i] = new Row();
             rows[i].setTime(schedule.getTimeIntervals()[i]);
             
@@ -303,15 +261,12 @@ public class WeeklySchedule {
     }
             
     public void setCoursesList() {
-        Course course;
         courses = Main_FX.person.getCourses();
-        String string;
         coursesList = new ArrayList<>();
         if (Main_FX.person.getCourses().isEmpty())
             return;
         for (int i = 0; i < Main_FX.person.getCourses().size(); i++) {
-            course = courses.get(i);
-            string = course.getListInfo();
+            String string = courses.get(i).getListInfo();
             coursesList.add(new Label(string));
        }
     }
@@ -325,9 +280,9 @@ public class WeeklySchedule {
         dialog.setTitle("Add a New Course.");
         dialog.setHeaderText(null);
         
-        GridPane dialogPane = new GridPane();
-        dialogPane.setHgap(10);
-        dialogPane.setVgap(10);
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
         
         Label prefixLb = new Label("Prefix: ");
         Label numberLb = new Label("Number: ");
@@ -357,23 +312,23 @@ public class WeeklySchedule {
         startTimeCb.setItems(times);
         endTimeCb.setItems(times);
         
-        dialogPane.add(prefixLb, 0, 0);
-        dialogPane.add(numberLb, 0, 1);
-        dialogPane.add(descriptionLb, 0, 2);
-        dialogPane.add(locationLb, 0, 3);
-        dialogPane.add(daysLb, 0, 4);
-        dialogPane.add(startTimeLb, 0, 5);
-        dialogPane.add(endTimeLb, 0, 6);
+        grid.add(prefixLb, 0, 0);
+        grid.add(numberLb, 0, 1);
+        grid.add(descriptionLb, 0, 2);
+        grid.add(locationLb, 0, 3);
+        grid.add(daysLb, 0, 4);
+        grid.add(startTimeLb, 0, 5);
+        grid.add(endTimeLb, 0, 6);
         
-        dialogPane.add(prefixTf, 1, 0);
-        dialogPane.add(numberTf, 1, 1);
-        dialogPane.add(descriptionTf, 1, 2);
-        dialogPane.add(locationTf, 1, 3);
-        dialogPane.add(daysCb, 1, 4);
-        dialogPane.add(startTimeCb, 1, 5);
-        dialogPane.add(endTimeCb, 1, 6);
+        grid.add(prefixTf, 1, 0);
+        grid.add(numberTf, 1, 1);
+        grid.add(descriptionTf, 1, 2);
+        grid.add(locationTf, 1, 3);
+        grid.add(daysCb, 1, 4);
+        grid.add(startTimeCb, 1, 5);
+        grid.add(endTimeCb, 1, 6);
         
-        dialog.getDialogPane().setContent(dialogPane);
+        dialog.getDialogPane().setContent(grid);
         
         ButtonType done = new ButtonType("Done", ButtonData.OK_DONE);
         ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
@@ -398,7 +353,7 @@ public class WeeklySchedule {
             if (schedule.isThereATimeConflict(course)) {
                Main_FX.person.getCourses().remove(course);
                schedule.timeConflictAlert(0);
-               addSuccess = false;
+               success = false;
             }
         }
     }
@@ -412,6 +367,7 @@ public class WeeklySchedule {
         
         ComboBox comboBox = new ComboBox();
         ObservableList<String> comboBoxList = FXCollections.observableArrayList();
+        setCoursesList();
         for (Label course : coursesList)
             comboBoxList.add(course.getText());
         comboBox.setItems(comboBoxList);
@@ -436,9 +392,245 @@ public class WeeklySchedule {
         
         Optional result = dialog.showAndWait();
         if (result.isPresent()) {
-            courses.remove(comboBox.getSelectionModel().getSelectedIndex());
-            String user_id = Integer.toString(Main_FX.person.getUserId());
-            sql = "DELETE FROM course WHERE user_id='" + user_id + "';";
+            int course = comboBox.getSelectionModel().getSelectedIndex();
+            int courseID = courses.get(course).getId();
+            sql = "DELETE FROM course WHERE id = ?";
+            try {
+                ps = conn.prepareStatement(sql);
+                ps.setInt(1, courseID);
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                Fn.showError(e);
+            }
+            courses.remove(course);
+        }
+    }
+    
+    public void modifyCourse() {
+        Dialog dialog = new Dialog();
+        dialog.setTitle("Modify a Course");
+        dialog.setHeaderText("Select which course to modify.");
+        dialog.setContentText(null);
+        
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        
+        Label coursesLb = new Label("Courses:");
+        
+        ComboBox coursesCb = new ComboBox();
+        setCoursesList();
+        ObservableList<String> comboBoxList = FXCollections.observableArrayList();
+        for (Label course : coursesList)
+            comboBoxList.add(course.getText());
+        coursesCb.setItems(comboBoxList);
+        
+        Button ok = new Button("OK");
+        
+        Label prefixLb = new Label("Prefix: ");
+        Label numberLb = new Label("Number: ");
+        Label descriptionLb = new Label("Description: ");
+        Label locationLb = new Label("Location: ");
+        Label daysLb = new Label("Days: ");
+        Label startTimeLb = new Label("Start Time: ");
+        Label endTimeLb = new Label("End Time");
+        
+        TextField prefixTf = new TextField();
+        TextField numberTf = new TextField();
+        TextField descriptionTf = new TextField();
+        TextField locationTf = new TextField();
+        
+        ComboBox daysCb = new ComboBox();
+        ComboBox startTimeCb = new ComboBox();
+        ComboBox endTimeCb = new ComboBox();
+        
+        ObservableList<String> daysList = FXCollections.observableArrayList();
+        daysList.addAll("M", "T", "W", "TH", "F", "MW", "TR");
+        
+        daysCb.setItems(daysList);
+        
+        ObservableList<String> times = FXCollections.observableArrayList();
+        times.addAll(Arrays.asList(schedule.getTimeIntervals()));
+        
+        startTimeCb.setItems(times);
+        endTimeCb.setItems(times);
+        
+        prefixTf.setDisable(true);
+        numberTf.setDisable(true);
+        descriptionTf.setDisable(true);
+        locationTf.setDisable(true);
+        daysCb.setDisable(true);
+        startTimeCb.setDisable(true);
+        endTimeCb.setDisable(true);
+        
+        grid.add(coursesLb, 0, 0);
+        grid.add(coursesCb, 0, 1);
+        grid.add(ok, 1, 1);
+        grid.add(prefixLb, 0, 2);
+        grid.add(prefixTf, 1, 2);
+        grid.add(numberLb, 0, 3);
+        grid.add(numberTf, 1, 3);
+        grid.add(descriptionLb, 0, 4);
+        grid.add(descriptionTf, 1, 4);
+        grid.add(locationLb, 0, 5);
+        grid.add(locationTf, 1, 5);
+        grid.add(daysLb, 0, 6);
+        grid.add(daysCb, 1, 6);
+        grid.add(startTimeLb, 0, 7);
+        grid.add(startTimeCb, 1, 7);
+        grid.add(endTimeLb, 0, 8);
+        grid.add(endTimeCb, 1, 8);
+        
+        ButtonType done = new ButtonType("Done", ButtonData.OK_DONE);
+        ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+        
+        dialog.getDialogPane().setContent(grid);
+        dialog.getDialogPane().getButtonTypes().addAll(done, cancel);
+        dialog.getDialogPane().lookupButton(done).setDisable(true);
+        
+        
+        ok.setOnAction(e -> {
+            prefixTf.setDisable(false);
+            numberTf.setDisable(false);
+            descriptionTf.setDisable(false);
+            locationTf.setDisable(false);
+            daysCb.setDisable(false);
+            startTimeCb.setDisable(false);
+            endTimeCb.setDisable(false);
+            dialog.getDialogPane().lookupButton(done).setDisable(false);
+            
+            int index = coursesCb.getSelectionModel().getSelectedIndex();
+            prefixTf.setText(courses.get(index).getPrefix());
+            numberTf.setText(courses.get(index).getNumber());
+            descriptionTf.setText(courses.get(index).getDescription());
+            locationTf.setText(courses.get(index).getLocation());
+            daysCb.setValue(courses.get(index).getDays());
+            startTimeCb.setValue(courses.get(index).getStartTime());
+            endTimeCb.setValue(courses.get(index).getEndTime());
+        });
+        
+        coursesCb.setOnAction(e -> {
+            prefixTf.setDisable(true);
+            numberTf.setDisable(true);
+            descriptionTf.setDisable(true);
+            locationTf.setDisable(true);
+            daysCb.setDisable(true);
+            startTimeCb.setDisable(true);
+            endTimeCb.setDisable(true);
+            dialog.getDialogPane().lookupButton(done).setDisable(true);
+            
+            prefixTf.setText("");
+            numberTf.setText("");
+            descriptionTf.setText("");
+            locationTf.setText("");
+            daysCb.setValue("");
+            startTimeCb.setValue("");
+            endTimeCb.setValue("");
+        });
+        
+        prefixTf.setOnKeyReleased(e -> {
+            if (prefixTf.getText().equals("") || numberTf.getText().equals("")
+                    || descriptionTf.getText().equals("")
+                    || locationTf.getText().equals(""))
+                dialog.getDialogPane().lookupButton(done).setDisable(true);
+            else
+                dialog.getDialogPane().lookupButton(done).setDisable(false);
+        });
+        
+        numberTf.setOnKeyReleased(e -> {
+            if (prefixTf.getText().equals("") || numberTf.getText().equals("")
+                    || descriptionTf.getText().equals("")
+                    || locationTf.getText().equals(""))
+                dialog.getDialogPane().lookupButton(done).setDisable(true);
+            else
+                dialog.getDialogPane().lookupButton(done).setDisable(false);
+        });
+        
+        descriptionTf.setOnKeyReleased(e -> {
+            if (prefixTf.getText().equals("") || numberTf.getText().equals("")
+                    || descriptionTf.getText().equals("")
+                    || locationTf.getText().equals(""))
+                dialog.getDialogPane().lookupButton(done).setDisable(true);
+            else
+                dialog.getDialogPane().lookupButton(done).setDisable(false);
+        });
+        
+        locationTf.setOnKeyReleased(e -> {
+            if (prefixTf.getText().equals("") || numberTf.getText().equals("")
+                    || descriptionTf.getText().equals("")
+                    || locationTf.getText().equals(""))
+                dialog.getDialogPane().lookupButton(done).setDisable(true);
+            else
+                dialog.getDialogPane().lookupButton(done).setDisable(false);
+        });
+        
+        dialog.setResultConverter(button -> {
+            if (button == done) {
+                int index = coursesCb.getSelectionModel().getSelectedIndex();
+                Course originalCourse = courses.get(index);
+                Course modifiedCourse = new Course(originalCourse.getId(),
+                        prefixTf.getText(), numberTf.getText(), descriptionTf.getText(),
+                        locationTf.getText(), daysCb.getSelectionModel().getSelectedItem().toString(),
+                        startTimeCb.getSelectionModel().getSelectedItem().toString(),
+                        endTimeCb.getSelectionModel().getSelectedItem().toString());
+                
+                if (originalCourse.isEqualTo(modifiedCourse)) {
+                    success = false;
+                    return null;
+                }
+                
+                Main_FX.person.getCourses().remove(index);
+                Main_FX.person.getCourses().add(index, modifiedCourse);
+                if (schedule.isThereATimeConflict(index)) {
+                    schedule.timeConflictAlert(1);
+                    Main_FX.person.getCourses().remove(index);
+                    Main_FX.person.getCourses().add(index, originalCourse);
+                    success = false;
+                }
+                return index;
+            }
+            return null;
+        });
+        
+        int resultIndex;
+        Optional<Integer> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            resultIndex = result.get();
+            updateCourseInDatabase(resultIndex);
+        }
+    }
+    
+    public void changeInterval() {
+        Dialog dialog = new Dialog();
+        dialog.setTitle("Change Time Interval");
+        dialog.setHeaderText("Choose a time interval.");
+        
+        ButtonType bt1 = new ButtonType("0");
+        ButtonType bt2 = new ButtonType("15");
+        ButtonType bt3 = new ButtonType("30");
+        ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+        
+        dialog.getDialogPane().getButtonTypes().addAll(bt1, bt2, bt3, cancel);
+        
+        dialog.setResultConverter(button -> {
+            if (button == bt1)
+                return 0;
+            else if (button == bt2)
+                return 15;
+            else if (button == bt3)
+                return 30;
+            return null;
+        });
+        
+        int timeIncrement;
+        int id;
+        Optional<Integer> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            timeIncrement = result.get();
+            id = Main_FX.person.getUserId();
+            
+            sql = "UPDATE user SET TimeIncrement='" + timeIncrement +
+                    "' WHERE id='" + id + "'";
             try {
                 ps = conn.prepareStatement(sql);
                 ps.executeUpdate();
@@ -448,19 +640,11 @@ public class WeeklySchedule {
         }
     }
     
-    public void modifyCourse() {
-        
-    }
-    
-    public void changeInterval() {
-        
-    }
-    
     public void changeTheme() {
         
     }
     
-    public void updateDatabaseCourse() {
+    public void addCourseToDatabase() {
         int num = courses.size() - 1;
         Course course = courses.get(num);
         
@@ -486,6 +670,31 @@ public class WeeklySchedule {
             ps.setString(6, description);
             ps.setString(7, location);
             ps.setString(8, days);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            Fn.showError(e);
+        }
+    }
+    
+    public void updateCourseInDatabase(int course) {
+        courses = Main_FX.person.getCourses();
+        Course modifiedCourse = courses.get(course);
+        
+        int id = modifiedCourse.getId();
+        String prefix = modifiedCourse.getPrefix();
+        String number = modifiedCourse.getNumber();
+        String description = modifiedCourse.getDescription();
+        String location = modifiedCourse.getLocation();
+        String days = modifiedCourse.getDays();
+        String startTime = modifiedCourse.getStartTime();
+        String endTime = modifiedCourse.getEndTime();
+        
+        sql = "UPDATE course SET prefix='" + prefix + "', number='" + number +
+                "', description='" + description + "', location='" + location +
+                "', days='" + days + "', startTime='" + startTime + "', endTime='" + 
+                endTime + "' WHERE id='" + id + "'";
+        try {
+            ps = conn.prepareStatement(sql);
             ps.executeUpdate();
         } catch (SQLException e) {
             Fn.showError(e);
