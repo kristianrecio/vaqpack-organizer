@@ -3,8 +3,7 @@ package vaqpackorganizer;
 
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.time.LocalDate;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -54,7 +53,8 @@ public class MonthlySchedule {
             String css = MonthlySchedule.class.getResource("CalendarStyle.css").toExternalForm();
             scene.getStylesheets().add(css);
 
-            DatePickerSkin datePickerSkin = new DatePickerSkin(new DatePicker());
+            DatePicker datePicker = new DatePicker();
+            DatePickerSkin datePickerSkin = new DatePickerSkin(datePicker);
             Node popupContent = datePickerSkin.getPopupContent();
             
             
@@ -62,6 +62,8 @@ public class MonthlySchedule {
             eventBtn.setMinSize(200, 25);
             eventBtn.setText("Add Event");
             eventBtn.setOnAction((ActionEvent e) -> {
+                
+                LocalDate date = datePicker.getValue();
                 
             });
             //Labels and textfields
@@ -79,6 +81,12 @@ public class MonthlySchedule {
             Label reminderLabel = new Label("Would you like to set a reminder?");
             ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList("Yes", "No"));
             cb.setTooltip(new Tooltip("Select Yes or No"));
+            //end
+            
+            //create a list with all events on a day
+            Label blankSpace = new Label(" ");
+            Label eventThisDay = new Label(" Events today: ");
+            
             //end
             
             //add textfields and labels to TextFields Pane
