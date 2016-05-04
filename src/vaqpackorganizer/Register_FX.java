@@ -64,7 +64,7 @@ public class Register_FX extends Application {
                 ps = conn.prepareStatement(sql);
                 ps.setString(1, name);
                 ps.setString(2, pass);
-                ps.executeUpdate();
+                ps.executeUpdate();                
                 Alert success = new Alert(Alert.AlertType.CONFIRMATION, name+" registered successfully!", ButtonType.OK);
                 success.setTitle("Success!");
                 success.showAndWait();

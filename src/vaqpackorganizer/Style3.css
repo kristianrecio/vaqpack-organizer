@@ -1,0 +1,15 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 30, 2016, 6:34:38 PM
+    Author     : Kristian Recio
+*/
+
+.root {
+    -fx-font-family: "Calibri Light";
+    -fx-base: rgb(46, 39, 250);
+    -fx-background: rgb(6, 0, 169);
+}

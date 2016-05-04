@@ -8,22 +8,21 @@ package vaqpackorganizer;
 import java.util.ArrayList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
 
 /**
  *
  * @author Kristian Recio
  */
 public class Schedule {
-    private int timeIncrement;
+    private final int timeIncrement = 15;
     private String[] timeIntervals;
     private int[][] coursesPlace;
+    private ArrayList<Course> courses;
     
     public void generateSchedule() {
         generateTimeTicks();
         initializeCoursesPlace();
-        inputDataIntoCoursesPlace();
+        setCoursesPlace();
     }
     
     public void initializeCoursesPlace() {
@@ -34,94 +33,119 @@ public class Schedule {
                 rows[j] = -1;
     }
     
-    public void inputDataIntoCoursesPlace() {
-        ArrayList<Course> courses = Main_FX.person.getCourses();
-        int k;
-        for (int i = 0; i < getTimeIntervals().length; i++) {
-            for (int j = 0; j < courses.size(); j++) {
-                if (getTimeIntervals()[i].equals(courses.get(j).getStartTime())) {
-                    k = i;
-                    while (!timeIntervals[k].equals(courses.get(j).getEndTime())) {
-                        switch (courses.get(j).getDays()) {
-                            case "M":
-                                if (getCoursesPlace()[k][0] == -1)
-                                    getCoursesPlace()[k][0] = j;
-                                else {
-                                    // Conflicting Times
-                                    return;
-                                }
-                                break;
-                            case "T":
-                                if (getCoursesPlace()[k][1] == -1)
-                                    getCoursesPlace()[k][1] = j;
-                                else {
-                                    //conflictingTimes(courses, j);
-                                    return;
-                                }
-                                break;
-                            case "W":
-                                if (getCoursesPlace()[k][2] == -1)
-                                    getCoursesPlace()[k][2] = j;
-                                else {
-                                    //conflictingTimes(courses, j);
-                                    return;
-                                }
-                                break;
-                            case "TH":
-                                if (getCoursesPlace()[k][3] == -1)
-                                    getCoursesPlace()[k][3] = j;
-                                else {
-                                    //conflictingTimes(courses, j);
-                                    return;
-                                }
-                                break;
-                            case "MW":
-                                if (getCoursesPlace()[k][0] == -1 && getCoursesPlace()[k][2] == -1) {
-                                    getCoursesPlace()[k][0] = j;
-                                    getCoursesPlace()[k][2] = j;
-                                } else {
-                                    //conflictingTimes(courses, j);
-                                    return;
-                                }
-                                break;
-                            case "TR":
-                                if (getCoursesPlace()[k][1] == -1 && getCoursesPlace()[k][3] == -1) {
-                                    getCoursesPlace()[k][1] = j;
-                                    getCoursesPlace()[k][3] = j;
-                                } else {
-                                   // conflictingTimes(courses, j);
-                                    return;
-                                }
-                                break;
-                            default:
-                                if (getCoursesPlace()[k][4] == -1)
-                                    getCoursesPlace()[k][4] = j;
-                                else {
-                                    //conflictingTimes(courses, j);
-                                    return;
-                                }
-                                break;
-                        }
-                        k++;
-                        if (!(k < timeIntervals.length)) break;
+    public void timeConflictAlert(int type) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Conflicting Times Alert");
+        alert.setHeaderText("ERROR: Conflicting Times");
+        if (type == 0)
+            alert.setContentText("The added course has conflicted with another courses's time. It will be removed.");
+        else
+            alert.setContentText("The modified course has conflicted with another course's time. The modifications will be removed.");
+        
+        alert.showAndWait();
+    }
+    
+    public boolean isThereATimeConflict(int course) {
+        ArrayList<Integer> courseTime = new ArrayList<>();
+        ArrayList<Integer> otherCourseTime = new ArrayList<>();
+        courses = Main_FX.person.getCourses();
+        
+        for (int i = 0; i < timeIntervals.length; i++) {
+            if (timeIntervals[i].equals(courses.get(course).getStartTime())) {
+                while (!timeIntervals[i].equals(courses.get(course).getEndTime()))
+                    courseTime.add(i++);
+                break;
+            }
+        }
+        
+        for (int i = 0; i < courses.size(); i++) {
+            if (i == course)
+                continue;
+            for (int j = 0; j < timeIntervals.length; j++) {
+                if (timeIntervals[j].equals(courses.get(i).getStartTime())) {
+                    while (!timeIntervals[j].equals(courses.get(i).getEndTime()))
+                        otherCourseTime.add(j++);
+                    break;
+                }
+            }
+            
+            for (int j = 0; j < courseTime.size(); j++) {
+                for (int k = 0; k < otherCourseTime.size(); k++) {
+                    if (courseTime.get(j).equals(otherCourseTime.get(k))) {
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
     
-    public void conflictingTimes(int course) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Conflicting Times Alert");
-        alert.setHeaderText("ERROR: Conflicting Times");
-        alert.setContentText("A courses's time has conflicted with another courses's time. It will be removed.");
-        
-        ButtonType ok = new ButtonType("OK", ButtonData.OK_DONE);
-        alert.getButtonTypes().add(ok);
-        
-        alert.showAndWait();
-        Main_FX.person.getCourses().remove(course);
-        generateSchedule();
+    public void setCoursesPlace() {
+        courses = Main_FX.person.getCourses();
+        int start, end;
+        for (int course = 0; course < courses.size(); course++) {
+            for (int time = 0; time < timeIntervals.length; time++) {
+                if (!timeIntervals[time].equals(courses.get(course).getStartTime()))
+                    continue;
+                start = time;
+                end = start;
+                switch (courses.get(course).getDays()) {
+                    case "M":
+                        while (!timeIntervals[end++].equals(courses.get(course).getEndTime()))
+                            if (end >= timeIntervals.length)
+                                break;
+                        while (start < end)
+                            coursesPlace[start++][0] = course;
+                        break;
+                    case "T":
+                        while (!timeIntervals[end++].equals(courses.get(course).getEndTime()))
+                            if (end >= timeIntervals.length)
+                                break;
+                        while (start < end)
+                            coursesPlace[start++][1] = course;
+                        break;
+                    case "W":
+                        while (!timeIntervals[end++].equals(courses.get(course).getEndTime()))
+                            if (end >= timeIntervals.length)
+                                break;
+                        while (start < end)
+                            coursesPlace[start++][2] = course;
+                        break;
+                    case "TH":
+                        while (!timeIntervals[end++].equals(courses.get(course).getEndTime()))
+                            if (end >= timeIntervals.length)
+                                break;
+                        while (start < end)
+                            coursesPlace[start++][3] = course;
+                    case "MW":
+                        while (!timeIntervals[end++].equals(courses.get(course).getEndTime()))
+                            if (end >= timeIntervals.length)
+                                break;
+                        while (start < end) {
+                            coursesPlace[start][0] = course;
+                            coursesPlace[start++][2] = course;
+                        }
+                        break;
+                    case "TR":
+                        while (!timeIntervals[end++].equals(courses.get(course).getEndTime()))
+                            if (end >= timeIntervals.length)
+                                break;
+                        while (start < end) {
+                            coursesPlace[start][1] = course;
+                            coursesPlace[start++][3] = course;
+                        }
+                        break;
+                    default:
+                        while (!timeIntervals[end++].equals(courses.get(course).getEndTime()))
+                            if (end >= timeIntervals.length)
+                                break;
+                        while (start < end)
+                            coursesPlace[start++][4] = course;
+                        break;
+                }
+                break;
+            }
+        }
     }
     
     public void generateTimeTicks() {
@@ -132,10 +156,6 @@ public class Schedule {
 
     public int getTimeIncrement() {
         return timeIncrement;
-    }
-
-    public void setTimeIncrement(int timeIncrement) {
-        this.timeIncrement = timeIncrement;
     }
     
     public String[] getTimeIntervals() {

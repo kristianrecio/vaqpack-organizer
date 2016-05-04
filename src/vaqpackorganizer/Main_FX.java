@@ -31,14 +31,16 @@ public class Main_FX extends Application {
     private final int id;
     private final Connection conn;
     public static Person person;
+    public static String theme;
+    public static Scene scene;
     
-    public Main_FX(int id, Connection conn,Stage primaryStage){
+    public Main_FX(int id, String theme, Connection conn,Stage primaryStage){
         this.id = id;
         this.conn = conn;
+        this.theme = theme;
         person = new Person(id,conn);
         setTSchedule();
         start(primaryStage);
-        System.out.println(this.id);
     }
     
     @Override
@@ -56,7 +58,8 @@ public class Main_FX extends Application {
         });
         
         AnchorPane Main = setMain();
-        Scene scene = new Scene(Main, Main.getPrefWidth(), Main.getPrefHeight());
+        scene = new Scene(Main, Main.getPrefWidth(), Main.getPrefHeight());
+        scene.getStylesheets().add(getClass().getResource(theme).toExternalForm());
         primaryStage.setTitle("VaqPack");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -72,8 +75,8 @@ public class Main_FX extends Application {
     
     public AnchorPane setMain(){
         AnchorPane Main = new AnchorPane();
-        Main.setPrefHeight(400);
-        Main.setPrefWidth(600);
+        Main.setPrefHeight(500);
+        Main.setPrefWidth(1050);
         BorderPane Bpane = new BorderPane();
         Bpane.setPrefHeight(Main.getPrefHeight());
         Bpane.setPrefWidth(Main.getPrefWidth());
