@@ -19,23 +19,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class MonthlySchedule {
-    
-    private Connection conn;
     private Tab tab;
+    Connection conn;
     HBox rootPane = new HBox(2);
     VBox TextFields = new VBox();
     
+    public MonthlySchedule(Connection conn){
+        this.conn = conn;
+    }
     
     public void setCalendarTab() {
         tab = new Tab();
         tab.setText("Calendar");
         setCalendar();
-        tab.setContent(rootPane);
     } 
-    
-    public void setConnection(Connection conn){
-        this.conn = conn;
-    }
     
     public void setCalendar() {
             
@@ -94,6 +91,14 @@ public class MonthlySchedule {
             
             //add calendar, button and textfields pane
             rootPane.getChildren().addAll(popupContent, TextFields);
+            tab.setContent(rootPane);
     
+    }
+
+    /**
+     * @return the tab
+     */
+    public Tab getTab() {
+        return tab;
     }
 }
