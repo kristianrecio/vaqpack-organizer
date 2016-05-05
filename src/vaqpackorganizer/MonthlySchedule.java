@@ -3,8 +3,7 @@ package vaqpackorganizer;
 
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.time.LocalDate;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -20,23 +19,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class MonthlySchedule {
-    
-    private Connection conn;
     private Tab tab;
+    Connection conn;
     HBox rootPane = new HBox(2);
     VBox TextFields = new VBox();
     
+    public MonthlySchedule(Connection conn){
+        this.conn = conn;
+    }
     
     public void setCalendarTab() {
         tab = new Tab();
         tab.setText("Calendar");
         setCalendar();
-        tab.setContent(rootPane);
     } 
-    
-    public void setConnection(Connection conn){
-        this.conn = conn;
-    }
     
     public void setCalendar() {
             
@@ -54,7 +50,8 @@ public class MonthlySchedule {
             String css = MonthlySchedule.class.getResource("CalendarStyle.css").toExternalForm();
             scene.getStylesheets().add(css);
 
-            DatePickerSkin datePickerSkin = new DatePickerSkin(new DatePicker());
+            DatePicker datePicker = new DatePicker();
+            DatePickerSkin datePickerSkin = new DatePickerSkin(datePicker);
             Node popupContent = datePickerSkin.getPopupContent();
             
             
@@ -62,6 +59,8 @@ public class MonthlySchedule {
             eventBtn.setMinSize(200, 25);
             eventBtn.setText("Add Event");
             eventBtn.setOnAction((ActionEvent e) -> {
+                
+                LocalDate date = datePicker.getValue();
                 
             });
             //Labels and textfields
@@ -81,11 +80,25 @@ public class MonthlySchedule {
             cb.setTooltip(new Tooltip("Select Yes or No"));
             //end
             
+            //create a list with all events on a day
+            Label blankSpace = new Label(" ");
+            Label eventThisDay = new Label(" Events today: ");
+            
+            //end
+            
             //add textfields and labels to TextFields Pane
             TextFields.getChildren().addAll(nameLabel, eventName, timeLabel, eventTime, placeLabel, eventPlace,reminderLabel, cb, eventBtn);
             
             //add calendar, button and textfields pane
             rootPane.getChildren().addAll(popupContent, TextFields);
+            tab.setContent(rootPane);
     
+    }
+
+    /**
+     * @return the tab
+     */
+    public Tab getTab() {
+        return tab;
     }
 }

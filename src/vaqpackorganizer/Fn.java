@@ -33,7 +33,7 @@ public class Fn {
         try{
             Class.forName("com.mysql.jdbc.Driver");
             return DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/vaqpack", "root", "Kr7909!?");
+            "jdbc:mysql://localhost:3306/vaqpack", "root", "root");
         }catch (ClassNotFoundException | SQLException e) {
             return null;
         }

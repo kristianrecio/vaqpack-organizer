@@ -23,7 +23,13 @@ public class Main_FX extends Application {
         s.setTheTab();
         TSchedule = s.getTab();
     }
+    private void setMSchedule(){
+        MonthlySchedule e = new MonthlySchedule(conn);
+        e.setCalendarTab();
+        MSchedule = e.getTab();
+    }
     
+    private Tab MSchedule;
     private Tab TSchedule;
     private Tab TMonthly;
     private Tab TInformation;
@@ -39,9 +45,10 @@ public class Main_FX extends Application {
     public Main_FX(int id, String theme, Connection conn,Stage primaryStage){
         this.id = id;
         this.conn = conn;
-        this.theme = theme;
+        //this.theme = theme;
         person = new Person(id,conn);
         setTSchedule();
+        setMSchedule();
         start(primaryStage);
     }
     
@@ -61,7 +68,7 @@ public class Main_FX extends Application {
         
         AnchorPane Main = setMain();
         scene = new Scene(Main, Main.getPrefWidth(), Main.getPrefHeight());
-        scene.getStylesheets().add(getClass().getResource(theme).toExternalForm());
+        //scene.getStylesheets().add(getClass().getResource(theme).toExternalForm());
         primaryStage.setTitle("VaqPack");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -96,7 +103,7 @@ public class Main_FX extends Application {
         Tpane.setPrefWidth(Main.getPrefWidth());
         Tpane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         
-        Tpane.getTabs().addAll(TSchedule);
+        Tpane.getTabs().addAll(TSchedule,MSchedule);
         Bpane.setCenter(Tpane);
         
         Main.setTopAnchor(Bpane,0.0);
