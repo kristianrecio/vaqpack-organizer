@@ -847,4 +847,8 @@ public class WeeklySchedule {
             Fn.showError(e);
         }
     }
+    
+    public void setPieChart() {
+        
+    }
 }
