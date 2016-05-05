@@ -25,6 +25,8 @@ public class Main_FX extends Application {
     }
     
     private Tab TSchedule;
+    private Tab TMonthly;
+    private Tab TInformation;
     private MenuItem MIout = Fn.setMenuItem("Log out");
     private MenuItem MIclose = Fn.setMenuItem("Close");
     private MenuItem MIedit = Fn.setMenuItem("Edit user information");
