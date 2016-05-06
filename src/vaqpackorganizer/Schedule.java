@@ -49,10 +49,12 @@ public class Schedule {
         ArrayList<Integer> courseTime = new ArrayList<>();
         ArrayList<Integer> otherCourseTime = new ArrayList<>();
         courses = Main_FX.person.getCourses();
+        Course course1 = courses.get(course);
+        Course course2 = null;
         
         for (int i = 0; i < timeIntervals.length; i++) {
-            if (timeIntervals[i].equals(courses.get(course).getStartTime())) {
-                while (!timeIntervals[i].equals(courses.get(course).getEndTime()))
+            if (timeIntervals[i].equals(course1.getStartTime())) {
+                while (!timeIntervals[i].equals(course1.getEndTime()))
                     courseTime.add(i++);
                 break;
             }
@@ -65,17 +67,18 @@ public class Schedule {
                 if (timeIntervals[j].equals(courses.get(i).getStartTime())) {
                     while (!timeIntervals[j].equals(courses.get(i).getEndTime()))
                         otherCourseTime.add(j++);
+                    course2 = courses.get(i);
                     break;
                 }
             }
+            if (course2 == null)
+                break;
             
-            for (int j = 0; j < courseTime.size(); j++) {
-                for (int k = 0; k < otherCourseTime.size(); k++) {
-                    if (courseTime.get(j).equals(otherCourseTime.get(k))) {
-                        return true;
-                    }
-                }
-            }
+            for (int j = 0; j < courseTime.size(); j++)
+                for (int k = 0; k < otherCourseTime.size(); k++)
+                    if (courseTime.get(j).equals(otherCourseTime.get(k)))
+                        if (course1.getDays().equals(course2.getDays()))
+                            return true;
         }
         return false;
     }
@@ -91,34 +94,34 @@ public class Schedule {
                 end = start;
                 switch (courses.get(course).getDays()) {
                     case "M":
-                        while (!timeIntervals[end++].equals(courses.get(course).getEndTime()))
+                        while (!timeIntervals[++end].equals(courses.get(course).getEndTime()))
                             if (end >= timeIntervals.length)
                                 break;
                         while (start < end)
                             coursesPlace[start++][0] = course;
                         break;
                     case "T":
-                        while (!timeIntervals[end++].equals(courses.get(course).getEndTime()))
+                        while (!timeIntervals[++end].equals(courses.get(course).getEndTime()))
                             if (end >= timeIntervals.length)
                                 break;
                         while (start < end)
                             coursesPlace[start++][1] = course;
                         break;
                     case "W":
-                        while (!timeIntervals[end++].equals(courses.get(course).getEndTime()))
+                        while (!timeIntervals[++end].equals(courses.get(course).getEndTime()))
                             if (end >= timeIntervals.length)
                                 break;
                         while (start < end)
                             coursesPlace[start++][2] = course;
                         break;
                     case "TH":
-                        while (!timeIntervals[end++].equals(courses.get(course).getEndTime()))
+                        while (!timeIntervals[++end].equals(courses.get(course).getEndTime()))
                             if (end >= timeIntervals.length)
                                 break;
                         while (start < end)
                             coursesPlace[start++][3] = course;
                     case "MW":
-                        while (!timeIntervals[end++].equals(courses.get(course).getEndTime()))
+                        while (!timeIntervals[++end].equals(courses.get(course).getEndTime()))
                             if (end >= timeIntervals.length)
                                 break;
                         while (start < end) {
@@ -127,7 +130,7 @@ public class Schedule {
                         }
                         break;
                     case "TR":
-                        while (!timeIntervals[end++].equals(courses.get(course).getEndTime()))
+                        while (!timeIntervals[++end].equals(courses.get(course).getEndTime()))
                             if (end >= timeIntervals.length)
                                 break;
                         while (start < end) {
@@ -136,7 +139,7 @@ public class Schedule {
                         }
                         break;
                     default:
-                        while (!timeIntervals[end++].equals(courses.get(course).getEndTime()))
+                        while (!timeIntervals[++end].equals(courses.get(course).getEndTime()))
                             if (end >= timeIntervals.length)
                                 break;
                         while (start < end)

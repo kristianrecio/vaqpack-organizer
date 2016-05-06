@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
@@ -50,6 +51,7 @@ public class WeeklySchedule {
     private ResultSet rs;
     private String sql;
     public static boolean success = true;
+    private PieChart pieChart;
     
     public WeeklySchedule() {
     }
@@ -65,7 +67,14 @@ public class WeeklySchedule {
     public void setPane() {
         pane = new BorderPane();
         
-        // Top border parts
+        setTheTop();
+        setTheLeft();
+        setTheCenter();
+        setTheRight();
+        setTheBottom();
+    }
+    
+    public void setTheTop() {
         name = new Label();
         id_num = new Label();
         semester = new Label();
@@ -81,8 +90,9 @@ public class WeeklySchedule {
         top.setAlignment(Pos.CENTER);
         
         pane.setTop(top);
-        
-        // Left border parts
+    }
+    
+    public void setTheLeft() {
         int buttonSize = 120;
         
         addCourse = new Button("Add A New Course");
@@ -98,15 +108,19 @@ public class WeeklySchedule {
                 addCourseToDatabase();
                 Main_FX.person.generateCourses();
                 setTheTable();
-                pane.setCenter(table);                
+                pane.setCenter(table);
+                setTheBottom();
             }
             success = true;
+            updatePieChart();
         });
         
         deleteCourse.setOnAction(e -> {
             deleteCourse();
             setTheTable();
             pane.setCenter(table);
+            setTheBottom();
+            updatePieChart();
         });
         
         modifyCourse.setOnAction(e -> {
@@ -114,6 +128,8 @@ public class WeeklySchedule {
             if (success) {
                 setTheTable();
                 pane.setCenter(table);
+                setTheBottom();
+                updatePieChart();
             }
             success = true;
         });
@@ -123,8 +139,16 @@ public class WeeklySchedule {
         left.setSpacing(10);
         left.setPadding(new Insets(0, 10, 0, 10));
         pane.setLeft(left);
+    }
+    
+    public void setTheCenter() {
+        setTheTable();
+        pane.setCenter(table);
+    }
+    
+    public void setTheRight() {
+        int buttonSize = 120;
         
-        // Right border parts
         intervalChange = new Button("Change Interval");
         changeTheme = new Button("Change Theme");
         intervalChange.setMinWidth(buttonSize);
@@ -140,25 +164,29 @@ public class WeeklySchedule {
             changeTheme();
         });
         
+        pieChart = new PieChart(setData());
+        
         right = new VBox();
-        right.getChildren().addAll(intervalChange, changeTheme);
+        right.getChildren().addAll(intervalChange, changeTheme, pieChart);
         right.setSpacing(10);
         right.setPadding(new Insets(0, 10, 0, 10));
+        right.setMaxWidth(100);
         pane.setRight(right);
-        
-        // Bottom border parts
+    }
+    
+    public void setTheBottom() {
         setCoursesList();
         bottom = new VBox();
+        Label label;
         if (!coursesList.isEmpty())
-            for (int i = 0; i < coursesList.size(); i++)
-                bottom.getChildren().add(coursesList.get(i));
-        bottom.setAlignment(Pos.CENTER);
+            for (int i = 0; i < coursesList.size(); i++) {
+                label = new Label();
+                label.setText("\t\t\t\t\t\t\t" + coursesList.get(i).getText());
+                bottom.getChildren().add(label);
+            }
+        bottom.setAlignment(Pos.CENTER_LEFT);
         bottom.setPadding(new Insets(10, 10, 10, 10));
         pane.setBottom(bottom);
-        
-        // Center border parts
-        setTheTable();
-        pane.setCenter(table);
     }
     
     public void setTheTable() {
@@ -221,7 +249,7 @@ public class WeeklySchedule {
             Fn.showError(e);
         }
         
-        initializeRows(schedule, rows, timeIncrement);
+        initializeRows(rows, timeIncrement);
         int inc = 0;
         switch (timeIncrement) {
             case 0: inc = 4; break;
@@ -235,7 +263,7 @@ public class WeeklySchedule {
         return rowValues;
     }
     
-    public void initializeRows(Schedule schedule, Row[] rows, int timeIncrement) {
+    public void initializeRows(Row[] rows, int timeIncrement) {
         String day;
         int cell;
         int inc = 1;
@@ -848,7 +876,47 @@ public class WeeklySchedule {
         }
     }
     
-    public void setPieChart() {
+    public ObservableList<PieChart.Data> setData() {
+        int[][] coursesPlace = schedule.getCoursesPlace();
         
+        int num = 0;
+        int freeTime = 57 * 5;
+        for (int i = 0; i < coursesPlace.length; i++) {
+            for (int j = 0; j < coursesPlace[i].length; j++) {
+                if (coursesPlace[i][j] != -1) {
+                    num++;
+                    freeTime--;
+                }
+            }
+        }
+        
+        ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
+        data.add(new PieChart.Data("Course Time", num * 15));
+        data.add(new PieChart.Data("Commitments Time", 0));
+        data.add(new PieChart.Data("Free Time", freeTime * 15));
+        
+        return data;
+    }
+    
+    public void updatePieChart() {
+        int[][] coursesPlace = schedule.getCoursesPlace();
+        
+        int num = 0;
+        int freeTime = 57 * 5;
+        for (int i = 0; i < coursesPlace.length; i++) {
+            for (int j = 0; j < coursesPlace[i].length; j++) {
+                if (coursesPlace[i][j] != -1) {
+                    num++;
+                    freeTime--;
+                }
+            }
+        }
+        
+        for (PieChart.Data data : pieChart.getData()) {
+            if (data.getName().equals("Course Time"))
+                data.setPieValue(num * 15);
+            if (data.getName().equals("Free Time"))
+                data.setPieValue(freeTime * 15);
+        }
     }
 }
