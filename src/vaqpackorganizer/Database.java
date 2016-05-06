@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javafx.collections.ObservableList;
 
 /**
@@ -90,7 +91,38 @@ public class Database {
         }
         return 0;
     }
+    public void generateProfessorList(ArrayList<Professor> professors, int major_id){
+            professors = new ArrayList<>();
+        try{
+                String sql_get = "SELECT * FROM professor WHERE major_id = "+major_id;
+                ps = conn.prepareStatement(sql_get);
+                rs = ps.executeQuery();
+                while(rs.next()){
+                    Professor p = new Professor(rs.getString("name"),
+                        rs.getString("phone"),rs.getString("email"),rs.getString("address"));
+                    professors.add(p);
+                }
+        }catch(SQLException e){
+            Fn.showError(e);
+        }
+    }
     
+        public void generateEmergencyList(ArrayList<Emergency_contact> emergency, int user_id){
+            emergency = new ArrayList<>();
+        try{
+                String sql_get = "SELECT * FROM emergency_contact WHERE user_id = "+user_id;
+                ps = conn.prepareStatement(sql_get);
+                rs = ps.executeQuery();
+                while(rs.next()){
+                    Emergency_contact e = new Emergency_contact(rs.getString("name"),
+                        rs.getString("phone"),rs.getString("email"),rs.getString("address"));
+                    emergency.add(e);
+                }
+        }catch(SQLException e){
+            Fn.showError(e);
+        }
+    }
+        
     public void modifyString(int inv_id, String table, String Parameter, String value){
         if(!value.equals("")){
             String sql = "UPDATE "+table

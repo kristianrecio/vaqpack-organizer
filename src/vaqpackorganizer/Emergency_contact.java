@@ -9,13 +9,13 @@ package vaqpackorganizer;
  *
  * @author Carlos
  */
-public class Professor {
+public class Emergency_contact{
     private String name;
     private String phone;
     private String email;
     private String address;
     
-    public Professor(String name, String phone, String email, String address){
+    public Emergency_contact(String name, String phone, String email, String address){
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -49,5 +49,5 @@ public class Professor {
     public String getAddress() {
         return address;
     }
+    
 }
-
