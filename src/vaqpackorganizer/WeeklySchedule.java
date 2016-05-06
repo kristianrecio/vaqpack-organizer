@@ -759,6 +759,7 @@ public class WeeklySchedule {
             Database.modifyInt(id, "user", "time_increment", timeIncrement);
         }
     }
+    
     public void changeTheme() {
         Dialog dialog = new Dialog();
         dialog.setTitle("Themes");
