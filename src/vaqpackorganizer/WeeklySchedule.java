@@ -25,8 +25,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import static vaqpackorganizer.Main_FX.theme;
 
 public class WeeklySchedule {
+    private int id;
     private Tab tab;
     private BorderPane pane;
     private Label name;
@@ -49,9 +51,13 @@ public class WeeklySchedule {
     private PreparedStatement ps;
     private ResultSet rs;
     private String sql;
+    private Database Database;
     public static boolean success = true;
     
-    public WeeklySchedule() {
+    public WeeklySchedule(int id, Database Database, Connection conn) {
+        this.id = id;
+        this.Database = Database;
+        this.conn = conn;
     }
     
     public void setTheTab() {
@@ -216,7 +222,7 @@ public class WeeklySchedule {
             ps.setInt(1, Main_FX.person.getUserId());
             rs = ps.executeQuery();
             while (rs.next())
-                timeIncrement = Integer.parseInt(rs.getString("TimeIncrement"));
+                timeIncrement = Integer.parseInt(rs.getString("time_increment"));
         } catch (SQLException e) {
             Fn.showError(e);
         }
@@ -722,18 +728,9 @@ public class WeeklySchedule {
         if (result.isPresent()) {
             timeIncrement = result.get();
             id = Main_FX.person.getUserId();
-            
-            sql = "UPDATE user SET TimeIncrement='" + timeIncrement +
-                    "' WHERE id='" + id + "'";
-            try {
-                ps = conn.prepareStatement(sql);
-                ps.executeUpdate();
-            } catch (SQLException e) {
-                Fn.showError(e);
-            }
+            Database.modifyInt(id, "user", "time_increment", timeIncrement);
         }
     }
-    
     public void changeTheme() {
         Dialog dialog = new Dialog();
         dialog.setTitle("Themes");
@@ -741,13 +738,13 @@ public class WeeklySchedule {
         dialog.getDialogPane().getStylesheets().add(getClass().getResource(Main_FX.theme).toExternalForm());
         
         GridPane grid = new GridPane();
+
+        ComboBox themeCb = new ComboBox();
+        ObservableList<String> themes = FXCollections.observableArrayList();
+        Database.getItems(themes,"theme","name");
+        themeCb.setItems(themes);
         
-        ComboBox comboBox = new ComboBox();
-        ObservableList<String> comboBoxList = FXCollections.observableArrayList();
-        comboBoxList.addAll("Default Style", "Style 1", "Style 2", "Style 3");
-        comboBox.setItems(comboBoxList);
-        
-        grid.add(comboBox, 0, 0);
+        grid.add(themeCb, 0, 0);
         
         ButtonType done = new ButtonType("Done", ButtonData.OK_DONE);
         ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
@@ -756,39 +753,21 @@ public class WeeklySchedule {
         dialog.getDialogPane().getButtonTypes().addAll(done, cancel);
         dialog.getDialogPane().lookupButton(done).setDisable(true);
         
-        comboBox.setOnAction(e -> {
+        themeCb.setOnAction(e -> {
             dialog.getDialogPane().lookupButton(done).setDisable(false);
         });
         
         dialog.setResultConverter(button -> {
             if (button == done) {
-                int index = comboBox.getSelectionModel().getSelectedIndex();
-                switch (index) {
-                    case 1: return "Style1.css";
-                    case 2: return "Style2.css";
-                    case 3: return "Style3.css";
-                    default: return "DefaultStyle.css";
-                }
+                int theme_id = Database.getID("theme", "name", themeCb.getSelectionModel().getSelectedItem().toString());
+                Database.modifyInt(id, "user", "theme_id", theme_id);
+                Main_FX.theme = Database.getString("theme",theme_id,"name");
+                Main_FX.scene.getStylesheets().remove(0);
+                Main_FX.scene.getStylesheets().add(getClass().getResource(Main_FX.theme).toExternalForm());
             }
             return null;
         });
-        
-        Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()) {
-            Main_FX.theme = result.get();
-            Main_FX.scene.getStylesheets().remove(0);
-            Main_FX.scene.getStylesheets().add(getClass().getResource(Main_FX.theme).toExternalForm());
-            
-            sql = "UPDATE user SET theme = ? WHERE id = ?";
-            try {
-                ps = conn.prepareStatement(sql);
-                ps.setString(1, Main_FX.theme);
-                ps.setInt(2, Main_FX.person.getUserId());
-                ps.executeUpdate();
-            } catch (SQLException e) {
-                Fn.showError(e);
-            }
-        }
+        dialog.showAndWait();
     }
     
     public void addCourseToDatabase() {
