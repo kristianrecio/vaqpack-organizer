@@ -21,15 +21,17 @@ public class Person {
     private String username;
     private String profile_url;
     private ArrayList<Course> courses;
+    private Database Database;
     
-    public Person(int id, Connection conn){
+    public Person(int id, int major_id, Connection conn, Database Database){
+        this.Database = Database;
         user_id = id;
         this.conn = conn;
         name = get("name");
         id_num = get("id_num");
-        semester = get("Semester");
+        semester = get("semester");
         email = get("email");
-        major = get("major");
+        major = this.Database.getString("major",major_id,"name");
         password = get("password");
         username = get("username");
         profile_url = get("profile_url");

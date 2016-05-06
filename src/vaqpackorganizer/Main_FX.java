@@ -19,7 +19,7 @@ import javafx.stage.Stage;
  */
 public class Main_FX extends Application {
     private void setTSchedule(){
-        WeeklySchedule s = new WeeklySchedule(); 
+        WeeklySchedule s = new WeeklySchedule(id,Database,conn); 
         s.setTheTab();
         TSchedule = s.getTab();
     }
@@ -42,15 +42,19 @@ public class Main_FX extends Application {
     public static String theme;
     public static Scene scene;
     
-    public Main_FX(int id, String theme, Connection conn,Stage primaryStage){
+    public Database Database;
+    
+    public Main_FX(int id, int theme_id, Connection conn,Stage primaryStage){
         this.id = id;
         this.conn = conn;
-        this.theme = theme;
-        person = new Person(id,conn);
+        Database = new Database(conn);
+        theme = Database.getString("theme",theme_id,"name");
+        person = new Person(id, Database.getInt("user",id,"major_id"), conn, Database);
         setTSchedule();
         setMSchedule();
         start(primaryStage);
     }
+    
     
     @Override
     public void start(Stage primaryStage) {
@@ -68,6 +72,7 @@ public class Main_FX extends Application {
         
         AnchorPane Main = setMain();
         scene = new Scene(Main, Main.getPrefWidth(), Main.getPrefHeight());
+        System.out.println(theme);
         scene.getStylesheets().add(getClass().getResource(theme).toExternalForm());
         primaryStage.setTitle("VaqPack");
         primaryStage.setScene(scene);
