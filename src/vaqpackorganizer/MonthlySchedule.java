@@ -122,8 +122,7 @@ public class MonthlySchedule {
             eventBtn.setText("Add Event");
             eventBtn.setOnAction((ActionEvent e) -> {
                 
-                
-                if(Main_FX.person.getEmail(null)) {//needs to get fixed.
+                if(Main_FX.person.getEmail().equals("")) { 
                         Alert alertEMail = new Alert(Alert.AlertType.ERROR, "No e-mail found" + ButtonType.OK);
                         alertEMail.showAndWait();
                     }
