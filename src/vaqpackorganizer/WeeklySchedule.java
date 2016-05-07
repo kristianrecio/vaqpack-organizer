@@ -26,7 +26,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import static vaqpackorganizer.Main_FX.theme;
 
 public class WeeklySchedule {
     private int id;
@@ -490,8 +489,9 @@ public class WeeklySchedule {
         ComboBox comboBox = new ComboBox();
         ObservableList<String> comboBoxList = FXCollections.observableArrayList();
         setCoursesList();
-        for (Label course : coursesList)
+        coursesList.stream().forEach((course) -> {
             comboBoxList.add(course.getText());
+        });
         comboBox.setItems(comboBoxList);
         
         Label coursesLb = new Label("Courses: ");
@@ -751,12 +751,12 @@ public class WeeklySchedule {
         });
         
         int timeIncrement;
-        int id;
+        int uesr_id;
         Optional<Integer> result = dialog.showAndWait();
         if (result.isPresent()) {
             timeIncrement = result.get();
-            id = Main_FX.person.getUserId();
-            Database.modifyInt(id, "user", "time_increment", timeIncrement);
+            uesr_id = Main_FX.person.getUserId();
+            Database.modifyInt(uesr_id, "user", "time_increment", timeIncrement);
         }
     }
     
