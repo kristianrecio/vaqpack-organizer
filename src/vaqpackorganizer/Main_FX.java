@@ -30,7 +30,7 @@ public class Main_FX extends Application {
     }
     
     private void setTInfo(Major info){
-        Information i = new Information(info);
+        Information i = new Information(info,person, Database);
         i.setTab();
         TInfo = i.getTab();
     }
@@ -115,7 +115,7 @@ public class Main_FX extends Application {
         Tpane.setPrefWidth(Main.getPrefWidth());
         Tpane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         
-        Tpane.getTabs().addAll(TSchedule,MSchedule);
+        Tpane.getTabs().addAll(TSchedule,MSchedule, TInfo);
         Bpane.setCenter(Tpane);
         
         Main.setTopAnchor(Bpane,0.0);

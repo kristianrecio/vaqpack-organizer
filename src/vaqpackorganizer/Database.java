@@ -99,7 +99,7 @@ public class Database {
                 rs = ps.executeQuery();
                 while(rs.next()){
                     Professor p = new Professor(rs.getString("name"),
-                        rs.getString("phone"),rs.getString("email"),rs.getString("address"));
+                        rs.getString("phone"),rs.getString("email"),rs.getString("office"));
                     professors.add(p);
                 }
         }catch(SQLException e){

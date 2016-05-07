@@ -26,6 +26,7 @@ import javafx.scene.layout.VBox;
 
 public class MonthlySchedule {
     
+    Person person;
     private Connection conn;
     PreparedStatement sl;
     private Tab tab;
@@ -44,8 +45,9 @@ public class MonthlySchedule {
         tab.setContent(rootPane);
     } 
     
-    public void setConnection(Connection conn){
+    public void setConnection(Connection conn, Person person){
         this.conn = conn;
+        this.person = person;
     }
     
     //insert into database

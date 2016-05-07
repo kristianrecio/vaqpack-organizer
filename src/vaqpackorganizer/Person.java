@@ -27,14 +27,14 @@ public class Person {
         this.Database = Database;
         user_id = id;
         this.conn = conn;
-        name = get("name");
-        id_num = get("id_num");
-        semester = get("semester");
-        email = get("email");
+        name = this.Database.getString("user", user_id, "name");
+        id_num = this.Database.getString("user", user_id, "id_num");
+        semester = this.Database.getString("user", user_id, "semester");
+        email = this.Database.getString("user", user_id, "email");
         major = this.Database.getString("major",major_id,"name");
-        password = get("password");
-        username = get("username");
-        profile_url = get("profile_url");
+        password = this.Database.getString("user", user_id, "password");
+        username = this.Database.getString("user", user_id, "username");
+        profile_url = this.Database.getString("user", user_id, "profile_url");
         generateCourses();
     }
     
@@ -56,41 +56,6 @@ public class Person {
         }
     }
     
-    public String get(String Parameter){
-        String result = "";
-        try{
-            String sql_get = "SELECT * FROM user WHERE id = ?";
-            ps = conn.prepareStatement(sql_get);
-            ps.setInt(1, user_id);
-            rs = ps.executeQuery();
-            if(rs.next()){
-                result = rs.getString(Parameter);
-            }
-            else{
-                result = "";
-            }
-        }catch(SQLException e){
-            Fn.showError(e);
-        }
-        return result;
-    }
-    
-    public void set(String Parameter, String Value){
-        if(!Value.equals("")){
-            String sql_set = "UPDATE user"
-                    + " SET "+Parameter+" = ?"
-                    + " WHERE id = ?";
-            try{
-                ps = conn.prepareStatement(sql_set);
-                ps.setString(1, Value);
-                ps.setInt(2, user_id);
-                ps.executeUpdate();
-            }catch(SQLException e){
-                Fn.showError(e);
-            }
-        }
-    }
-    
     public int getUserId() {
         return user_id;
     }
@@ -100,8 +65,8 @@ public class Person {
     }
 
     public void setName(String name) {
-        set("name",name);
-        this.name = get("name");
+        Database.modifyString(user_id, "user", "name", name);
+        this.name = Database.getString("user", user_id, "name");
     }
     
     public String getId_num() {
@@ -109,8 +74,8 @@ public class Person {
     }
 
     public void setId_num(String id_num) {
-        set("id_num",id_num);
-        this.id_num = get("id_num");
+        Database.modifyString(user_id, "user", "id_num", id_num);
+        this.id_num = Database.getString("user", user_id, "id_num");
     }
 
     public String getSemester() {
@@ -118,8 +83,8 @@ public class Person {
     }
 
     public void setSemester(String semester) {
-        set("Semester",semester);
-        this.semester = get("semester");
+        Database.modifyString(user_id, "user", "semester", semester);
+        this.semester = Database.getString("user", user_id, "semester");
     }
     
     public ArrayList getCourses() {
@@ -135,17 +100,17 @@ public class Person {
     }
     
     public void setEmail(String email) {
-        set("email",email);
-        this.email = get("email");
+        Database.modifyString(user_id, "user", "email", email);
+        this.email = Database.getString("user", user_id, "email");
     }
 
     public String getMajor() {
         return major;
     }
 
-    public void setMajor(String major) {
-        set("major",major);
-        this.major = get("major");
+    public void setMajor(int major_id) {
+        Database.modifyInt(user_id, "user", "major_id", major_id);
+        this.major = Database.getString("major", major_id, "name");
     }
 
     public String getPassword(){
@@ -154,8 +119,8 @@ public class Person {
     
     public void setPassword(String oldpass,String newpass,String confirm) {
         if(oldpass.equals(getPassword()) && newpass.equals(confirm)){
-            set("password",newpass);
-            this.password = get("password");
+        Database.modifyString(user_id, "user", "password", password);
+        this.password = Database.getString("user", user_id, "password");
         }
     }
 
@@ -167,8 +132,8 @@ public class Person {
     }
 
     public void setUsername(String username) {
-        set("username",username);
-        this.username = get("username");
+        Database.modifyString(user_id, "user", "username", username);
+        this.username = Database.getString("user", user_id, "username");
     }
 
     public String getProfile_url() {
@@ -176,7 +141,7 @@ public class Person {
     }
 
     public void setProfile_url(String profile_url) {
-        set("profile_url",profile_url);
-        this.profile_url = get("profile_url");
+        Database.modifyString(user_id, "user", "profile_url", profile_url);
+        this.profile_url = Database.getString("user", user_id, "profile_url");
     }
 }

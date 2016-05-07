@@ -26,13 +26,11 @@ import javax.mail.internet.MimeMultipart;
  *
  * @author Roberto
  */
-public class SendEMail {
-    
+public class SendEMail { 
     public class GMailAuthenticator extends javax.mail.Authenticator {
         public PasswordAuthentication getPasswordAuthentication() {
             String user = "vaqpackdonotreply@gmail.com";
             String pwd = "Ryobmujg1";
-                
             return new PasswordAuthentication(user, pwd);
         }
     }

@@ -26,7 +26,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import static vaqpackorganizer.Main_FX.theme;
 
 public class WeeklySchedule {
     private int id;
@@ -63,7 +62,6 @@ public class WeeklySchedule {
     }
     
     public void setTheTab() {
-        conn = Fn.get(conn);
         tab = new Tab();
         tab.setText("Weekly Schedule");
         setPane();
