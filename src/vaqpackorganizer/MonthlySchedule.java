@@ -13,12 +13,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
@@ -26,7 +29,7 @@ import javafx.scene.layout.VBox;
 
 public class MonthlySchedule {
     
-    Person person;
+    
     private Connection conn;
     PreparedStatement sl;
     private Tab tab;
@@ -45,9 +48,8 @@ public class MonthlySchedule {
         tab.setContent(rootPane);
     } 
     
-    public void setConnection(Connection conn, Person person){
+    public void setConnection(Connection conn){
         this.conn = conn;
-        this.person = person;
     }
     
     //insert into database
@@ -121,28 +123,33 @@ public class MonthlySchedule {
             eventBtn.setOnAction((ActionEvent e) -> {
                 
                 
-                String Event_Name = eventName.getText();
-                String Event_Time_Start = eventTimeStart.getSelectionModel().getSelectedItem().toString();
-                String Event_Time_End = eventTimeEnd.getSelectionModel().getSelectedItem().toString();
-                String Event_Place = eventPlace.getText();
-                LocalDate theDate = datePicker.getValue();
-                Date Event_Date = new Date(theDate.toEpochDay()); //type java.sql.Date
-                //this line adds everything to the database
-                //data.addEvent(Event_Name, Event_Time_Start, Event_Time_End,Event_Place, Event_Date, 0);
-                
-                
+                if(Main_FX.person.getEmail(null)) {//needs to get fixed.
+                        Alert alertEMail = new Alert(Alert.AlertType.ERROR, "No e-mail found" + ButtonType.OK);
+                        alertEMail.showAndWait();
+                    }
+                    
+                    else {
+                        
+                        String Event_Name = eventName.getText();
+                        String Event_Time_Start = eventTimeStart.getSelectionModel().getSelectedItem().toString();
+                        String Event_Time_End = eventTimeEnd.getSelectionModel().getSelectedItem().toString();
+                        String Event_Place = eventPlace.getText();
+                        LocalDate theDate = datePicker.getValue();
+                        Date Event_Date = new Date(theDate.toEpochDay()); //type java.sql.Date
+                        //data.addEvent(Event_Name, Event_Time_Start, Event_Time_End,Event_Place, Event_Date, 0);
+                    }
                 
             });
             
             //create a list with all events on a day
             Label blankSpace = new Label(" ");
             Label eventThisDay = new Label(" Events today: ");
-            
+            TextArea printEvents = new TextArea();
             //end
             
             //add textfields and labels to TextFields Pane
             TextFields.getChildren().addAll(nameLabel, eventName, timeStartLabel, eventTimeStart, timeEndLabel, 
-                    eventTimeEnd, placeLabel, eventPlace,reminderLabel, cb, eventBtn);
+                    eventTimeEnd, placeLabel, eventPlace, reminderLabel, cb, eventBtn, blankSpace, eventThisDay, printEvents);
             
             //add calendar, button and textfields pane
             rootPane.getChildren().addAll(popupContent, TextFields);
