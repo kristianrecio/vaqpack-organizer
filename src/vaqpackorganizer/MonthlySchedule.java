@@ -30,16 +30,11 @@ import javafx.scene.layout.VBox;
 public class MonthlySchedule {
     
     
-    private Connection conn;
-    PreparedStatement sl;
+
     private Tab tab;
     HBox rootPane = new HBox(2);
     VBox TextFields = new VBox();
     TimeTicks timeticks = new TimeTicks(15);
-    
-    public MonthlySchedule(Connection conn){
-        this.conn = conn;
-    }
     
     public void setCalendarTab() {
         tab = new Tab();
@@ -48,29 +43,8 @@ public class MonthlySchedule {
         tab.setContent(rootPane);
     } 
     
-    public void setConnection(Connection conn){
-        this.conn = conn;
-    }
+ 
     
-    //insert into database
-    public void addEvent(String Event_Name, String Event_Time_Start, String Event_Time_End, String Event_Place, Date Event_Date, String Reminder) {
-        try{
-            String addEvent = "INSERT INTO event(Event_Name, Event_Time_Start, Event_Time_End, Event_Place, Event_Date, Reminder)"
-                    +"VALUES (?,?,?,?,?,?,?)";
-            sl = conn.prepareStatement(addEvent);
-            sl.setString(1, Event_Name);
-            sl.setString(2, Event_Time_Start);
-            sl.setString(3, Event_Time_End);
-            sl.setString(4, Event_Place);
-            sl.setDate(5, Event_Date);
-            sl.setString(6, Reminder);
-            sl.executeUpdate();
-                  
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    //end
     
     public void setCalendar() {
             
