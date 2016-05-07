@@ -53,8 +53,8 @@ public class Information {
         TInfo.setContent(pane);
     }
     
-    private GridPane top = new GridPane();
-    private BorderPane t = new BorderPane();
+    private GridPane top_right = new GridPane();
+    private BorderPane top = new BorderPane();
     private Label Lname = new Label("Name");
     private Label Lemail = new Label("e-mail");
     private Label Lid_num = new Label("UTRGV ID");
@@ -67,34 +67,34 @@ public class Information {
     private TextField Tsemester = new TextField();
     
     public void setTop(){
-        top.setHgap(8);
-        top.setVgap(16);
+        top_right.setHgap(8);
+        top_right.setVgap(16);
         
-        top.add(Lname, 0, 0);
-        top.add(Lemail, 0, 1);
-        top.add(Lid_num, 0, 2);
-        top.add(Lmajor, 0, 3);
-        top.add(Lsemester, 0, 4);
+        top_right.add(Lname, 0, 0);
+        top_right.add(Lemail, 0, 1);
+        top_right.add(Lid_num, 0, 2);
+        top_right.add(Lmajor, 0, 3);
+        top_right.add(Lsemester, 0, 4);
         
         Tname.setText(person.getName());
         Tname.setDisable(true);
-        top.add(Tname, 1, 0);
+        top_right.add(Tname, 1, 0);
         
         Temail.setText(person.getEmail());
         Temail.setDisable(true);
-        top.add(Temail, 1, 1);
+        top_right.add(Temail, 1, 1);
         
         Tid_num.setText(person.getId_num());
         Tid_num.setDisable(true);
-        top.add(Tid_num, 1, 2);
+        top_right.add(Tid_num, 1, 2);
         
         Tmajor.setText(person.getMajor());
         Tmajor.setDisable(true);
-        top.add(Tmajor, 1, 3);
+        top_right.add(Tmajor, 1, 3);
         
         Tsemester.setText(person.getSemester());
         Tsemester.setDisable(true);
-        top.add(Tsemester, 1, 4);
+        top_right.add(Tsemester, 1, 4);
         
         
         ImageView picture = ImageViewBuilder.create()
@@ -104,13 +104,37 @@ public class Information {
         picture.setFitHeight(148);
         picture.setFitWidth(128);
         
-        t.setCenter(top);
-        t.setLeft(picture);
-        pane.setTop(t);
+        top.setCenter(top_right);
+        top.setLeft(picture);
+        pane.setTop(top);
     }
     
+    private GridPane left = new GridPane();
+    private Label Lmajor_dep =  new Label("Major department information");
+    private Label Lmajor_name = new Label ();
+    private Label Lmajor_location = new Label();
+    private Label Lmajor_phone = new Label();
+    private Label Lmajor_email = new Label();
+    private Label Lmajor_url = new Label();
+    
     public void setLeft(){
+        left.setHgap(8);
+        left.setVgap(4);
         
+        Lmajor_name.setText(info.getName());
+        Lmajor_location.setText("Location: "+info.getLocation());
+        Lmajor_phone.setText("Phone: "+info.getPhone());
+        Lmajor_email.setText("e-mail: "+info.getEmail());
+        Lmajor_url.setText("Department website: "+info.getUrl());
+        
+        left.add(Lmajor_dep, 0, 0);
+        left.add(Lmajor_name, 1, 0);
+        left.add(Lmajor_location, 0, 1);
+        left.add(Lmajor_phone, 1, 1);
+        left.add(Lmajor_email, 0, 2);
+        left.add(Lmajor_url, 1, 2);
+        
+        pane.setLeft(left);
     }
     
     public Tab getTab(){
