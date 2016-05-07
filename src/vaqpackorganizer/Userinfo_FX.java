@@ -28,7 +28,6 @@ public class Userinfo_FX extends Application {
     private PasswordField Fnewpass = Fn.setPasswordField(8,96,"New password");
     private PasswordField Fconfirm = Fn.setPasswordField(8,136,"Confirm new password");
     private TextField Femail = Fn.setTextField(8,176,"e-mail");
-    private TextField Fmajor = Fn.setTextField(8,216,"Major");
     private TextField Fid_num = Fn.setTextField(8,256,"UTRGV ID");
     private TextField Fsemester = Fn.setTextField(8,296,"Semester");
     private TextField Fname = Fn.setTextField(8,336,"Name");
@@ -46,14 +45,12 @@ public class Userinfo_FX extends Application {
         Ball.setOnAction((ActionEvent event) -> {
         String user_name = Fuser_name.getText();
         String email = Femail.getText();
-        String major = Fmajor.getText();
         String id_num = Fid_num.getText();
         String semester = Fsemester.getText();
         String name = Fname.getText();
         
             user.setUsername(user_name);
             user.setEmail(email);
-            user.setMajor(major);
             user.setId_num(id_num);
             user.setSemester(semester);
             user.setName(name);
@@ -69,7 +66,7 @@ public class Userinfo_FX extends Application {
         Userinfo.setPrefHeight(168);
         Userinfo.setPrefWidth(256);
         Userinfo.getChildren().addAll(Fuser_name,Foldpass,Fnewpass,Fconfirm,Bpass,
-                Femail,Fmajor,Fid_num,Fsemester,Fname,Ball);
+                Femail,Fid_num,Fsemester,Fname,Ball);
         
         Scene scene = new Scene(Userinfo, 300, 380);
         

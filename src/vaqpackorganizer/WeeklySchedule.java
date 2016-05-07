@@ -62,7 +62,6 @@ public class WeeklySchedule {
     }
     
     public void setTheTab() {
-        conn = Fn.get(conn);
         tab = new Tab();
         tab.setText("Weekly Schedule");
         setPane();

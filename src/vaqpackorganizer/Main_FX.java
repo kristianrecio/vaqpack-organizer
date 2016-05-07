@@ -29,10 +29,15 @@ public class Main_FX extends Application {
         MSchedule = e.getTab();
     }
     
+    private void setTInfo(Major info){
+        Information i = new Information(info,person, Database);
+        i.setTab();
+        TInfo = i.getTab();
+    }
+
     private Tab MSchedule;
     private Tab TSchedule;
-    private Tab TMonthly;
-    private Tab TInformation;
+    private Tab TInfo;
     private MenuItem MIout = Fn.setMenuItem("Log out");
     private MenuItem MIclose = Fn.setMenuItem("Close");
     private MenuItem MIedit = Fn.setMenuItem("Edit user information");
@@ -52,6 +57,8 @@ public class Main_FX extends Application {
         person = new Person(id, Database.getInt("user",id,"major_id"), conn, Database);
         setTSchedule();
         setMSchedule();
+        Major info = new Major(id,Database.getInt("user",id,"major_id"), Database);
+        setTInfo(info);
         start(primaryStage);
     }
     
@@ -108,7 +115,7 @@ public class Main_FX extends Application {
         Tpane.setPrefWidth(Main.getPrefWidth());
         Tpane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         
-        Tpane.getTabs().addAll(TSchedule,MSchedule);
+        Tpane.getTabs().addAll(TSchedule,MSchedule, TInfo);
         Bpane.setCenter(Tpane);
         
         Main.setTopAnchor(Bpane,0.0);

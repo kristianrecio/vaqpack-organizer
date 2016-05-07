@@ -26,13 +26,11 @@ import javax.mail.internet.MimeMultipart;
  *
  * @author Roberto
  */
-public class SendEMail {
-    
+public class SendEMail { 
     public class GMailAuthenticator extends javax.mail.Authenticator {
         public PasswordAuthentication getPasswordAuthentication() {
             String user = "vaqpackdonotreply@gmail.com";
             String pwd = "Ryobmujg1";
-                
             return new PasswordAuthentication(user, pwd);
         }
     }
@@ -41,10 +39,7 @@ public class SendEMail {
         try{
             new SendEMail().sendSimpleMail("Testing", "vaqpackdonotreply@gmail.com",
                     "vaqpackdonotreply@gmail.com", "testing....");
-            new SendEMail().sendSimpleMail("Testing", "robertaralva@gmail.com",
-                    "vaqpackdonotreply@gmail.com", "testing....");
-            new SendEMail().sendSimpleMail("Testing", "roberto_utb@hotmail.com",
-                    "vaqpackdonotreply@gmail.com", "testing....");
+            
         }catch (Throwable e) {
             e.printStackTrace();
         } 
