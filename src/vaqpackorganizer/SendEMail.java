@@ -37,7 +37,7 @@ public class SendEMail {
     
     public void mailSender() {
         try{
-            new SendEMail().sendSimpleMail("Testing", "vaqpackdonotreply@gmail.com",
+            new SendEMail().sendSimpleMail("Event Reminder", Main_FX.person.getEmail(),
                     "vaqpackdonotreply@gmail.com", "testing....");
             
         }catch (Throwable e) {

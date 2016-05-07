@@ -53,7 +53,7 @@ public class MonthlySchedule {
     }
     
     //insert into database
-    public void addEvent(String Event_Name, String Event_Time_Start, String Event_Time_End, String Event_Place, Date Event_Date, int Reminder) {
+    public void addEvent(String Event_Name, String Event_Time_Start, String Event_Time_End, String Event_Place, Date Event_Date, String Reminder) {
         try{
             String addEvent = "INSERT INTO event(Event_Name, Event_Time_Start, Event_Time_End, Event_Place, Event_Date, Reminder)"
                     +"VALUES (?,?,?,?,?,?,?)";
@@ -63,7 +63,7 @@ public class MonthlySchedule {
             sl.setString(3, Event_Time_End);
             sl.setString(4, Event_Place);
             sl.setDate(5, Event_Date);
-            sl.setInt(6, Reminder);
+            sl.setString(6, Reminder);
             sl.executeUpdate();
                   
         }catch (SQLException e) {
@@ -135,7 +135,9 @@ public class MonthlySchedule {
                         String Event_Place = eventPlace.getText();
                         LocalDate theDate = datePicker.getValue();
                         Date Event_Date = new Date(theDate.toEpochDay()); //type java.sql.Date
-                        //data.addEvent(Event_Name, Event_Time_Start, Event_Time_End,Event_Place, Event_Date, 0);
+                        String reminderYesNo = cb.getSelectionModel().getSelectedItem().toString();
+                        
+                        data.addEvent(Event_Name, Event_Time_Start, Event_Time_End,Event_Place, Event_Date, reminderYesNo);
                     }
                 
             });
