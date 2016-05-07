@@ -30,7 +30,7 @@ import javafx.scene.layout.VBox;
 public class MonthlySchedule {
     
     
-
+    
     private Tab tab;
     HBox rootPane = new HBox(2);
     VBox TextFields = new VBox();
@@ -110,8 +110,7 @@ public class MonthlySchedule {
                         LocalDate theDate = datePicker.getValue();
                         Date Event_Date = new Date(theDate.toEpochDay()); //type java.sql.Date
                         String reminderYesNo = cb.getSelectionModel().getSelectedItem().toString();
-                        
-                        //data.addEvent(Event_Name, Event_Time_Start, Event_Time_End,Event_Place, Event_Date, reminderYesNo);
+                        Main_FX.Database.addEvent(Event_Name, Event_Time_Start, Event_Time_End,Event_Place, Event_Date, reminderYesNo);
                     }
                 
             });

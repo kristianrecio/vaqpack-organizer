@@ -47,7 +47,7 @@ public class Main_FX extends Application {
     public static String theme;
     public static Scene scene;
     
-    public Database Database;
+    public static Database Database; // static ;)
     
     public Main_FX(int id, int theme_id, Connection conn,Stage primaryStage){
         this.id = id;
