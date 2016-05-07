@@ -144,7 +144,7 @@ public class MonthlySchedule {
             //create a list with all events on a day
             Label blankSpace = new Label(" ");
             Label eventThisDay = new Label(" Events today: ");
-            TextArea printEvents = new TextArea();
+            TextArea printEvents = new TextArea(); //need to put database data here.
             //end
             
             //add textfields and labels to TextFields Pane

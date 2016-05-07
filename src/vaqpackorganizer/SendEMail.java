@@ -39,10 +39,7 @@ public class SendEMail {
         try{
             new SendEMail().sendSimpleMail("Testing", "vaqpackdonotreply@gmail.com",
                     "vaqpackdonotreply@gmail.com", "testing....");
-            new SendEMail().sendSimpleMail("Testing", "robertaralva@gmail.com",
-                    "vaqpackdonotreply@gmail.com", "testing....");
-            new SendEMail().sendSimpleMail("Testing", "roberto_utb@hotmail.com",
-                    "vaqpackdonotreply@gmail.com", "testing....");
+            
         }catch (Throwable e) {
             e.printStackTrace();
         } 
