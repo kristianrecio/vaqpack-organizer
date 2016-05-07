@@ -27,6 +27,9 @@ import javax.mail.internet.MimeMultipart;
  * @author Roberto
  */
 public class SendEMail { 
+    
+    String messageText;//needs to get data from database to be sent via e-mail
+    
     public class GMailAuthenticator extends javax.mail.Authenticator {
         public PasswordAuthentication getPasswordAuthentication() {
             String user = "vaqpackdonotreply@gmail.com";
@@ -37,8 +40,8 @@ public class SendEMail {
     
     public void mailSender() {
         try{
-            new SendEMail().sendSimpleMail("Testing", "vaqpackdonotreply@gmail.com",
-                    "vaqpackdonotreply@gmail.com", "testing....");
+            new SendEMail().sendSimpleMail("Event Reminder", Main_FX.person.getEmail(),
+                    "vaqpackdonotreply@gmail.com", messageText);
             
         }catch (Throwable e) {
             e.printStackTrace();

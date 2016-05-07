@@ -24,7 +24,7 @@ public class Main_FX extends Application {
         TSchedule = s.getTab();
     }
     private void setMSchedule(){
-        MonthlySchedule e = new MonthlySchedule(conn);
+        MonthlySchedule e = new MonthlySchedule();
         e.setCalendarTab();
         MSchedule = e.getTab();
     }
