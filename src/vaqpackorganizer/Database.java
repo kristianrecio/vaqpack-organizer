@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 /**
  *
@@ -26,6 +28,36 @@ public class Database {
     public Database(Connection conn){
         this.conn = conn;
     }
+    
+    public void deleteRecord(String table, int id){
+        try{
+            String sql = "DELETE FROM "+table+" WHERE id = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1,id);
+            ps.executeUpdate();
+            }catch(SQLException e){
+                Fn.showError(e);
+            } 
+    }
+        public void insertContact(int user_id, String name, String phone, String email, String address){
+            try{
+            String sql = "INSERT INTO emergency_contact (user_id, name, phone, email, address) " +
+                            "VALUES (?,?,?,?,?)";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, user_id);
+            ps.setString(2, name);
+            ps.setString(3, phone);
+            ps.setString(4, email);
+            ps.setString(5, address);
+            ps.executeUpdate();
+            Alert success = new Alert(Alert.AlertType.CONFIRMATION, "Success", ButtonType.OK);
+                success.setTitle("Add emergency contact.");
+                success.showAndWait();
+            }catch(SQLException e){
+                Fn.showError(e);
+            }        
+        }
+    
         public ResultSet get(String table){
         try{
             String sql = "SELECT * FROM "+table;

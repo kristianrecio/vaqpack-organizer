@@ -42,7 +42,7 @@ public class Information {
     private Button Bedit = new Button("Edit");
     private Button Bsave = new Button("Save Changes");
     private Button BaddContact = new Button("Add emergency contact");
-    private Button BeditContact = new Button("Edit contact");
+    private Button BeditContact = new Button("Edit emergency contact");
     private Button BdeleteContact = new Button("Delete contact");
     private Button Bediturl = new Button("Change profile picture");
     
@@ -116,6 +116,109 @@ public class Information {
         Optional result = dialog.showAndWait();
     }
     
+    public void addContact(){
+        Dialog<Information> dialog = new Dialog();
+        dialog.setTitle("Add contact");
+        dialog.setHeaderText(null);
+        
+        GridPane dialogPane = new GridPane();
+        
+        Label nameLb = new Label("Name");
+        Label phoneLb = new Label("Phone");
+        Label emailLb = new Label("e-mail");
+        Label addressLb = new Label("Address");
+        
+        TextField nameTf = new TextField();
+        TextField phoneTf = new TextField();
+        TextField emailTf = new TextField();
+        TextField addressTf = new TextField();
+        
+        dialogPane.add(nameLb, 0, 0);
+        dialogPane.add(phoneLb, 0, 1);
+        dialogPane.add(emailLb, 0, 2);
+        dialogPane.add(addressLb, 0, 3);
+        
+        dialogPane.add(nameTf, 1, 0);
+        dialogPane.add(phoneTf, 1, 1);
+        dialogPane.add(emailTf, 1, 2);
+        dialogPane.add(addressTf, 1, 3);
+        
+        dialog.getDialogPane().setContent(dialogPane);
+        
+        ButtonType done = new ButtonType("Add", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        
+        dialog.getDialogPane().getButtonTypes().addAll(cancel, done);
+        
+        dialog.setResultConverter((ButtonType b) -> {
+            if (b == done) {
+                String name = nameTf.getText();
+                String phone = phoneTf.getText();
+                String email = emailTf.getText();
+                String address = addressTf.getText();
+                if(!name.equals("")&& !phone.equals("") && !email.equals("") && !address.equals("")){
+                    Database.insertContact(person.getUserId(), name, phone, email, address);
+                }
+            }
+            return null;
+    });
+        Optional result = dialog.showAndWait();
+    }
+    
+    public void editContact(int index){
+        Emergency_contact e = info.getEList().get(index);
+        int contact_id = Database.getID("emergency_contact", "name",e.getName());
+        Dialog<Information> dialog = new Dialog();
+        dialog.setTitle("Edit contact");
+        dialog.setHeaderText(null);
+        
+        GridPane dialogPane = new GridPane();
+        
+        Label nameLb = new Label("Name");
+        Label phoneLb = new Label("Phone");
+        Label emailLb = new Label("e-mail");
+        Label addressLb = new Label("Address");
+        
+        TextField nameTf = new TextField();
+        nameTf.setText(e.getName());
+        TextField phoneTf = new TextField();
+        phoneTf.setText(e.getPhone());
+        TextField emailTf = new TextField();
+        emailTf.setText(e.getEmail());
+        TextField addressTf = new TextField();
+        addressTf.setText(e.getAddress());
+        
+        dialogPane.add(nameLb, 0, 0);
+        dialogPane.add(phoneLb, 0, 1);
+        dialogPane.add(emailLb, 0, 2);
+        dialogPane.add(addressLb, 0, 3);
+        
+        dialogPane.add(nameTf, 1, 0);
+        dialogPane.add(phoneTf, 1, 1);
+        dialogPane.add(emailTf, 1, 2);
+        dialogPane.add(addressTf, 1, 3);
+        
+        dialog.getDialogPane().setContent(dialogPane);
+        
+        ButtonType done = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType delete = new ButtonType("Delete contact", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(cancel, done, delete);
+        
+        dialog.setResultConverter((ButtonType b) -> {
+            if (b == done) {
+                    Database.modifyString(contact_id, "emergency_contact", "name", nameTf.getText());
+                    Database.modifyString(contact_id, "emergency_contact", "phone", phoneTf.getText());
+                    Database.modifyString(contact_id, "emergency_contact", "email", emailTf.getText());
+                    Database.modifyString(contact_id, "emergency_contact", "address", addressTf.getText());
+            }
+            else if(b == delete){
+                Database.deleteRecord("emergency_contact",contact_id);
+            }
+            return null;
+    });
+        Optional result = dialog.showAndWait();
+    }
     
     public void setTop(){
         Bediturl.setOnAction((ActionEvent event) -> {
@@ -254,14 +357,22 @@ public class Information {
     private GridPane bottom = new GridPane();
     private TextArea police = new TextArea();
     private TextArea bookstore = new TextArea();
-    public void setBottom(){
+    
+    public void setBottom(){ 
+        BaddContact.setOnAction((ActionEvent event) -> {
+            addContact();
+        });
+        BeditContact.setOnAction((ActionEvent event) -> {
+            editContact(LVemer.getSelectionModel().getSelectedIndex());
+        });
+        ObservableList<String> emergency = FXCollections.observableArrayList();
         LVemer.setMaxSize(256, 148);
         LVprof.setMaxSize(256, 148);
-        ObservableList<String> emergency = FXCollections.observableArrayList();
         
-        for (int i = 0; i < info.getPList().size(); i++){
-            emergency.add(info.getEList().get(i).getInfoFormat());
-        }
+        for (int i = 0; i < info.getEList().size(); i++){
+                emergency.add(info.getEList().get(i).getInfoFormat());
+            }
+            
         LVemer.setItems(emergency);
         
         bottom.add(Lemer, 0, 0);
@@ -276,7 +387,8 @@ public class Information {
 
         bottom.add(Lprof, 1, 0);
         bottom.add(LVprof, 1, 1);
-        
+        bottom.add(BaddContact, 2, 0);
+        bottom.add(BeditContact, 3, 0);
         pane.setBottom(bottom);
     }
     
