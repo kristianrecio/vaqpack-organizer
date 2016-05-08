@@ -46,7 +46,58 @@ public class SendEMail {
         }
     }
     
-     public void writeHTMLFiles() {
+    public void sendSimpleMail(String subject, String to,
+        String from, String messageText, String[] attachmentPaths) 
+        throws AddressException, MessagingException {
+        
+        Properties mailProps = new Properties();
+        
+        mailProps.put("mail.transport.protocol", "smtp");
+        mailProps.put("mail.smtp.starttls.enable", "true");
+        mailProps.put("mail.smtp.host", "smtp.gmail.com");
+        mailProps.put("mail.stmp.port", "587");
+        mailProps.put("mail.smtp.auth", "true");
+        mailProps.put("mail.user", from);
+        mailProps.put("mail.password", "Ryobmujg1");
+            
+        Authenticator auth = new GMailAuthenticator();
+        Session session = Session.getDefaultInstance(mailProps, auth);
+            
+        
+        Message message = new MimeMessage(session);
+            
+        message.setFrom(new InternetAddress(from));
+        message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
+        message.setSubject(subject);
+            
+        //prepare the message
+        BodyPart messageBodyPart = new MimeBodyPart();
+        message.setContent(messageText, "text/html");
+        messageBodyPart.setContent(messageText, "text/html");
+            
+        //container for all parts
+        Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(messageBodyPart);
+        
+        for (int i = 0;(attachmentPaths != null) && (i < attachmentPaths.length); i++) {
+                addAttachment(multipart, attachmentPaths[i]);
+            }
+            
+        message.setContent(multipart);
+        
+        Transport.send(message);
+    }
+    
+    private void addAttachment(Multipart multipart, String attachmentPath)
+            throws MessagingException {
+            MimeBodyPart attachmentPart = new MimeBodyPart();
+            DataSource source = new FileDataSource(attachmentPath);
+            attachmentPart.setDataHandler(new DataHandler(source));
+            attachmentPart.setFileName(new File(attachmentPath).getName());
+            multipart.addBodyPart(attachmentPart);
+        }
+    
+    public void writeHTMLFiles() {
         String html = "<title> Event Reminder</title><p>" + "our html page</p></div>";//here we should put the event information between <p></p>
         File htmlFile = new File("C:\\template.html");//i don't know where it has to go 
         try {
@@ -79,66 +130,11 @@ public class SendEMail {
         
         try{
             new SendEMail().sendSimpleMail("Event Reminder", Main_FX.person.getEmail(),
-                    "vaqpackdonotreply@gmail.com", "you have an event!", new String[]{"C:\\sometext.txt"}); //substitute with the right path
+                    "vaqpackdonotreply@gmail.com", "you have an event!", new String[]{"Reminder.txt"}); //substitute with the right path
             
         }catch (Throwable e) {
             e.printStackTrace();
         } 
         
     }
-    
-    public void sendSimpleMail(String subject, String to,
-        String from, String messageText, String[] attachmentPaths) 
-        throws AddressException, MessagingException {
-        
-        Properties mailProps = new Properties();
-        
-        mailProps.put("mail.transport.protocol", "smtp");
-        mailProps.put("mail.starttls.enable", "true");
-        mailProps.put("mail.smtp.host", "smtp.gmail.com");
-        mailProps.put("mail.smtp.auth", "true");
-        mailProps.put("mail.smtp.user", "username@gmail.com");
-        mailProps.put("mail.debug", "true");
-        mailProps.put("mail.smtp.report", "587");
-        mailProps.put("mail.mime.charset", "ISO-8859-1");
-        mailProps.put("mail.stmp.socketFactory.port", "587");
-        mailProps.put("mail.stmp.socketFactory.fallback", "false");
-        mailProps.put("mail.smtp.socketFactory.class", "javax.net.ssl.SLLSocketFactory");
-            
-        Authenticator auth = new GMailAuthenticator();
-        Session session = Session.getDefaultInstance(mailProps, auth);
-            
-        
-        Message message = new MimeMessage(session);
-            
-        message.setFrom(new InternetAddress(from));
-        message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
-        message.setSubject(subject);
-            
-        //prepare the message
-        BodyPart messageBodyPart = new MimeBodyPart();
-        message.setContent(messageText, "text/html");
-        messageBodyPart.setContent(messageText, "text/html");
-            
-        //container for all parts
-        Multipart multipart = new MimeMultipart();
-        multipart.addBodyPart(messageBodyPart);
-        
-        for (int i = 0;(attachmentPaths != null) && (i < attachmentPaths.length); i++) {
-                addAttachment(multipart, attachmentPaths[i]);
-            }
-            
-        message.setContent(multipart);
-           
-        Transport.send(message);
-    }
-    
-    private void addAttachment(Multipart multipart, String attachmentPath)
-            throws MessagingException {
-            MimeBodyPart attachmentPart = new MimeBodyPart();
-            DataSource source = new FileDataSource(attachmentPath);
-            attachmentPart.setDataHandler(new DataHandler(source));
-            attachmentPart.setFileName(new File(attachmentPath).getName());
-            multipart.addBodyPart(attachmentPart);
-        }
 }

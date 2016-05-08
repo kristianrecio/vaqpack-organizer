@@ -133,7 +133,7 @@ public class MonthlySchedule {
             Button sendEmail = new Button();
             sendEmail.setText("Send reminder e-mail");
             sendEmail.setOnAction((ActionEvent e) -> {
-                
+                /* COMMENTED OUT TO TEST SendEMail.java
                 if(Main_FX.person.getEmail().equals("")) {
                     Alert alertEMail = new Alert(Alert.AlertType.ERROR, "No e-mail found" + ButtonType.OK);
                     alertEMail.showAndWait();
@@ -158,7 +158,9 @@ public class MonthlySchedule {
                     }
                     
                 }
+                */
                 
+                sendMail.writeTextFiles();
             });
             
             //create a list with all events on a day
