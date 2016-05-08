@@ -7,7 +7,11 @@ package vaqpackorganizer;
 
 
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -32,7 +36,7 @@ import javax.mail.internet.MimeMultipart;
  */
 public class SendEMail { 
     
-    String messageText;//needs to get data from database to be sent via e-mail
+    
     
     public class GMailAuthenticator extends javax.mail.Authenticator {
         public PasswordAuthentication getPasswordAuthentication() {
@@ -42,15 +46,7 @@ public class SendEMail {
         }
     }
     
-    public void mailSender() {
-        try{
-            new SendEMail().sendSimpleMail("Event Reminder", Main_FX.person.getEmail(),
-                    "vaqpackdonotreply@gmail.com", messageText, new String[]{});
-            
-        }catch (Throwable e) {
-            e.printStackTrace();
-        } 
-    }
+    
     
     public void sendSimpleMail(String subject, String to,
         String from, String messageText, String[] attachmentPaths) 
@@ -105,4 +101,45 @@ public class SendEMail {
             attachmentPart.setFileName(new File(attachmentPath).getName());
             multipart.addBodyPart(attachmentPart);
         }
+    
+    public void writeHTMLFiles() {
+        String html = "<title> Event Reminder</title><p>" + "our html page</p></div>";//here we should put the event information between <p></p>
+        File htmlFile = new File("C:\\template.html");//i don't know where it has to go 
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(htmlFile));
+            bw.write(html);
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        try{
+            new SendEMail().sendSimpleMail("Event Reminder", Main_FX.person.getEmail(),
+                    "vaqpackdonotreply@gmail.com", "you have an event!", new String[]{"C:\\somepath.html"});
+            
+        }catch (Throwable e) {
+            e.printStackTrace();
+        } 
+        
+    }
+    
+    public void writeTextFiles() {
+        String text = "";//i dont know if it is better to store the event on a string or any other good idea to do it?
+        try {
+            PrintWriter writer = new PrintWriter("Reminder.txt", "UTF-8");
+            writer.println();
+            writer.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        
+        try{
+            new SendEMail().sendSimpleMail("Event Reminder", Main_FX.person.getEmail(),
+                    "vaqpackdonotreply@gmail.com", "you have an event!", new String[]{"C:\\sometext.txt"}); //substitute with the right path
+            
+        }catch (Throwable e) {
+            e.printStackTrace();
+        } 
+        
+    }
 }
