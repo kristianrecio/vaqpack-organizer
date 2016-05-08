@@ -5,6 +5,8 @@
  */
 package vaqpackorganizer;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Tab;
 
 /**
@@ -15,7 +17,8 @@ public class Admin {
     private Tab tab;
     
     public Admin() {
-        
+         ObservableList<String> users = FXCollections.observableArrayList();
+         Main_FX.Database.getItems(users, "user", "name");
     }
     
     public Tab getTab() {
