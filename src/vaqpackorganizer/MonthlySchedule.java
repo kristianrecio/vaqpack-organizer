@@ -5,13 +5,13 @@ import com.sun.javafx.scene.control.skin.DatePickerSkin;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Arrays;
-import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
@@ -120,8 +120,10 @@ public class MonthlySchedule {
                             schedule.timeConflictAlert(3);
                             Main_FX.person.getEvents().remove(Main_FX.person.getEvents().size() - 1);
                         }
-                        else
+                        else {
                             Main_FX.Database.addEvent(Event_Name, Event_Time_Start, Event_Time_End,Event_Place, Event_Date, reminderYesNo);
+                            success();
+                        }
                     
                 
             });
@@ -162,6 +164,13 @@ public class MonthlySchedule {
             //add calendar, button and textfields pane
             rootPane.getChildren().addAll(popupContent, TextFields);
     
+    }
+    
+    public void success() {
+        Alert alert = new Alert(AlertType.NONE);
+        alert.setTitle("Event Added");
+        alert.setHeaderText("Event added successfully.");
+        alert.showAndWait();
     }
 
     public Tab getTab() {

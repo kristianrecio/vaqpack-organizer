@@ -38,7 +38,7 @@ public class Person {
         username = this.Database.getString("user", user_id, "username");
         profile_url = this.Database.getString("user", user_id, "profile_url");
         generateCourses();
-        //generateEvents();
+        generateEvents();
     }
     
     public void generateCourses(){

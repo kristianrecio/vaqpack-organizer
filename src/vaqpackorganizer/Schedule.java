@@ -169,7 +169,7 @@ public class Schedule {
                 if (timeIntervals[j].equals(events.get(i).getStartTime())) {
                     while (!timeIntervals[j].equals(events.get(i).getEndTime()))
                         otherEventTime.add(j++);
-                    event2 = events.get(j);
+                    event2 = events.get(i);
                     break;
                 }
             }
@@ -203,7 +203,7 @@ public class Schedule {
             }
         }
         
-        for (int i = 0; i < events.size(); i++) {
+        for (int i = 0; i < courses.size(); i++) {
             courseTime = new ArrayList<>();
             for (int j = 0; j < timeIntervals.length; j++) {
                 if (timeIntervals[j].equals(courses.get(i).getStartTime())) {
