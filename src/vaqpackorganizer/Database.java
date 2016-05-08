@@ -37,7 +37,19 @@ public class Database {
         }
         return null;
     }
-        public void getItems(ObservableList<String> items, String table, String column){
+    
+    public ResultSet get(String table, int id){
+        try{
+            String sql = "SELECT * FROM "+table;
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            return rs;
+        }catch(SQLException e){
+            Fn.showError(e);
+        }
+        return null;
+    }
+    public void getItems(ObservableList<String> items, String table, String column){
         get(table);
         try{
             while(rs.next()){
@@ -45,6 +57,20 @@ public class Database {
             }
         }catch(SQLException e){
             Fn.showError(e);
+        }
+    }
+    
+    public void getItems(ObservableList<String> items, String table, String column, String parameter,int id){
+        try{
+        String sql = "SELECT * FROM "+table+" WHERE "+parameter+" = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                items.add(rs.getString(column));
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
         }
     }
         
@@ -93,8 +119,9 @@ public class Database {
         }
         return 0;
     }
+    
+    
     public void generateProfessorList(ArrayList<Professor> professors, int major_id){
-            professors = new ArrayList<>();
         try{
                 String sql_get = "SELECT * FROM professor WHERE major_id = "+major_id;
                 ps = conn.prepareStatement(sql_get);
@@ -110,10 +137,10 @@ public class Database {
     }
     
         public void generateEmergencyList(ArrayList<Emergency_contact> emergency, int user_id){
-            emergency = new ArrayList<>();
         try{
-                String sql_get = "SELECT * FROM emergency_contact WHERE user_id = "+user_id;
+                String sql_get = "SELECT * FROM emergency_contact WHERE user_id = ?";
                 ps = conn.prepareStatement(sql_get);
+                ps.setInt(1, user_id);
                 rs = ps.executeQuery();
                 while(rs.next()){
                     Emergency_contact e = new Emergency_contact(rs.getString("name"),

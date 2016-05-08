@@ -21,6 +21,10 @@ public class Professor {
         this.email = email;
         this.address = address;
     }
+    
+    public String getInfoFormat(){
+        return name+" - "+email;
+    }
 
     /**
      * @return the name

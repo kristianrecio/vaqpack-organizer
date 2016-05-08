@@ -101,7 +101,6 @@ public class MonthlySchedule {
                         Alert alertEMail = new Alert(Alert.AlertType.ERROR, "No e-mail found" + ButtonType.OK);
                         alertEMail.showAndWait();
                     }
-                    
                     else {
                         String Event_Name = eventName.getText();
                         String Event_Time_Start = eventTimeStart.getSelectionModel().getSelectedItem().toString();
