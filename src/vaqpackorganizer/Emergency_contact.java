@@ -16,6 +16,7 @@ public class Emergency_contact{
     private String address;
     
     public Emergency_contact(String name, String phone, String email, String address){
+        
         this.name = name;
         this.phone = phone;
         this.email = email;

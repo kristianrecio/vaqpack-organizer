@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * @author Carlos
  */
 public class Major {
+    private final int user_id;
     private final int major_id;
     private ArrayList<Professor> professors = new ArrayList();
     private ArrayList<Emergency_contact> emergency = new ArrayList();
@@ -25,6 +26,7 @@ public class Major {
     
     public Major(int user_id, int major_id, Database Database){
         this.major_id = major_id;
+        this.user_id = user_id;
         name = Database.getString("major", major_id, "name");
         phone = Database.getString("major", major_id, "phone");
         location = Database.getString("major", major_id, "location");
@@ -43,7 +45,10 @@ public class Major {
     public ArrayList<Emergency_contact> getEList(){
         return emergency;
     }
-
+    
+    public void setEList(){
+        Main_FX.Database.generateEmergencyList(emergency,user_id);
+    }
     /**
      * @return the name
      */

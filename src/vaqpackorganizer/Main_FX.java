@@ -47,7 +47,6 @@ public class Main_FX extends Application {
     private Tab adminTab;
     private MenuItem MIout = Fn.setMenuItem("Log out");
     private MenuItem MIclose = Fn.setMenuItem("Close");
-    private MenuItem MIedit = Fn.setMenuItem("Edit user information");
     private final int id;
     private final Connection conn;
     public static Person person;
@@ -82,10 +81,6 @@ public class Main_FX extends Application {
         MIclose.setOnAction((ActionEvent event) -> { 
             primaryStage.close();
         });
-        MIedit.setOnAction((ActionEvent event) -> {
-            Stage Userinfo = new Stage();
-            Userinfo_FX edit = new Userinfo_FX(conn,person,Userinfo);
-        });
         
         AnchorPane Main = setMain();
         scene = new Scene(Main, Main.getPrefWidth(), Main.getPrefHeight());
@@ -115,7 +110,7 @@ public class Main_FX extends Application {
         MenuBar Mbar = new MenuBar();
         Menu Moptions = new Menu();
         Moptions.setText("Options");
-        Moptions.getItems().addAll(MIout,MIclose, MIedit);
+        Moptions.getItems().addAll(MIout,MIclose);
         Mbar.getMenus().add(Moptions);
         Bpane.setTop(Mbar);
         
