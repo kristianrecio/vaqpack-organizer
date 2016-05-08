@@ -7,7 +7,11 @@ package vaqpackorganizer;
 
 
 
+import java.io.File;
 import java.util.Properties;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.Authenticator;
 import javax.mail.BodyPart;
 import javax.mail.Message;
@@ -41,7 +45,7 @@ public class SendEMail {
     public void mailSender() {
         try{
             new SendEMail().sendSimpleMail("Event Reminder", Main_FX.person.getEmail(),
-                    "vaqpackdonotreply@gmail.com", messageText);
+                    "vaqpackdonotreply@gmail.com", messageText, new String[]{});
             
         }catch (Throwable e) {
             e.printStackTrace();
@@ -49,7 +53,7 @@ public class SendEMail {
     }
     
     public void sendSimpleMail(String subject, String to,
-        String from, String messageText) 
+        String from, String messageText, String[] attachmentPaths) 
         throws AddressException, MessagingException {
         
         Properties mailProps = new Properties();
@@ -83,9 +87,22 @@ public class SendEMail {
         //container for all parts
         Multipart multipart = new MimeMultipart();
         multipart.addBodyPart(messageBodyPart);
+        
+        for (int i = 0;(attachmentPaths != null) && (i < attachmentPaths.length); i++) {
+                addAttachment(multipart, attachmentPaths[i]);
+            }
             
         message.setContent(multipart);
            
         Transport.send(message);
     }
+    
+    private void addAttachment(Multipart multipart, String attachmentPath)
+            throws MessagingException {
+            MimeBodyPart attachmentPart = new MimeBodyPart();
+            DataSource source = new FileDataSource(attachmentPath);
+            attachmentPart.setDataHandler(new DataHandler(source));
+            attachmentPart.setFileName(new File(attachmentPath).getName());
+            multipart.addBodyPart(attachmentPart);
+        }
 }

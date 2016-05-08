@@ -246,4 +246,14 @@ public class Database {
         }
     }
     //end
+    
+    public void deleteUser(String username) {
+        try {
+            String sql = "DELETE FROM user WHERE username='" + username + "'";
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            Fn.showError(e);
+        }
+    }
 }
