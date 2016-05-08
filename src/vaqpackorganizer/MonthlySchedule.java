@@ -2,9 +2,9 @@ package vaqpackorganizer;
 
 
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
@@ -138,16 +139,24 @@ public class MonthlySchedule {
                     alertEMail.showAndWait();
                 }
                 
-                else if(Main_FX.person.getEmail().equals("")) { //need to fix this by saying that user has an email.
-                    Alert fileChoice = new Alert(Alert.AlertType.CONFIRMATION, "Do you want me to send you a text file?" + ButtonType.YES + ButtonType.NO);
-                    fileChoice.showAndWait();
-                    sendMail.writeTextFiles();
-                }
-                
-                else {
-                    Alert fileChoice = new Alert(Alert.AlertType.CONFIRMATION, "Do you want me to send you an HTML file?" + ButtonType.YES + ButtonType.NO);
-                    fileChoice.showAndWait();
-                    sendMail.writeHTMLFiles();
+                else{
+                    Alert alertSendEMail = new Alert(AlertType.CONFIRMATION);
+                    alertSendEMail.setTitle("Send reminder via E-mail");
+                    alertSendEMail.setHeaderText("Sed Reminder via E-mail");
+                    alertSendEMail.setContentText("Please select an option: ");
+                    
+                    ButtonType sendHTML = new ButtonType("Send HTML file");
+                    ButtonType sendText = new ButtonType("Send text file");
+                    ButtonType addNewMail = new ButtonType("Add another E-mail");
+                    ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+                    
+                    alertSendEMail.getButtonTypes().setAll(sendHTML, sendText, addNewMail, cancel);
+                    
+                    Optional<ButtonType> result = alertSendEMail.showAndWait();
+                    if(result.get() == sendHTML) {
+                        
+                    }
+                    
                 }
                 
             });
