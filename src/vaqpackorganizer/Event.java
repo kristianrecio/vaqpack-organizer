@@ -18,6 +18,7 @@ public class Event {
     private String endTime;
     private String place;
     private Date date;
+    private String dateString;
     private String reminder;
     private String description; // Not implemented in MonthlySchedule.java
     
@@ -28,6 +29,12 @@ public class Event {
         this.place = place;
         this.date = date;
         this.reminder = reminder;
+    }
+    
+    public Event(String name, String startTime, String endTime, String place, String dateString, String reminder) {
+        this.name = name;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
     
     public String getName() {

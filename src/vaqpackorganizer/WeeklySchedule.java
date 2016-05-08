@@ -856,7 +856,13 @@ public class WeeklySchedule {
     }
     
     public ObservableList<PieChart.Data> setData() {
+        schedule.generateCourseSchedule();
+        schedule.generateEventSchedule();
         int[][] coursesPlace = schedule.getCoursesPlace();
+        int[][] eventsPlace = schedule.getEventsPlace();
+        
+        System.out.println(coursesPlace.length);
+        System.out.println(eventsPlace.length);
         
         int num = 0;
         int freeTime = 57 * 5;
