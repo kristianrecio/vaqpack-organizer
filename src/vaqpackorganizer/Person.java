@@ -67,8 +67,10 @@ public class Person {
             ps.setInt(1, user_id);
             rs = ps.executeQuery();
             while (rs.next()) {
-                Event e;
-                e = new Event(rs.getString("name"), rs.getString("startTime"), rs.getString("endTime"), rs.getString("Place"), rs.getString("date"), rs.getString("reminder"));
+                Event e = new Event(rs.getString("name"), rs.getString("startTime"),
+                rs.getString("endTime"), rs.getString("place"), rs.getString("date"),
+                rs.getString("day"), rs.getString("reminder"), rs.getString("description"));
+                events.add(e);
             } 
         } catch (SQLException e) {
             Fn.showError(e);

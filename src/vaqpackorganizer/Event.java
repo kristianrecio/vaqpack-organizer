@@ -17,24 +17,33 @@ public class Event {
     private String startTime;
     private String endTime;
     private String place;
-    private Date date;
+    private LocalDate date;
+    private String day;
     private String dateString;
     private String reminder;
     private String description; // Not implemented in MonthlySchedule.java
     
-    public Event(String name, String startTime, String endTime, String place, Date date, String reminder) {
+    public Event(String name, String startTime, String endTime, String place, LocalDate date, String reminder, String description) {
         this.name = name;
         this.startTime = startTime;
         this.endTime = endTime;
         this.place = place;
         this.date = date;
+        this.dateString = date.toString();
+        this.day = date.getDayOfWeek().toString();
         this.reminder = reminder;
+        this.description = description;
     }
     
-    public Event(String name, String startTime, String endTime, String place, String dateString, String reminder) {
+    public Event(String name, String startTime, String endTime, String place, String dateString, String day, String reminder, String description) {
         this.name = name;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.place = place;
+        this.dateString = dateString;
+        this.day = day;
+        this.reminder = reminder;
+        this.description = description;
     }
     
     public String getName() {
@@ -69,19 +78,43 @@ public class Event {
         this.place = place;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public String getReminder() {
         return reminder;
     }
 
     public void setReminder(String reminder) {
         this.reminder = reminder;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
+
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

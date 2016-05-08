@@ -180,7 +180,7 @@ public class Schedule {
             for (int j = 0; j < eventTime.size(); j++)
                 for (int k = 0; k < otherEventTime.size(); k++)
                     if (eventTime.get(j).equals(otherEventTime.get(k)))
-                        if (event1.getDate().toLocalDate().getDayOfWeek().toString().equals(event2.getDate().toLocalDate().getDayOfWeek().toString()))
+                        if (event1.getDay().equals(event2.getDay()))
                             return true;
         }
         
@@ -228,9 +228,7 @@ public class Schedule {
     }
     
     public boolean courseEventConflictDayCheck(Event event, Course course) {
-        String day = event.getDate().toLocalDate().getDayOfWeek().toString();
-        
-        switch (day) {
+        switch (event.getDay()) {
             case "MONDAY":
                 if (course.getDays().equals("M") || course.getDays().equals("MW"))
                     return true;
@@ -336,9 +334,8 @@ public class Schedule {
                     continue;
                 start = time;
                 end = start;
-                day = events.get(event).getDate().toLocalDate().getDayOfWeek().toString();
                 int column;
-                switch (day) {
+                switch (events.get(event).getDay()) {
                     case "SUNDAY": column = 0; break;
                     case "MONDAY": column = 1; break;
                     case "TUESDAY": column = 2; break;

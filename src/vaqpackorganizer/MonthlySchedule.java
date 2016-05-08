@@ -107,11 +107,11 @@ public class MonthlySchedule {
                         String Event_Time_End = eventTimeEnd.getSelectionModel().getSelectedItem().toString();
                         String Event_Place = eventPlace.getText();
                         LocalDate theDate = datePicker.getValue();
-                        Date Event_Date = new Date(theDate.toEpochDay()); //type java.sql.Date
+                        //Date Event_Date = new Date(theDate.toEpochDay()); //type java.sql.Date
                         String reminderYesNo = cb.getSelectionModel().getSelectedItem().toString();
                         
                         schedule.generateEventSchedule();
-                        Event event = new Event(Event_Name, Event_Time_Start, Event_Time_End, Event_Place, Event_Date, reminderYesNo);
+                        Event event = new Event(Event_Name, Event_Time_Start, Event_Time_End, Event_Place, theDate, reminderYesNo, "description");
                         Main_FX.person.getEvents().add(event);
                         if (schedule.isThereEventTimeConflict(Main_FX.person.getEvents().size() - 1)) {
                             schedule.timeConflictAlert(2);
@@ -121,7 +121,7 @@ public class MonthlySchedule {
                             Main_FX.person.getEvents().remove(Main_FX.person.getEvents().size() - 1);
                         }
                         else {
-                            Main_FX.Database.addEvent(Event_Name, Event_Time_Start, Event_Time_End,Event_Place, Event_Date, reminderYesNo);
+                            Main_FX.Database.addEvent(event);
                             success();
                         }
                     
@@ -167,9 +167,7 @@ public class MonthlySchedule {
     }
     
     public void success() {
-        Alert alert = new Alert(AlertType.NONE);
-        alert.setTitle("Event Added");
-        alert.setHeaderText("Event added successfully.");
+        Alert alert = new Alert(AlertType.INFORMATION, "Event Added Successfully", ButtonType.OK);
         alert.showAndWait();
     }
 
