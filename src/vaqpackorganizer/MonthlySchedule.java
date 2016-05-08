@@ -2,12 +2,10 @@ package vaqpackorganizer;
 
 
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
-import java.sql.Connection;
 import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Arrays;
+import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,6 +34,7 @@ public class MonthlySchedule {
     VBox TextFields = new VBox();
     TimeTicks timeticks = new TimeTicks(15);
     private Schedule schedule = new Schedule();
+    private SendEMail sendMail = new SendEMail();
     
     public void setCalendarTab() {
         tab = new Tab();
@@ -92,16 +91,17 @@ public class MonthlySchedule {
             cb.setTooltip(new Tooltip("Select Yes or No"));
             //end
             
+            
+            
             Button eventBtn = new Button();
             eventBtn.setMinSize(200, 25);
             eventBtn.setText("Add Event");
+            eventBtn.disableProperty().bind(eventName.textProperty().isEmpty()
+                                            .or(eventTimeStart.valueProperty().isNull())
+                                            .or(eventTimeEnd.valueProperty().isNull())
+                                            .or(eventPlace.textProperty().isEmpty()));
             eventBtn.setOnAction((ActionEvent e) -> {
                 
-                if(Main_FX.person.getEmail().equals("")) { 
-                        Alert alertEMail = new Alert(Alert.AlertType.ERROR, "No e-mail found" + ButtonType.OK);
-                        alertEMail.showAndWait();
-                    }
-                    else {
                         String Event_Name = eventName.getText();
                         String Event_Time_Start = eventTimeStart.getSelectionModel().getSelectedItem().toString();
                         String Event_Time_End = eventTimeEnd.getSelectionModel().getSelectedItem().toString();
@@ -122,8 +122,22 @@ public class MonthlySchedule {
                         }
                         else
                             Main_FX.Database.addEvent(Event_Name, Event_Time_Start, Event_Time_End,Event_Place, Event_Date, reminderYesNo);
-                    }
+                    
                 
+            });
+            
+            Button sendEmail = new Button();
+            sendEmail.setText("Send reminder e-mail");
+            sendEmail.setOnAction((ActionEvent e) -> {
+                
+                if(Main_FX.person.getEmail().equals("")) {
+                    Alert alertEMail = new Alert(Alert.AlertType.ERROR, "No e-mail found" + ButtonType.OK);
+                    alertEMail.showAndWait();
+                }
+                
+                else {
+                    sendMail.mailSender();
+                }
             });
             
             //create a list with all events on a day
