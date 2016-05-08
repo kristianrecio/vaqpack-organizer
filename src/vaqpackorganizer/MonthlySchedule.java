@@ -135,9 +135,18 @@ public class MonthlySchedule {
                     alertEMail.showAndWait();
                 }
                 
-                else {
-                    sendMail.mailSender();
+                else if(Main_FX.person.getEmail().equals()) { //need to fix this by saying that user has an email.
+                    Alert fileChoice = new Alert(Alert.AlertType.CONFIRMATION, "Do you want me to send you a text file?" + ButtonType.YES + ButtonType.NO);
+                    fileChoice.showAndWait();
+                    sendMail.writeTextFiles();
                 }
+                
+                else {
+                    Alert fileChoice = new Alert(Alert.AlertType.CONFIRMATION, "Do you want me to send you an HTML file?" + ButtonType.YES + ButtonType.NO);
+                    fileChoice.showAndWait();
+                    sendMail.writeHTMLFiles();
+                }
+                
             });
             
             //create a list with all events on a day
@@ -148,7 +157,7 @@ public class MonthlySchedule {
             
             //add textfields and labels to TextFields Pane
             TextFields.getChildren().addAll(nameLabel, eventName, timeStartLabel, eventTimeStart, timeEndLabel, 
-                    eventTimeEnd, placeLabel, eventPlace, reminderLabel, cb, eventBtn, blankSpace, eventThisDay, printEvents);
+                    eventTimeEnd, placeLabel, eventPlace, reminderLabel, cb, eventBtn, blankSpace, sendEmail, eventThisDay, printEvents);
             
             //add calendar, button and textfields pane
             rootPane.getChildren().addAll(popupContent, TextFields);
