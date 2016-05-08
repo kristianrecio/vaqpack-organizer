@@ -30,16 +30,12 @@ import javafx.scene.layout.VBox;
 public class MonthlySchedule {
     
     
-    private Connection conn;
-    PreparedStatement sl;
+    
     private Tab tab;
     HBox rootPane = new HBox(2);
     VBox TextFields = new VBox();
     TimeTicks timeticks = new TimeTicks(15);
-    
-    public MonthlySchedule(Connection conn){
-        this.conn = conn;
-    }
+    private Schedule schedule = new Schedule();
     
     public void setCalendarTab() {
         tab = new Tab();
@@ -48,29 +44,8 @@ public class MonthlySchedule {
         tab.setContent(rootPane);
     } 
     
-    public void setConnection(Connection conn){
-        this.conn = conn;
-    }
+ 
     
-    //insert into database
-    public void addEvent(String Event_Name, String Event_Time_Start, String Event_Time_End, String Event_Place, Date Event_Date, int Reminder) {
-        try{
-            String addEvent = "INSERT INTO event(Event_Name, Event_Time_Start, Event_Time_End, Event_Place, Event_Date, Reminder)"
-                    +"VALUES (?,?,?,?,?,?,?)";
-            sl = conn.prepareStatement(addEvent);
-            sl.setString(1, Event_Name);
-            sl.setString(2, Event_Time_Start);
-            sl.setString(3, Event_Time_End);
-            sl.setString(4, Event_Place);
-            sl.setDate(5, Event_Date);
-            sl.setInt(6, Reminder);
-            sl.executeUpdate();
-                  
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    //end
     
     public void setCalendar() {
             
@@ -127,14 +102,26 @@ public class MonthlySchedule {
                         alertEMail.showAndWait();
                     }
                     else {
-                        
                         String Event_Name = eventName.getText();
                         String Event_Time_Start = eventTimeStart.getSelectionModel().getSelectedItem().toString();
                         String Event_Time_End = eventTimeEnd.getSelectionModel().getSelectedItem().toString();
                         String Event_Place = eventPlace.getText();
                         LocalDate theDate = datePicker.getValue();
                         Date Event_Date = new Date(theDate.toEpochDay()); //type java.sql.Date
-                        //data.addEvent(Event_Name, Event_Time_Start, Event_Time_End,Event_Place, Event_Date, 0);
+                        String reminderYesNo = cb.getSelectionModel().getSelectedItem().toString();
+                        
+                        schedule.generateEventSchedule();
+                        Event event = new Event(Event_Name, Event_Time_Start, Event_Time_End, Event_Place, Event_Date, reminderYesNo);
+                        Main_FX.person.getEvents().add(event);
+                        if (schedule.isThereEventTimeConflict(Main_FX.person.getEvents().size() - 1)) {
+                            schedule.timeConflictAlert(2);
+                            Main_FX.person.getEvents().remove(Main_FX.person.getEvents().size() - 1);
+                        } else if (schedule.isThereEventCourseConflict(Main_FX.person.getEvents().size() - 1)) {
+                            schedule.timeConflictAlert(3);
+                            Main_FX.person.getEvents().remove(Main_FX.person.getEvents().size() - 1);
+                        }
+                        else
+                            Main_FX.Database.addEvent(Event_Name, Event_Time_Start, Event_Time_End,Event_Place, Event_Date, reminderYesNo);
                     }
                 
             });
@@ -142,7 +129,7 @@ public class MonthlySchedule {
             //create a list with all events on a day
             Label blankSpace = new Label(" ");
             Label eventThisDay = new Label(" Events today: ");
-            TextArea printEvents = new TextArea();
+            TextArea printEvents = new TextArea(); //need to put database data here.
             //end
             
             //add textfields and labels to TextFields Pane

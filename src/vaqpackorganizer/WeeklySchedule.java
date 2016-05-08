@@ -238,7 +238,7 @@ public class WeeklySchedule {
     public ObservableList<Row> getTimes() {
         ObservableList rowValues = FXCollections.observableArrayList();
         schedule = new Schedule();
-        schedule.generateSchedule();
+        schedule.generateCourseSchedule();
         Row[] rows = new Row[schedule.getTimeIntervals().length];
         int timeIncrement = 0;
         
@@ -468,7 +468,7 @@ public class WeeklySchedule {
         if (result.isPresent()) {
             Main_FX.person.getCourses().add(result.get());
             int course = Main_FX.person.getCourses().size() - 1;
-            if (schedule.isThereATimeConflict(course)) {
+            if (schedule.isThereCourseTimeConflict(course)) {
                Main_FX.person.getCourses().remove(course);
                schedule.timeConflictAlert(0);
                success = false;
@@ -488,8 +488,9 @@ public class WeeklySchedule {
         ComboBox comboBox = new ComboBox();
         ObservableList<String> comboBoxList = FXCollections.observableArrayList();
         setCoursesList();
-        for (Label course : coursesList)
+        coursesList.stream().forEach((course) -> {
             comboBoxList.add(course.getText());
+        });
         comboBox.setItems(comboBoxList);
         
         Label coursesLb = new Label("Courses: ");
@@ -706,7 +707,7 @@ public class WeeklySchedule {
                 
                 Main_FX.person.getCourses().remove(index);
                 Main_FX.person.getCourses().add(index, modifiedCourse);
-                if (schedule.isThereATimeConflict(index)) {
+                if (schedule.isThereCourseTimeConflict(index)) {
                     schedule.timeConflictAlert(1);
                     Main_FX.person.getCourses().remove(index);
                     Main_FX.person.getCourses().add(index, originalCourse);
@@ -749,12 +750,12 @@ public class WeeklySchedule {
         });
         
         int timeIncrement;
-        int id;
+        int uesr_id;
         Optional<Integer> result = dialog.showAndWait();
         if (result.isPresent()) {
             timeIncrement = result.get();
-            id = Main_FX.person.getUserId();
-            Database.modifyInt(id, "user", "time_increment", timeIncrement);
+            uesr_id = Main_FX.person.getUserId();
+            Database.modifyInt(uesr_id, "user", "time_increment", timeIncrement);
         }
     }
     

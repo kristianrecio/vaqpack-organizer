@@ -21,6 +21,7 @@ public class Person {
     private String username;
     private String profile_url;
     private ArrayList<Course> courses;
+    private ArrayList<Event> events;
     private Database Database;
     
     public Person(int id, int major_id, Connection conn, Database Database){
@@ -93,6 +94,14 @@ public class Person {
     
     public void setCourses(ArrayList<Course> courses) {
         this.courses = courses;
+    }
+    
+    public ArrayList getEvents() {
+        return events;
+    }
+    
+    public void setEvents(ArrayList<Event> events) {
+        this.events = events;
     }
 
     public String getEmail() {

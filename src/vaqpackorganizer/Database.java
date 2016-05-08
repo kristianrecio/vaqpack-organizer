@@ -6,6 +6,7 @@
 package vaqpackorganizer;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,6 +20,7 @@ import javafx.collections.ObservableList;
 public class Database {
     private final Connection conn;
     private PreparedStatement ps = null;
+    private PreparedStatement sl;
     private ResultSet rs;
     
     public Database(Connection conn){
@@ -192,4 +194,24 @@ public class Database {
         }
         return 0;
     }
+    
+    //insert into database
+    public void addEvent(String Event_Name, String Event_Time_Start, String Event_Time_End, String Event_Place, Date Event_Date, String Reminder) {
+        try{
+            String addEvent = "INSERT INTO event(Event_Name, Event_Time_Start, Event_Time_End, Event_Place, Event_Date, Reminder)"
+                    +"VALUES (?,?,?,?,?,?,?)";
+            sl = conn.prepareStatement(addEvent);
+            sl.setString(1, Event_Name);
+            sl.setString(2, Event_Time_Start);
+            sl.setString(3, Event_Time_End);
+            sl.setString(4, Event_Place);
+            sl.setDate(5, Event_Date);
+            sl.setString(6, Reminder);
+            sl.executeUpdate();
+                  
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    //end
 }

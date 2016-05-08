@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/Major.java</file>
             <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/Database.java</file>
             <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/MonthlySchedule.java</file>
@@ -10,6 +11,23 @@
             <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/Log_FX.java</file>
             <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/Information.java</file>
             <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/Emergency_contact.java</file>
+=======
+<<<<<<< HEAD
+            <file>file:/C:/Users/Kristian%20Recio/Documents/NetBeansProjects/vaqpack-organizer/src/vaqpackorganizer/WeeklySchedule.java</file>
+            <file>file:/C:/Users/Kristian%20Recio/Documents/NetBeansProjects/vaqpack-organizer/src/vaqpackorganizer/Main_FX.java</file>
+            <file>file:/C:/Users/Kristian%20Recio/Documents/NetBeansProjects/vaqpack-organizer/src/vaqpackorganizer/Schedule.java</file>
+            <file>file:/C:/Users/Kristian%20Recio/Documents/NetBeansProjects/vaqpack-organizer/src/vaqpackorganizer/MonthlySchedule.java</file>
+            <file>file:/C:/Users/Kristian%20Recio/Documents/NetBeansProjects/vaqpack-organizer/src/vaqpackorganizer/Person.java</file>
+=======
+            <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/Main_FX.java</file>
+            <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/Log_FX.java</file>
+            <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/Userinfo_FX.java</file>
+            <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/Person.java</file>
+            <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/WeeklySchedule.java</file>
+            <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/Fn.java</file>
+            <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/SendEMail.java</file>
+>>>>>>> 1d2e17683acfcce867923903dd2090389f84631b
+>>>>>>> 8f3773f0adc8b63cf09f72c468321c483cfb3521
         </group>
     </open-files>
 </project-private>
