@@ -192,10 +192,13 @@ public class MonthlySchedule {
     }
     
     public void showReminder() {
-        Alert reminderAlert = new Alert(AlertType.INFORMATION);
-        reminderAlert.setTitle("Reminder Dialog");
-        reminderAlert.setHeaderText("You have an event!");
-        reminderAlert.setContentText("Check Calendar tab for more info");
+        
+        if(Main_FX.person.getEvents().equals("")) {
+            Alert reminderAlert = new Alert(AlertType.INFORMATION);
+            reminderAlert.setTitle("Reminder Dialog");
+            reminderAlert.setHeaderText("You have an event!");
+            reminderAlert.setContentText("Check Calendar tab for more info");
+        }
     }
 
     public Tab getTab() {
