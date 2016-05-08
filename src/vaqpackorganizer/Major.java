@@ -13,8 +13,8 @@ import java.util.ArrayList;
  */
 public class Major {
     private final int major_id;
-    private ArrayList<Professor> professors;
-    private ArrayList<Emergency_contact> emergency;
+    private ArrayList<Professor> professors = new ArrayList();
+    private ArrayList<Emergency_contact> emergency = new ArrayList();
     public Police police = new Police();
     public Bookstore bookstore = new Bookstore();
     private String name;
@@ -77,6 +77,13 @@ public class Major {
      */
     public String getUrl() {
         return url;
+    }
+
+    /**
+     * @return the major_id
+     */
+    public int getMajor_id() {
+        return major_id;
     }
     
 }

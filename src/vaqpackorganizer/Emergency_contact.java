@@ -21,6 +21,10 @@ public class Emergency_contact{
         this.email = email;
         this.address = address;
     }
+    
+    public String getInfoFormat(){
+       return name+" - "+address+" - "+phone; 
+    }
 
     /**
      * @return the name
