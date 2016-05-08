@@ -55,16 +55,12 @@ public class SendEMail {
         Properties mailProps = new Properties();
         
         mailProps.put("mail.transport.protocol", "smtp");
-        mailProps.put("mail.starttls.enable", "true");
+        mailProps.put("mail.smtp.starttls.enable", "true");
         mailProps.put("mail.smtp.host", "smtp.gmail.com");
+        mailProps.put("mail.stmp.port", "587");
         mailProps.put("mail.smtp.auth", "true");
-        mailProps.put("mail.smtp.user", "username@gmail.com");
-        mailProps.put("mail.debug", "true");
-        mailProps.put("mail.smtp.report", "465");
-        mailProps.put("mail.mime.charset", "ISO-8859-1");
-        mailProps.put("mail.stmp.socketFactory.port", "465");
-        mailProps.put("mail.stmp.socketFactory.fallback", "false");
-        mailProps.put("mail.smtp.socketFactory.class", "javax.net.ssl.SLLSocketFactory");
+        mailProps.put("mail.user", from);
+        mailProps.put("mail.password", "Ryobmujg1");
             
         Authenticator auth = new GMailAuthenticator();
         Session session = Session.getDefaultInstance(mailProps, auth);
@@ -89,7 +85,7 @@ public class SendEMail {
             }
             
         message.setContent(multipart);
-           
+        
         Transport.send(message);
     }
     
@@ -135,7 +131,7 @@ public class SendEMail {
         
         try{
             new SendEMail().sendSimpleMail("Event Reminder", Main_FX.person.getEmail(),
-                    "vaqpackdonotreply@gmail.com", "you have an event!", new String[]{"C:\\sometext.txt"}); //substitute with the right path
+                    "vaqpackdonotreply@gmail.com", "you have an event!", new String[]{"Reminder.txt"}); //substitute with the right path
             
         }catch (Throwable e) {
             e.printStackTrace();
