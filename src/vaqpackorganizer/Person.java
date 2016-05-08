@@ -69,7 +69,8 @@ public class Person {
             while (rs.next()) {
                 Event e = new Event(rs.getString("name"), rs.getString("startTime"),
                 rs.getString("endTime"), rs.getString("place"), rs.getString("date"),
-                rs.getString("day"), rs.getString("reminder"), rs.getString("description"));
+                rs.getInt("month"), rs.getInt("day"), rs.getInt("year"), rs.getString("dayString"),
+                rs.getString("reminder"), rs.getString("description"));
                 events.add(e);
             } 
         } catch (SQLException e) {

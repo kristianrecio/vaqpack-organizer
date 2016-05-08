@@ -230,8 +230,8 @@ public class Database {
     //insert into database
     public void addEvent(Event event) {
         try{
-            String addEvent = "INSERT INTO event(user_id, name, startTime, endTime, place, date, day, reminder, description)"
-                    +"VALUES (?,?,?,?,?,?,?,?,?)";
+            String addEvent = "INSERT INTO event(user_id, name, startTime, endTime, place, date, month, day, year, dayString, reminder, description)"
+                    +"VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
             sl = conn.prepareStatement(addEvent);
             sl.setInt(1, Main_FX.person.getUserId());
             sl.setString(2, event.getName());
@@ -239,9 +239,12 @@ public class Database {
             sl.setString(4, event.getEndTime());
             sl.setString(5, event.getPlace());
             sl.setString(6, event.getDateString());
-            sl.setString(7, event.getDay());
-            sl.setString(8, event.getReminder());
-            sl.setString(9, event.getDescription());
+            sl.setInt(7, event.getMonth());
+            sl.setInt(8, event.getDay());
+            sl.setInt(9, event.getYear());
+            sl.setString(10, event.getDayString());
+            sl.setString(11, event.getReminder());
+            sl.setString(12, event.getDescription());
             sl.executeUpdate();
                   
         }catch (SQLException e) {

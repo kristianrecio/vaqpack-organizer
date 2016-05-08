@@ -2,7 +2,6 @@ package vaqpackorganizer;
 
 
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Arrays;
 import javafx.collections.FXCollections;
@@ -10,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -35,16 +35,28 @@ public class MonthlySchedule {
     TimeTicks timeticks = new TimeTicks(15);
     private Schedule schedule = new Schedule();
     private SendEMail sendMail = new SendEMail();
+    private PieChartAnimation pieChartAnimation = new PieChartAnimation();
+    private PieChart pieChart;
     
     public void setCalendarTab() {
         tab = new Tab();
         tab.setText("Calendar");
         setCalendar();
+        setPieChart();
         tab.setContent(rootPane);
     } 
     
- 
+    public void setPieChart() {
+        pieChartAnimation.setChart();
+        pieChart = pieChartAnimation.getChart();
+        
+        rootPane.getChildren().add(pieChart);
+    }
     
+    public void updatePieChart() {
+        pieChartAnimation.updatePieChart();
+        pieChart = pieChartAnimation.getChart();
+    }
     
     public void setCalendar() {
             
@@ -124,6 +136,7 @@ public class MonthlySchedule {
                         else {
                             Main_FX.Database.addEvent(event);
                             success();
+                            updatePieChart();
                         }
                     
                 
