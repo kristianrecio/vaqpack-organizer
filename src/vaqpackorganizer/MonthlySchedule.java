@@ -35,6 +35,7 @@ public class MonthlySchedule {
     HBox rootPane = new HBox(2);
     VBox TextFields = new VBox();
     TimeTicks timeticks = new TimeTicks(15);
+    private Schedule schedule = new Schedule();
     
     public void setCalendarTab() {
         tab = new Tab();
@@ -102,7 +103,6 @@ public class MonthlySchedule {
                     }
                     
                     else {
-                        
                         String Event_Name = eventName.getText();
                         String Event_Time_Start = eventTimeStart.getSelectionModel().getSelectedItem().toString();
                         String Event_Time_End = eventTimeEnd.getSelectionModel().getSelectedItem().toString();
@@ -110,7 +110,19 @@ public class MonthlySchedule {
                         LocalDate theDate = datePicker.getValue();
                         Date Event_Date = new Date(theDate.toEpochDay()); //type java.sql.Date
                         String reminderYesNo = cb.getSelectionModel().getSelectedItem().toString();
-                        Main_FX.Database.addEvent(Event_Name, Event_Time_Start, Event_Time_End,Event_Place, Event_Date, reminderYesNo);
+                        
+                        schedule.generateEventSchedule();
+                        Event event = new Event(Event_Name, Event_Time_Start, Event_Time_End, Event_Place, Event_Date, reminderYesNo);
+                        Main_FX.person.getEvents().add(event);
+                        if (schedule.isThereEventTimeConflict(Main_FX.person.getEvents().size() - 1)) {
+                            schedule.timeConflictAlert(2);
+                            Main_FX.person.getEvents().remove(Main_FX.person.getEvents().size() - 1);
+                        } else if (schedule.isThereEventCourseConflict(Main_FX.person.getEvents().size() - 1)) {
+                            schedule.timeConflictAlert(3);
+                            Main_FX.person.getEvents().remove(Main_FX.person.getEvents().size() - 1);
+                        }
+                        else
+                            Main_FX.Database.addEvent(Event_Name, Event_Time_Start, Event_Time_End,Event_Place, Event_Date, reminderYesNo);
                     }
                 
             });
