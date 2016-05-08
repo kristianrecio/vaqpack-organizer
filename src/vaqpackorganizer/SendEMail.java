@@ -46,8 +46,6 @@ public class SendEMail {
         }
     }
     
-    
-    
     public void sendSimpleMail(String subject, String to,
         String from, String messageText, String[] attachmentPaths) 
         throws AddressException, MessagingException {
@@ -65,6 +63,7 @@ public class SendEMail {
         Authenticator auth = new GMailAuthenticator();
         Session session = Session.getDefaultInstance(mailProps, auth);
             
+        
         Message message = new MimeMessage(session);
             
         message.setFrom(new InternetAddress(from));

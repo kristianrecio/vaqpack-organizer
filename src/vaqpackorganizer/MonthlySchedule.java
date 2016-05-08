@@ -58,9 +58,6 @@ public class MonthlySchedule {
             
             
             Scene scene = new Scene(rootPane, 1080, 720);
-            
-            String css = MonthlySchedule.class.getResource("CalendarStyle.css").toExternalForm();
-            scene.getStylesheets().add(css);
 
             DatePicker datePicker = new DatePicker();
             DatePickerSkin datePickerSkin = new DatePickerSkin(datePicker);
@@ -83,6 +80,9 @@ public class MonthlySchedule {
             
             Label placeLabel = new Label("Place held: ");
             TextField eventPlace = new TextField();
+            
+            Label descriptionLabel = new Label("Brief description of the event: ");
+            TextField eventDescription = new TextField();
             //end of labels and text fields
             
             //choice box for reminder
@@ -106,12 +106,13 @@ public class MonthlySchedule {
                         String Event_Time_Start = eventTimeStart.getSelectionModel().getSelectedItem().toString();
                         String Event_Time_End = eventTimeEnd.getSelectionModel().getSelectedItem().toString();
                         String Event_Place = eventPlace.getText();
+                        String Event_Description = eventDescription.getText();
                         LocalDate theDate = datePicker.getValue();
                         //Date Event_Date = new Date(theDate.toEpochDay()); //type java.sql.Date
                         String reminderYesNo = cb.getSelectionModel().getSelectedItem().toString();
                         
                         schedule.generateEventSchedule();
-                        Event event = new Event(Event_Name, Event_Time_Start, Event_Time_End, Event_Place, theDate, reminderYesNo, "description");
+                        Event event = new Event(Event_Name, Event_Time_Start, Event_Time_End, Event_Place, theDate, reminderYesNo, Event_Description);
                         Main_FX.person.getEvents().add(event);
                         if (schedule.isThereEventTimeConflict(Main_FX.person.getEvents().size() - 1)) {
                             schedule.timeConflictAlert(2);
@@ -161,7 +162,7 @@ public class MonthlySchedule {
             
             //add textfields and labels to TextFields Pane
             TextFields.getChildren().addAll(nameLabel, eventName, timeStartLabel, eventTimeStart, timeEndLabel, 
-                    eventTimeEnd, placeLabel, eventPlace, reminderLabel, cb, eventBtn, blankSpace, sendEmail, eventThisDay, printEvents);
+                    eventTimeEnd, placeLabel, eventPlace, reminderLabel, descriptionLabel, eventDescription, cb, eventBtn, blankSpace, sendEmail, eventThisDay, printEvents);
             
             //add calendar, button and textfields pane
             rootPane.getChildren().addAll(popupContent, TextFields);
@@ -171,6 +172,13 @@ public class MonthlySchedule {
     public void success() {
         Alert alert = new Alert(AlertType.INFORMATION, "Event Added Successfully", ButtonType.OK);
         alert.showAndWait();
+    }
+    
+    public void showReminder() {
+        Alert reminderAlert = new Alert(AlertType.INFORMATION);
+        reminderAlert.setTitle("Reminder Dialog");
+        reminderAlert.setHeaderText("You have an event!");
+        reminderAlert.setContentText("Check Calendar tab for more info");
     }
 
     public Tab getTab() {
