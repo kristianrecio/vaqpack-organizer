@@ -8,6 +8,7 @@ import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
@@ -70,13 +71,11 @@ public class MonthlySchedule {
             rootPane.setMaxHeight(400);
             //end
             
-            
             Scene scene = new Scene(rootPane, 1080, 720);
 
             DatePicker datePicker = new DatePicker();
             DatePickerSkin datePickerSkin = new DatePickerSkin(datePicker);
             Node popupContent = datePickerSkin.getPopupContent();
-            
             
             //Labels and textfields
             Label nameLabel = new Label("Event Name: ");
@@ -148,13 +147,6 @@ public class MonthlySchedule {
             Button sendEmail = new Button();
             sendEmail.setText("Send reminder e-mail");
             sendEmail.setOnAction((ActionEvent e) -> {
-                
-                if(Main_FX.person.getEmail().equals("")) {
-                    Alert alertEMail = new Alert(Alert.AlertType.ERROR, "No e-mail found" + ButtonType.OK);
-                    alertEMail.showAndWait();
-                }
-                
-                else{
                     Alert alertSendEMail = new Alert(AlertType.CONFIRMATION);
                     alertSendEMail.setTitle("Send reminder via E-mail");
                     alertSendEMail.setHeaderText("Sed Reminder via E-mail");
@@ -180,8 +172,6 @@ public class MonthlySchedule {
                     else{
                         
                     }
-                    
-                }
                 
                 
             });
@@ -198,7 +188,8 @@ public class MonthlySchedule {
             
             //add calendar, button and textfields pane
             rootPane.getChildren().addAll(popupContent, TextFields);
-    
+            rootPane.setPadding(new Insets(10, 10, 10, 10));
+            rootPane.setSpacing(10);
     }
     
     public void success() {
