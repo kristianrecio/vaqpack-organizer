@@ -182,29 +182,6 @@ public class MonthlySchedule {
                 
             });
             
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 
-            Date date = new Date();
-            
-            String todayDate = date.toString();
-            ArrayList<Event> events = Main_FX.person.getEvents();
-            ArrayList<String> reminderList = new ArrayList<>();
-            
-            for (int i = 0; i < Main_FX.person.getEvents().size(); i++) {
-                String userEventDate = events.get(i).getDate();
-                if (todayDate.charAt(0) == userEventDate.charAt(0)
-                        && todayDate.charAt(1) == userEventDate.charAt(1)
-                        && todayDate.charAt(2) == userEventDate.charAt(2)
-                        && todayDate.charAt(3) == userEventDate.charAt(3)
-                        && todayDate.charAt(5) == userEventDate.charAt(5)
-                        && todayDate.charAt(6) == userEventDate.charAt(6)
-                        && todayDate.charAt(8) == userEventDate.charAt(8)
-                        && todayDate.charAt(9) == userEventDate.charAt(9)){
-                    reminderList.add(events.get(i).getName() + " " + events.get(i).getStartTime() + " " + events.get(i).getEndTime());
-                }
-            }
-           
-           
-            
             //create a list with all events on a day
             Label blankSpace = new Label(" ");
             Label eventThisDay = new Label(" Events today: ");
@@ -231,12 +208,43 @@ public class MonthlySchedule {
     
     public void showReminder() {
         
-        if(Main_FX.person.getEvents().equals(1)) { //need to fix this
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 
+        Date date = new Date();
+            
+        String todayDate = date.toString();
+        ArrayList<Event> events = Main_FX.person.getEvents();
+        ArrayList<String> reminderList = new ArrayList<>();
+            
+            
+        for (int i = 0; i < Main_FX.person.getEvents().size(); i++) {
+            String userEventDate = events.get(i).getDate();
+            if (todayDate.charAt(0) == userEventDate.charAt(0)
+                    && todayDate.charAt(1) == userEventDate.charAt(1)
+                    && todayDate.charAt(2) == userEventDate.charAt(2)
+                    && todayDate.charAt(3) == userEventDate.charAt(3)
+                    && todayDate.charAt(5) == userEventDate.charAt(5)
+                    && todayDate.charAt(6) == userEventDate.charAt(6)
+                    && todayDate.charAt(8) == userEventDate.charAt(8)
+                    && todayDate.charAt(9) == userEventDate.charAt(9)){
+                    
+                    reminderList.add(events.get(i).getName() + " " + events.get(i).getStartTime() + " " + events.get(i).getEndTime());
+                    
+                }
+            }
+            
+        
             Alert reminderAlert = new Alert(AlertType.INFORMATION);
             reminderAlert.setTitle("Reminder Dialog");
             reminderAlert.setHeaderText("You have an event!");
             reminderAlert.setContentText("Check Calendar tab for more info");
-        }
+            
+            VBox reminderShowList = new VBox();
+            for (int i = 0; i < reminderList.size(); i++) {
+            
+                Label myLabel = new Label(reminderList.get(i));
+                reminderShowList.getChildren().add(myLabel);
+            }
+        
     }
 
     public Tab getTab() {
