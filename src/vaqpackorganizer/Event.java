@@ -21,7 +21,7 @@ public class Event {
     private String day;
     private String dateString;
     private String reminder;
-    private String description; // Not implemented in MonthlySchedule.java
+    private String description; 
     
     public Event(String name, String startTime, String endTime, String place, LocalDate date, String reminder, String description) {
         this.name = name;
