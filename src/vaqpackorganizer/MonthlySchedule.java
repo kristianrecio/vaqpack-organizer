@@ -40,6 +40,7 @@ public class MonthlySchedule {
     private PieChartAnimation pieChartAnimation = new PieChartAnimation();
     private PieChart pieChart;
     
+    String eventTextArea = "";
     public void setCalendarTab() {
         tab = new Tab();
         tab.setText("Calendar");
@@ -169,13 +170,13 @@ public class MonthlySchedule {
                     
                     Optional<ButtonType> result = alertSendEMail.showAndWait();
                     if(result.get() == sendHTML) { //need to fix this
-                        
+                        sendMail.writeHTMLFiles();
                     }
                     else if(result.get() == sendText) {
                         sendMail.writeTextFiles();
                     }
                     else if(result.get() == addNewMail) {
-                        sendMail.writeHTMLFiles();
+                        
                     }
                     else{
                         
@@ -186,10 +187,15 @@ public class MonthlySchedule {
                 
             });
             
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); Date date = new Date();
+            
+            
+            
             //create a list with all events on a day
             Label blankSpace = new Label(" ");
             Label eventThisDay = new Label(" Events today: ");
-            TextArea printEvents = new TextArea(); //need to put database data here.
+            TextArea printEvents = new TextArea(); 
+            printEvents.setText(eventTextArea);
             printEvents.prefHeight(100);
             printEvents.prefWidth(300);
             //end
