@@ -160,10 +160,9 @@ public class MonthlySchedule {
                     
                     ButtonType sendHTML = new ButtonType("Send HTML file");
                     ButtonType sendText = new ButtonType("Send text file");
-                    ButtonType addNewMail = new ButtonType("Add another E-mail");
                     ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
                     
-                    alertSendEMail.getButtonTypes().setAll(sendHTML, sendText, addNewMail, cancel);
+                    alertSendEMail.getButtonTypes().setAll(sendHTML, sendText, cancel);
                     
                     Optional<ButtonType> result = alertSendEMail.showAndWait();
                     if(result.get() == sendHTML) { //need to fix this
@@ -172,9 +171,6 @@ public class MonthlySchedule {
                     else if(result.get() == sendText) {
                         sendMail.writeTextFiles();
                     }
-                    else if(result.get() == addNewMail) {
-                        
-                    }
                     else{
                         
                     }
@@ -182,22 +178,9 @@ public class MonthlySchedule {
                 
             });
             
-            
-           
-           
-            
-            //create a list with all events on a day
-            Label blankSpace = new Label(" ");
-            Label eventThisDay = new Label(" Events today: ");
-            TextArea printEvents = new TextArea(); 
-            printEvents.setText(eventTextArea);
-            printEvents.prefHeight(100);
-            printEvents.prefWidth(300);
-            //end
-            
             //add textfields and labels to TextFields Pane
             TextFields.getChildren().addAll(nameLabel, eventName, timeStartLabel, eventTimeStart, timeEndLabel, 
-                    eventTimeEnd, placeLabel, eventPlace, reminderLabel, cb, descriptionLabel, eventDescription, eventBtn, blankSpace, sendEmail, eventThisDay, printEvents);
+                    eventTimeEnd, placeLabel, eventPlace, reminderLabel, cb, descriptionLabel, eventDescription, eventBtn, sendEmail);
             
             //add calendar, button and textfields pane
             rootPane.getChildren().addAll(popupContent, TextFields);
@@ -231,7 +214,9 @@ public class MonthlySchedule {
                     && todayDate.charAt(8) == userEventDate.charAt(8)
                     && todayDate.charAt(9) == userEventDate.charAt(9)){
                     
-                    reminderList.add(events.get(i).getName() + " " + events.get(i).getStartTime() + " " + events.get(i).getEndTime());
+                    reminderList.add(events.get(i).getName() + " " 
+                            + events.get(i).getStartTime() + " " 
+                            + events.get(i).getEndTime());
                     
                 }
             }
