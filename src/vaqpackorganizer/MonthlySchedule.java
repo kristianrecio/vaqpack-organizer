@@ -188,9 +188,22 @@ public class MonthlySchedule {
             String todayDate = date.toString();
             ArrayList<Event> events = Main_FX.person.getEvents();
             
+            
             for (int i = 0; i < Main_FX.person.getEvents().size(); i++) {
-                events.get(i).getDate();
+                String userEventDate = events.get(i).getDate();
+                if (todayDate.charAt(0) == userEventDate.charAt(0)
+                        && todayDate.charAt(1) == userEventDate.charAt(1)
+                        && todayDate.charAt(2) == userEventDate.charAt(2)
+                        && todayDate.charAt(3) == userEventDate.charAt(3)
+                        && todayDate.charAt(5) == userEventDate.charAt(5)
+                        && todayDate.charAt(6) == userEventDate.charAt(6)
+                        && todayDate.charAt(8) == userEventDate.charAt(8)
+                        && todayDate.charAt(9) == userEventDate.charAt(9)){
+                    
+                }
             }
+           
+           
             
             //create a list with all events on a day
             Label blankSpace = new Label(" ");
