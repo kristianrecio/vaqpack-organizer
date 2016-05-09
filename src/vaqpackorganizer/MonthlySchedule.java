@@ -21,15 +21,16 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class MonthlySchedule {
@@ -157,15 +158,37 @@ public class MonthlySchedule {
                     alertSendEMail.setTitle("Send reminder via E-mail");
                     alertSendEMail.setHeaderText("Sed Reminder via E-mail");
                     alertSendEMail.setContentText("Please select an option: ");
+                  
+                    ArrayList<Event> someEvents = Main_FX.person.getEvents();
+                    ArrayList<String> allEventNames = new ArrayList<>();
+
+
+                    for (int i = 0; i < Main_FX.person.getEvents().size(); i++) {
+                            allEventNames.add(someEvents.get(i).getName());
+                        }
+                    
+                    VBox reminderChoice = new VBox();
+                    for (int i = 0; i < someEvents.size(); i++) {
+                        reminderChoice.getChildren().add(new CheckBox(someEvents.get(i).getName()));
+                    }
+                    Button okReminderBtn = new Button();
+                    okReminderBtn.setText("OK");
+                    
+                    reminderChoice.getChildren().add(okReminderBtn);
+             
+                    alertSendEMail.getDialogPane().setContent(reminderChoice);
                     
                     ButtonType sendHTML = new ButtonType("Send HTML file");
                     ButtonType sendText = new ButtonType("Send text file");
                     ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
                     
+                    alertSendEMail.getDialogPane().setContent(reminderChoice);
                     alertSendEMail.getButtonTypes().setAll(sendHTML, sendText, cancel);
                     
                     Optional<ButtonType> result = alertSendEMail.showAndWait();
-                    if(result.get() == sendHTML) { //need to fix this
+                    if(result.get() == sendHTML) {
+                        
+                        
                         sendMail.writeHTMLFiles();
                     }
                     else if(result.get() == sendText) {
@@ -233,6 +256,7 @@ public class MonthlySchedule {
                 Label myLabel = new Label(reminderList.get(i));
                 reminderShowList.getChildren().add(myLabel);
             }
+            reminderAlert.getDialogPane().setContent(reminderShowList);
         
     }
 
