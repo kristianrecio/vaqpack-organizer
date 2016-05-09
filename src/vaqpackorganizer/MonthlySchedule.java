@@ -187,7 +187,7 @@ public class MonthlySchedule {
             
             String todayDate = date.toString();
             ArrayList<Event> events = Main_FX.person.getEvents();
-            
+            ArrayList<String> reminderList = new ArrayList<>();
             
             for (int i = 0; i < Main_FX.person.getEvents().size(); i++) {
                 String userEventDate = events.get(i).getDate();
@@ -199,7 +199,7 @@ public class MonthlySchedule {
                         && todayDate.charAt(6) == userEventDate.charAt(6)
                         && todayDate.charAt(8) == userEventDate.charAt(8)
                         && todayDate.charAt(9) == userEventDate.charAt(9)){
-                    
+                    reminderList.add(events.get(i).getName() + " " + events.get(i).getStartTime() + " " + events.get(i).getEndTime());
                 }
             }
            

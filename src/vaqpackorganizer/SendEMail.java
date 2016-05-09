@@ -122,7 +122,6 @@ public class SendEMail {
 
 
             byte[] myBytes = "New Contents\n".getBytes();
-            byte[] myBytes = "Testing the overwriting of stream\n".getBytes();
 
             stream.write(myBytes);
             stream.close();
