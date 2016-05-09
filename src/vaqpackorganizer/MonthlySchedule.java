@@ -46,14 +46,15 @@ public class MonthlySchedule {
         tab.setText("Calendar");
         setCalendar();
         setPieChart();
-        tab.setContent(rootPane);
+        
+        HBox hBox = new HBox();
+        hBox.getChildren().addAll(rootPane, pieChart);
+        tab.setContent(hBox);
     } 
     
     public void setPieChart() {
         pieChartAnimation.setChart();
         pieChart = pieChartAnimation.getChart();
-        
-        rootPane.getChildren().add(pieChart);
     }
     
     public void updatePieChart() {
@@ -186,7 +187,7 @@ public class MonthlySchedule {
             
             //add textfields and labels to TextFields Pane
             TextFields.getChildren().addAll(nameLabel, eventName, timeStartLabel, eventTimeStart, timeEndLabel, 
-                    eventTimeEnd, placeLabel, eventPlace, reminderLabel, descriptionLabel, eventDescription, cb, eventBtn, blankSpace, sendEmail, eventThisDay, printEvents);
+                    eventTimeEnd, placeLabel, eventPlace, reminderLabel, cb, descriptionLabel, eventDescription, eventBtn, blankSpace, sendEmail, eventThisDay, printEvents);
             
             //add calendar, button and textfields pane
             rootPane.getChildren().addAll(popupContent, TextFields);

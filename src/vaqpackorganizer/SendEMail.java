@@ -9,6 +9,7 @@ package vaqpackorganizer;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
@@ -116,16 +117,18 @@ public class SendEMail {
     public void writeTextFiles() {
         try {
             File textFile = new File("Reminder.txt");
+            FileOutputStream stream = new FileOutputStream(textFile, false);
             
-            FileWriter textWriter = new FileWriter(textFile, false);
-            //textWriter.write(Main_FX.person.getEvents()); //needs to be resolved.
+            byte[] myBytes = "New Contents\n".getBytes();
+            stream.write(myBytes);
+            stream.close();
         }catch (IOException e) {
-            
+            Fn.showError(e);
         }
         
         try{
-            new SendEMail().sendSimpleMail("Event Reminder", Main_FX.person.getEmail(),
-                    "vaqpackdonotreply@gmail.com", "you have an event!", new String[]{"C:\\reminder.txt"}); 
+            sendSimpleMail("Event Reminder", Main_FX.person.getEmail(),
+                    "vaqpackdonotreply@gmail.com", "you have an event!", new String[]{"Reminder.txt"}); 
             
         }catch (Throwable e) {
             e.printStackTrace();
