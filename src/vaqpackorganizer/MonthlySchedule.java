@@ -64,6 +64,7 @@ public class MonthlySchedule {
             DatePickerSkin datePickerSkin = new DatePickerSkin(datePicker);
             Node popupContent = datePickerSkin.getPopupContent();
             
+            
             //Labels and textfields
             Label nameLabel = new Label("Event Name: ");
             TextField eventName = new TextField();
@@ -153,14 +154,14 @@ public class MonthlySchedule {
                     alertSendEMail.getButtonTypes().setAll(sendHTML, sendText, addNewMail, cancel);
                     
                     Optional<ButtonType> result = alertSendEMail.showAndWait();
-                    if(result.get() == sendHTML) {
+                    if(result.get() == sendHTML) { //need to fix this
                         
                     }
                     else if(result.get() == sendText) {
-                        
+                        sendMail.writeTextFiles();
                     }
                     else if(result.get() == addNewMail) {
-                        
+                        sendMail.writeHTMLFiles();
                     }
                     else{
                         
@@ -168,7 +169,7 @@ public class MonthlySchedule {
                     
                 }
                 
-                sendMail.writeTextFiles();
+                
             });
             
             //create a list with all events on a day
@@ -193,7 +194,7 @@ public class MonthlySchedule {
     
     public void showReminder() {
         
-        if(Main_FX.person.getEvents().equals("")) {
+        if(Main_FX.person.getEvents().equals(1)) { //need to fix this
             Alert reminderAlert = new Alert(AlertType.INFORMATION);
             reminderAlert.setTitle("Reminder Dialog");
             reminderAlert.setHeaderText("You have an event!");
