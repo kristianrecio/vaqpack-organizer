@@ -32,7 +32,7 @@ public class MonthlySchedule {
     
     
     private Tab tab;
-    HBox rootPane = new HBox(2);
+    VBox rootPane = new VBox(15);
     VBox TextFields = new VBox();
     TimeTicks timeticks = new TimeTicks(15);
     private Schedule schedule = new Schedule();
@@ -71,7 +71,7 @@ public class MonthlySchedule {
             //end
             
             
-            Scene scene = new Scene(rootPane, 1080, 720);
+            Scene scene = new Scene(rootPane, 1500, 950);
 
             DatePicker datePicker = new DatePicker();
             DatePickerSkin datePickerSkin = new DatePickerSkin(datePicker);
@@ -109,7 +109,7 @@ public class MonthlySchedule {
             
             
             Button eventBtn = new Button();
-            eventBtn.setMinSize(200, 25);
+            eventBtn.setMinSize(200, 30);
             eventBtn.setText("Add Event");
             eventBtn.disableProperty().bind(eventName.textProperty().isEmpty()
                                             .or(eventTimeStart.valueProperty().isNull())
@@ -190,6 +190,8 @@ public class MonthlySchedule {
             Label blankSpace = new Label(" ");
             Label eventThisDay = new Label(" Events today: ");
             TextArea printEvents = new TextArea(); //need to put database data here.
+            printEvents.prefHeight(100);
+            printEvents.prefWidth(300);
             //end
             
             //add textfields and labels to TextFields Pane
