@@ -47,7 +47,7 @@ public class SendEMail {
     }
     
     public void sendSimpleMail(String subject, String to,
-        String from, String messageText, String[] attachmentPaths) 
+        String from, String messageText, String attachmentPath) 
         throws AddressException, MessagingException {
         
         Properties mailProps = new Properties();
@@ -78,7 +78,8 @@ public class SendEMail {
         //container for all parts
         Multipart multipart = new MimeMultipart();
         multipart.addBodyPart(messageBodyPart);
-            
+        
+        addAttachment(multipart, attachmentPath);
         message.setContent(multipart);
         
         Transport.send(message);
@@ -106,7 +107,7 @@ public class SendEMail {
         
         try{
             new SendEMail().sendSimpleMail("Event Reminder", Main_FX.person.getEmail(),
-                    "vaqpackdonotreply@gmail.com", "you have an event!", new String[]{"C:\\template.html"});
+                    "vaqpackdonotreply@gmail.com", "you have an event!", "C:\\template.html");
             
         }catch (Throwable e) {
             e.printStackTrace();
@@ -119,7 +120,7 @@ public class SendEMail {
             File textFile = new File("Reminder.txt");
             FileOutputStream stream = new FileOutputStream(textFile, false);
             
-            byte[] myBytes = "New Contents\n".getBytes();
+            byte[] myBytes = "Testing the overwriting of stream\n".getBytes();
             stream.write(myBytes);
             stream.close();
         }catch (IOException e) {
@@ -128,7 +129,7 @@ public class SendEMail {
         
         try{
             sendSimpleMail("Event Reminder", Main_FX.person.getEmail(),
-                    "vaqpackdonotreply@gmail.com", "you have an event!", new String[]{"Reminder.txt"}); 
+                    "vaqpackdonotreply@gmail.com", "you have an event!", "Reminder.txt"); 
             
         }catch (Throwable e) {
             e.printStackTrace();
