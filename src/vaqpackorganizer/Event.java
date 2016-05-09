@@ -5,7 +5,6 @@
  */
 package vaqpackorganizer;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 /**
@@ -17,11 +16,8 @@ public class Event {
     private String startTime;
     private String endTime;
     private String place;
-    private String dateString;
-    private int month;
-    private int day;
-    private int year;
-    private String dayString;
+    private String date;
+    private String day;
     private String reminder;
     private String description; // Not implemented in MonthlySchedule.java
     
@@ -30,26 +26,20 @@ public class Event {
         this.startTime = startTime;
         this.endTime = endTime;
         this.place = place;
-        this.dateString = date.toString();
-        this.month = date.getMonthValue();
-        this.day = date.getDayOfMonth();
-        this.year = date.getYear();
-        this.dayString = date.getDayOfWeek().toString();
+        this.date = date.toString();
+        this.day = date.getDayOfWeek().toString();
         this.reminder = reminder;
         this.description = description;
     }
     
-    public Event(String name, String startTime, String endTime, String place, String dateString,
-            int month, int day, int year, String dayString, String reminder, String description) {
+    public Event(String name, String startTime, String endTime, String place, String date,
+            String day, String reminder, String description) {
         this.name = name;
         this.startTime = startTime;
         this.endTime = endTime;
         this.place = place;
-        this.dateString = dateString;
-        this.month = month;
+        this.date = date;
         this.day = day;
-        this.year = year;
-        this.dayString = dayString;
         this.reminder = reminder;
         this.description = description;
     }
@@ -94,12 +84,12 @@ public class Event {
         this.reminder = reminder;
     }
 
-    public String getDateString() {
-        return dateString;
+    public String getDate() {
+        return date;
     }
 
-    public void setDateString(String dateString) {
-        this.dateString = dateString;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getDescription() {
@@ -110,35 +100,11 @@ public class Event {
         this.description = description;
     }
 
-    public int getMonth() {
-        return month;
-    }
-
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public String getDayString() {
-        return dayString;
-    }
-
-    public void setDayString(String dayString) {
-        this.dayString = dayString;
-    }
-
-    public int getDay() {
+    public String getDay() {
         return day;
     }
 
-    public void setDay(int day) {
+    public void setDay(String day) {
         this.day = day;
     }
 }
