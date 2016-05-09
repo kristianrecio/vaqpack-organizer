@@ -231,7 +231,7 @@ public class Database {
     public void addEvent(Event event) {
         try{
             String addEvent = "INSERT INTO event(user_id, name, startTime, endTime, place, date, day, reminder, description)"
-                    +"VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+                    +"VALUES (?,?,?,?,?,?,?,?,?)";
             sl = conn.prepareStatement(addEvent);
             sl.setInt(1, Main_FX.person.getUserId());
             sl.setString(2, event.getName());

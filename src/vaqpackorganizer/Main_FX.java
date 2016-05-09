@@ -83,7 +83,7 @@ public class Main_FX extends Application {
         });
         
         AnchorPane Main = setMain();
-        scene = new Scene(Main, Main.getPrefWidth(), Main.getPrefHeight());
+        scene = new Scene(Main, 1100, 675);
         scene.getStylesheets().add(getClass().getResource(theme).toExternalForm());
         primaryStage.setTitle("VaqPack");
         primaryStage.setScene(scene);

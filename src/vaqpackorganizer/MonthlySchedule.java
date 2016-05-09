@@ -2,12 +2,17 @@ package vaqpackorganizer;
 
 
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
@@ -46,14 +51,15 @@ public class MonthlySchedule {
         tab.setText("Calendar");
         setCalendar();
         setPieChart();
-        tab.setContent(rootPane);
+        
+        HBox hBox = new HBox();
+        hBox.getChildren().addAll(rootPane, pieChart);
+        tab.setContent(hBox);
     } 
     
     public void setPieChart() {
         pieChartAnimation.setChart();
         pieChart = pieChartAnimation.getChart();
-        
-        rootPane.getChildren().add(pieChart);
     }
     
     public void updatePieChart() {
@@ -71,13 +77,11 @@ public class MonthlySchedule {
             rootPane.setMaxHeight(400);
             //end
             
-            
             Scene scene = new Scene(rootPane, 1500, 950);
 
             DatePicker datePicker = new DatePicker();
             DatePickerSkin datePickerSkin = new DatePickerSkin(datePicker);
             Node popupContent = datePickerSkin.getPopupContent();
-            
             
             //Labels and textfields
             Label nameLabel = new Label("Event Name: ");
@@ -149,13 +153,6 @@ public class MonthlySchedule {
             Button sendEmail = new Button();
             sendEmail.setText("Send reminder e-mail");
             sendEmail.setOnAction((ActionEvent e) -> {
-                
-                if(Main_FX.person.getEmail().equals("")) {
-                    Alert alertEMail = new Alert(Alert.AlertType.ERROR, "No e-mail found" + ButtonType.OK);
-                    alertEMail.showAndWait();
-                }
-                
-                else{
                     Alert alertSendEMail = new Alert(AlertType.CONFIRMATION);
                     alertSendEMail.setTitle("Send reminder via E-mail");
                     alertSendEMail.setHeaderText("Sed Reminder via E-mail");
@@ -181,15 +178,19 @@ public class MonthlySchedule {
                     else{
                         
                     }
-                    
-                }
                 
                 
             });
             
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); Date date = new Date();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 
+            Date date = new Date();
             
+            String todayDate = date.toString();
+            ArrayList<Event> events = Main_FX.person.getEvents();
             
+            for (int i = 0; i < Main_FX.person.getEvents().size(); i++) {
+                events.get(i).getDate();
+            }
             
             //create a list with all events on a day
             Label blankSpace = new Label(" ");
@@ -202,11 +203,12 @@ public class MonthlySchedule {
             
             //add textfields and labels to TextFields Pane
             TextFields.getChildren().addAll(nameLabel, eventName, timeStartLabel, eventTimeStart, timeEndLabel, 
-                    eventTimeEnd, placeLabel, eventPlace, reminderLabel, descriptionLabel, eventDescription, cb, eventBtn, blankSpace, sendEmail, eventThisDay, printEvents);
+                    eventTimeEnd, placeLabel, eventPlace, reminderLabel, cb, descriptionLabel, eventDescription, eventBtn, blankSpace, sendEmail, eventThisDay, printEvents);
             
             //add calendar, button and textfields pane
             rootPane.getChildren().addAll(popupContent, TextFields);
-    
+            rootPane.setPadding(new Insets(10, 10, 10, 10));
+            rootPane.setSpacing(10);
     }
     
     public void success() {
