@@ -5,8 +5,6 @@
  */
 package vaqpackorganizer;
 
-import java.sql.Date;
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -65,6 +63,8 @@ public class Schedule {
             case 2:
                 alert.setContentText("The event added has conflicted with another event's time. It will not be added.");
                 break;
+            case 3:
+                alert.setContentText("The event added has conflicted with a course's time. It will not be added.");
         }
         
         alert.showAndWait();
@@ -180,7 +180,7 @@ public class Schedule {
             for (int j = 0; j < eventTime.size(); j++)
                 for (int k = 0; k < otherEventTime.size(); k++)
                     if (eventTime.get(j).equals(otherEventTime.get(k)))
-                        if (event1.getDay().equals(event2.getDay()))
+                        if (event1.getDate().equals(event2.getDate()))
                             return true;
         }
         
@@ -209,7 +209,7 @@ public class Schedule {
                 if (timeIntervals[j].equals(courses.get(i).getStartTime())) {
                     while (!timeIntervals[j].equals(courses.get(i).getEndTime()))
                         courseTime.add(j++);
-                    course = courses.get(j);
+                    course = courses.get(i);
                     break;
                 }
             }
@@ -352,24 +352,6 @@ public class Schedule {
                     eventsPlace[start++][column] = event;
                 break;
             }
-        }
-    }
-    
-    public char getDayChar(Date date) {
-        DayOfWeek dayOfWeek = date.toLocalDate().getDayOfWeek();
-        String dayString = dayOfWeek.toString();
-        
-        switch (dayString) {
-            case "MONDAY":
-                return 'M';
-            case "TUESDAY":
-                return 'T';
-            case "WEDNESDAY":
-                return 'W';
-            case "THURSDAY":
-                return 'T';
-            default:
-                return 'F';
         }
     }
     

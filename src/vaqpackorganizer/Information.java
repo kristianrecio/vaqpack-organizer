@@ -308,7 +308,6 @@ public class Information {
     private GridPane left = new GridPane();
     private Label Lmajor_dep =  new Label("Major department information");
     private Label Lmajor_name = new Label ();
-    private Label Lmajor_location = new Label();
     private Label Lmajor_phone = new Label();
     private Label Lmajor_email = new Label();
     private Label Lmajor_url = new Label();
@@ -320,14 +319,12 @@ public class Information {
         left.setVgap(4);
         
         Lmajor_name.setText(info.getName());
-        Lmajor_location.setText("Location: "+info.getLocation());
         Lmajor_phone.setText("Phone: "+info.getPhone());
         Lmajor_email.setText("e-mail: "+info.getEmail());
         Lmajor_url.setText("Department website: "+info.getUrl());
         
         left.add(Lmajor_dep, 0, 0);
         left.add(Lmajor_name, 1, 0);
-        left.add(Lmajor_location, 0, 1);
         left.add(Lmajor_phone, 1, 1);
         left.add(Lmajor_email, 0, 2);
         left.add(Lmajor_url, 1, 2);

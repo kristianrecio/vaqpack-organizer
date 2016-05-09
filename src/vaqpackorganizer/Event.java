@@ -5,7 +5,6 @@
  */
 package vaqpackorganizer;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 /**
@@ -17,9 +16,8 @@ public class Event {
     private String startTime;
     private String endTime;
     private String place;
-    private LocalDate date;
+    private String date;
     private String day;
-    private String dateString;
     private String reminder;
     private String description; 
     
@@ -28,19 +26,19 @@ public class Event {
         this.startTime = startTime;
         this.endTime = endTime;
         this.place = place;
-        this.date = date;
-        this.dateString = date.toString();
+        this.date = date.toString();
         this.day = date.getDayOfWeek().toString();
         this.reminder = reminder;
         this.description = description;
     }
     
-    public Event(String name, String startTime, String endTime, String place, String dateString, String day, String reminder, String description) {
+    public Event(String name, String startTime, String endTime, String place, String date,
+            String day, String reminder, String description) {
         this.name = name;
         this.startTime = startTime;
         this.endTime = endTime;
         this.place = place;
-        this.dateString = dateString;
+        this.date = date;
         this.day = day;
         this.reminder = reminder;
         this.description = description;
@@ -86,28 +84,12 @@ public class Event {
         this.reminder = reminder;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
-    }
-
-    public String getDay() {
-        return day;
-    }
-
-    public void setDay(String day) {
-        this.day = day;
-    }
-
-    public String getDateString() {
-        return dateString;
-    }
-
-    public void setDateString(String dateString) {
-        this.dateString = dateString;
     }
 
     public String getDescription() {
@@ -116,5 +98,13 @@ public class Event {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
     }
 }

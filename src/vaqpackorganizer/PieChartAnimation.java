@@ -19,7 +19,7 @@ public class PieChartAnimation {
     
     
     public PieChartAnimation() {
-        
+        schedule = new Schedule();
     }
     
     public void setChart() {

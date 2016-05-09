@@ -20,7 +20,6 @@ public class Major {
     public Bookstore bookstore = new Bookstore();
     private String name;
     private String phone;
-    private String location;
     private String email;
     private String url;
     
@@ -29,7 +28,6 @@ public class Major {
         this.user_id = user_id;
         name = Database.getString("major", major_id, "name");
         phone = Database.getString("major", major_id, "phone");
-        location = Database.getString("major", major_id, "location");
         email = Database.getString("major", major_id, "email");
         url = Database.getString("major", major_id, "url");
         
@@ -61,13 +59,6 @@ public class Major {
      */
     public String getPhone() {
         return phone;
-    }
-
-    /**
-     * @return the location
-     */
-    public String getLocation() {
-        return location;
     }
 
     /**
