@@ -118,11 +118,9 @@ public class SendEMail {
     public void writeTextFiles() {
         try {
             File textFile = new File("Reminder.txt");
-<<<<<<< HEAD
             
             FileWriter textWriter = new FileWriter(textFile, false);
             textWriter.write(Main_FX.person.getEvents().toString()); //needs to be resolved.
-=======
             FileOutputStream stream = new FileOutputStream(textFile, false);
 
 
@@ -132,7 +130,6 @@ public class SendEMail {
             stream.write(myBytes);
             stream.close();
 
->>>>>>> 2441b5b06a0664202ef5851284e8ac1d1b12e02c
         }catch (IOException e) {
             Fn.showError(e);
         }
