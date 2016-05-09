@@ -5,8 +5,6 @@
  */
 package vaqpackorganizer;
 
-import java.sql.Date;
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -65,6 +63,8 @@ public class Schedule {
             case 2:
                 alert.setContentText("The event added has conflicted with another event's time. It will not be added.");
                 break;
+            case 3:
+                alert.setContentText("The event added has conflicted with a course's time. It will not be added.");
         }
         
         alert.showAndWait();
@@ -169,7 +169,7 @@ public class Schedule {
                 if (timeIntervals[j].equals(events.get(i).getStartTime())) {
                     while (!timeIntervals[j].equals(events.get(i).getEndTime()))
                         otherEventTime.add(j++);
-                    event2 = events.get(j);
+                    event2 = events.get(i);
                     break;
                 }
             }
@@ -180,7 +180,7 @@ public class Schedule {
             for (int j = 0; j < eventTime.size(); j++)
                 for (int k = 0; k < otherEventTime.size(); k++)
                     if (eventTime.get(j).equals(otherEventTime.get(k)))
-                        if (event1.getDate().toLocalDate().getDayOfWeek().toString().equals(event2.getDate().toLocalDate().getDayOfWeek().toString()))
+                        if (event1.getDate().equals(event2.getDate()))
                             return true;
         }
         
@@ -203,13 +203,13 @@ public class Schedule {
             }
         }
         
-        for (int i = 0; i < events.size(); i++) {
+        for (int i = 0; i < courses.size(); i++) {
             courseTime = new ArrayList<>();
             for (int j = 0; j < timeIntervals.length; j++) {
                 if (timeIntervals[j].equals(courses.get(i).getStartTime())) {
                     while (!timeIntervals[j].equals(courses.get(i).getEndTime()))
                         courseTime.add(j++);
-                    course = courses.get(j);
+                    course = courses.get(i);
                     break;
                 }
             }
@@ -228,9 +228,7 @@ public class Schedule {
     }
     
     public boolean courseEventConflictDayCheck(Event event, Course course) {
-        String day = event.getDate().toLocalDate().getDayOfWeek().toString();
-        
-        switch (day) {
+        switch (event.getDay()) {
             case "MONDAY":
                 if (course.getDays().equals("M") || course.getDays().equals("MW"))
                     return true;
@@ -336,9 +334,8 @@ public class Schedule {
                     continue;
                 start = time;
                 end = start;
-                day = events.get(event).getDate().toLocalDate().getDayOfWeek().toString();
                 int column;
-                switch (day) {
+                switch (events.get(event).getDay()) {
                     case "SUNDAY": column = 0; break;
                     case "MONDAY": column = 1; break;
                     case "TUESDAY": column = 2; break;
@@ -355,24 +352,6 @@ public class Schedule {
                     eventsPlace[start++][column] = event;
                 break;
             }
-        }
-    }
-    
-    public char getDayChar(Date date) {
-        DayOfWeek dayOfWeek = date.toLocalDate().getDayOfWeek();
-        String dayString = dayOfWeek.toString();
-        
-        switch (dayString) {
-            case "MONDAY":
-                return 'M';
-            case "TUESDAY":
-                return 'T';
-            case "WEDNESDAY":
-                return 'W';
-            case "THURSDAY":
-                return 'T';
-            default:
-                return 'F';
         }
     }
     

@@ -1,6 +1,7 @@
 package vaqpackorganizer;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,6 +38,7 @@ public class Person {
         username = this.Database.getString("user", user_id, "username");
         profile_url = this.Database.getString("user", user_id, "profile_url");
         generateCourses();
+        generateEvents();
     }
     
     public void generateCourses(){
@@ -53,6 +55,24 @@ public class Person {
                     courses.add(c);
                 }
         }catch(SQLException e){
+            Fn.showError(e);
+        }
+    }
+    
+    public void generateEvents() {
+        events = new ArrayList<>();
+        try {
+            String sql_get = "SELECT * FROM event WHERE user_id = ?";
+            ps = conn.prepareStatement(sql_get);
+            ps.setInt(1, user_id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Event e = new Event(rs.getString("name"), rs.getString("startTime"),
+                rs.getString("endTime"), rs.getString("place"), rs.getString("date"),
+                rs.getString("day"), rs.getString("reminder"), rs.getString("description"));
+                events.add(e);
+            } 
+        } catch (SQLException e) {
             Fn.showError(e);
         }
     }

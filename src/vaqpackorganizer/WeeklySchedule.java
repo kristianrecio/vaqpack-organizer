@@ -53,6 +53,7 @@ public class WeeklySchedule {
     private String sql;
     private Database Database;
     public static boolean success = true;
+    private PieChartAnimation pieChartAnimation;
     private PieChart pieChart;
     
     public WeeklySchedule(int id, Database Database, Connection conn) {
@@ -116,7 +117,8 @@ public class WeeklySchedule {
                 setTheBottom();
             }
             success = true;
-            updatePieChart();
+            pieChartAnimation.updatePieChart();
+            pieChart = pieChartAnimation.getChart();
         });
         
         deleteCourse.setOnAction(e -> {
@@ -124,7 +126,8 @@ public class WeeklySchedule {
             setTheTable();
             pane.setCenter(table);
             setTheBottom();
-            updatePieChart();
+            pieChartAnimation.updatePieChart();
+            pieChart = pieChartAnimation.getChart();
         });
         
         modifyCourse.setOnAction(e -> {
@@ -133,7 +136,8 @@ public class WeeklySchedule {
                 setTheTable();
                 pane.setCenter(table);
                 setTheBottom();
-                updatePieChart();
+                pieChartAnimation.updatePieChart();
+                pieChart = pieChartAnimation.getChart();
             }
             success = true;
         });
@@ -168,7 +172,9 @@ public class WeeklySchedule {
             changeTheme();
         });
         
-        pieChart = new PieChart(setData());
+        pieChartAnimation = new PieChartAnimation();
+        pieChartAnimation.setChart();
+        pieChart = pieChartAnimation.getChart();
         
         right = new VBox();
         right.getChildren().addAll(intervalChange, changeTheme, pieChart);
@@ -852,50 +858,6 @@ public class WeeklySchedule {
             ps.executeUpdate();
         } catch (SQLException e) {
             Fn.showError(e);
-        }
-    }
-    
-    public ObservableList<PieChart.Data> setData() {
-        int[][] coursesPlace = schedule.getCoursesPlace();
-        
-        int num = 0;
-        int freeTime = 57 * 5;
-        for (int i = 0; i < coursesPlace.length; i++) {
-            for (int j = 0; j < coursesPlace[i].length; j++) {
-                if (coursesPlace[i][j] != -1) {
-                    num++;
-                    freeTime--;
-                }
-            }
-        }
-        
-        ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
-        data.add(new PieChart.Data("Course Time", num * 15));
-        data.add(new PieChart.Data("Commitments Time", 0));
-        data.add(new PieChart.Data("Free Time", freeTime * 15));
-        
-        return data;
-    }
-    
-    public void updatePieChart() {
-        int[][] coursesPlace = schedule.getCoursesPlace();
-        
-        int num = 0;
-        int freeTime = 57 * 5;
-        for (int i = 0; i < coursesPlace.length; i++) {
-            for (int j = 0; j < coursesPlace[i].length; j++) {
-                if (coursesPlace[i][j] != -1) {
-                    num++;
-                    freeTime--;
-                }
-            }
-        }
-        
-        for (PieChart.Data data : pieChart.getData()) {
-            if (data.getName().equals("Course Time"))
-                data.setPieValue(num * 15);
-            if (data.getName().equals("Free Time"))
-                data.setPieValue(freeTime * 15);
         }
     }
 }
