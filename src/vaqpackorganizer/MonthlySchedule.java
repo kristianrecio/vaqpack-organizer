@@ -21,6 +21,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -214,7 +215,12 @@ public class MonthlySchedule {
         String todayDate = date.toString();
         ArrayList<Event> events = Main_FX.person.getEvents();
         ArrayList<String> reminderList = new ArrayList<>();
-            
+        
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(new CheckBox("First"), new CheckBox("Second"), new CheckBox("Third"));
+        
+ 
+        
             
         for (int i = 0; i < Main_FX.person.getEvents().size(); i++) {
             String userEventDate = events.get(i).getDate();
