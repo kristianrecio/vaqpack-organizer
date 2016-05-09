@@ -11,7 +11,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -78,10 +77,6 @@ public class SendEMail {
         //container for all parts
         Multipart multipart = new MimeMultipart();
         multipart.addBodyPart(messageBodyPart);
-        
-        for (int i = 0;(attachmentPaths != null) && (i < attachmentPaths.length); i++) {
-                addAttachment(multipart, attachmentPaths[i]);
-            }
             
         message.setContent(multipart);
         
@@ -98,7 +93,7 @@ public class SendEMail {
         }
     
     public void writeHTMLFiles() {
-        String html = "<title> Event Reminder</title><p>" + "our html page</p></div>";//here we should put the event information between <p></p>
+        String html = "<title> Event Reminder</title><p>" + Main_FX.person.getEvents() + "our html page</p></div>";//here we should put the event information between <p></p>
         File htmlFile = new File("C:\\template.html");//i don't know where it has to go 
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(htmlFile));
@@ -110,7 +105,7 @@ public class SendEMail {
         
         try{
             new SendEMail().sendSimpleMail("Event Reminder", Main_FX.person.getEmail(),
-                    "vaqpackdonotreply@gmail.com", "you have an event!", new String[]{"C:\\somepath.html"});
+                    "vaqpackdonotreply@gmail.com", "you have an event!", new String[]{"C:\\template.html"});
             
         }catch (Throwable e) {
             e.printStackTrace();
@@ -119,18 +114,18 @@ public class SendEMail {
     }
     
     public void writeTextFiles() {
-        String text = "";//i dont know if it is better to store the event on a string or any other good idea to do it?
         try {
-            PrintWriter writer = new PrintWriter("Reminder.txt", "UTF-8");
-            writer.println();
-            writer.close();
-        }catch (IOException e){
-            e.printStackTrace();
+            File textFile = new File("Reminder.txt");
+            
+            FileWriter textWriter = new FileWriter(textFile, false);
+            textWriter.write(Main_FX.person.getEvents()); //needs to be resolved.
+        }catch (IOException e) {
+            
         }
         
         try{
             new SendEMail().sendSimpleMail("Event Reminder", Main_FX.person.getEmail(),
-                    "vaqpackdonotreply@gmail.com", "you have an event!", new String[]{"Reminder.txt"}); //substitute with the right path
+                    "vaqpackdonotreply@gmail.com", "you have an event!", new String[]{"C:\\reminder.txt"}); 
             
         }catch (Throwable e) {
             e.printStackTrace();
