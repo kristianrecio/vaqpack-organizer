@@ -15,6 +15,7 @@ import javafx.scene.GroupBuilder;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -79,7 +80,7 @@ public class Information {
     private TextField Tname = new TextField();
     private TextField Temail = new TextField();
     private TextField Tid_num = new TextField();
-    private TextField Tmajor = new TextField();
+    private ComboBox Tmajor = new ComboBox();
     private TextField Tsemester = new TextField();
     private ImageView picture;
     
@@ -232,6 +233,7 @@ public class Information {
             Temail.setEditable(true);
             Tid_num.setEditable(true);
             Tsemester.setEditable(true);
+            Tmajor.setDisable(false);
             Bsave.setDisable(false);
             
         });
@@ -240,6 +242,7 @@ public class Information {
             Temail.setEditable(false);
             Tid_num.setEditable(false);
             Tsemester.setEditable(false);
+            Tmajor.setDisable(true);
             
             if(!Tname.getText().equals("")){
                 person.setName(Tname.getText());
@@ -256,6 +259,11 @@ public class Information {
             if(!Tsemester.getText().equals("")){
                 person.setSemester(Tsemester.getText());
             }
+            
+            String major = Tmajor.getSelectionModel().getSelectedItem().toString();
+            int major_id = Database.getID("Major", "name", major);
+            person.setMajor(major_id);
+            
             Bsave.setDisable(true);
          });
          
@@ -280,8 +288,16 @@ public class Information {
         Tid_num.setEditable(false);
         top_center.add(Tid_num, 1, 2);
         
-        Tmajor.setText(person.getMajor());
-        Tmajor.setEditable(false);
+        Tmajor.setDisable(true);
+        ObservableList<String> majors = FXCollections.observableArrayList();
+        Database.getItems(majors, "Major", "name");
+        Tmajor.setItems(majors);
+        for(int i = 0; i < majors.size();i++){
+            if(majors.get(i).equals(person.getMajor())){
+                Tmajor.getSelectionModel().select(i);
+            }
+        }
+
         top_center.add(Tmajor, 1, 3);
         
         Tsemester.setText(person.getSemester());
