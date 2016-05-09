@@ -118,9 +118,9 @@ public class SendEMail {
             File textFile = new File("Reminder.txt");
             
             FileWriter textWriter = new FileWriter(textFile, false);
-            textWriter.write(Main_FX.person.getEvents()); //needs to be resolved.
+            textWriter.write(Main_FX.person.getEvents().toString()); //needs to be resolved.
         }catch (IOException e) {
-            
+            Fn.showError(e);
         }
         
         try{
