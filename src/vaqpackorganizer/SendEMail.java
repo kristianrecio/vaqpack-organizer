@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -94,20 +95,27 @@ public class SendEMail {
             multipart.addBodyPart(attachmentPart);
         }
     
-    public void writeHTMLFiles() {
-        String html = "<title> Event Reminder</title><p>" + Main_FX.person.getEvents() + "our html page</p></div>";//here we should put the event information between <p></p>
-        File htmlFile = new File("C:\\template.html");//i don't know where it has to go 
+    public void writeHTMLFiles(String email, ArrayList<Event> events) {
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(htmlFile));
-            bw.write(html);
-            bw.close();
+            File htmlFile = new File("template.html");
+            FileOutputStream stream = new FileOutputStream(htmlFile, false);
+            
+            String fileContents = "<html><p>Events:\n\n</p></html>";
+            
+            for (int i = 0; i < events.size(); i++)
+                fileContents += events.get(i).getEventInfo() + "\n\n";
+            
+            byte[] myBytes = fileContents.getBytes();
+
+            stream.write(myBytes);
+            stream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Fn.showError(e);
         }
         
         try{
-            new SendEMail().sendSimpleMail("Event Reminder", Main_FX.person.getEmail(),
-                    "vaqpackdonotreply@gmail.com", "you have an event!", "C:\\template.html");
+            new SendEMail().sendSimpleMail("Event Reminder", email,
+                    "vaqpackdonotreply@gmail.com", "your events are in the attached file.", "template.html");
             
         }catch (Throwable e) {
             e.printStackTrace();
@@ -115,28 +123,38 @@ public class SendEMail {
         
     }
     
-    public void writeTextFiles() {
+    public void writeTextFiles(String email, ArrayList<Event> events) {
         try {
+<<<<<<< HEAD
             File textFile = new File("Reminder.txt");
             
             FileWriter textWriter = new FileWriter(textFile, false);
             textWriter.write(Main_FX.person.getEvents().toString()); //needs to be resolved.
+=======
+            File textFile = new File("Events.txt");
+>>>>>>> 05cdcd3a397fa26953edb9137c2885f56ad864b2
             FileOutputStream stream = new FileOutputStream(textFile, false);
-
-
-            byte[] myBytes = "New Contents\n".getBytes();
-            //byte[] myBytes = "Testing the overwriting of stream\n".getBytes();
-
+            
+            String fileContents = String.format("Events:\n\n");
+            
+            for (int i = 0; i < events.size(); i++)
+                fileContents += String.format(events.get(i).getEventInfo() + "\n\n");
+            
+            byte[] myBytes = fileContents.getBytes();
+            
             stream.write(myBytes);
             stream.close();
+<<<<<<< HEAD
 
+=======
+>>>>>>> 05cdcd3a397fa26953edb9137c2885f56ad864b2
         }catch (IOException e) {
             Fn.showError(e);
         }
         
         try{
-            sendSimpleMail("Event Reminder", Main_FX.person.getEmail(),
-                    "vaqpackdonotreply@gmail.com", "you have an event!", "Reminder.txt"); 
+            sendSimpleMail("Event Reminder", email,
+                    "vaqpackdonotreply@gmail.com", "Your events are in the attached file.", "Events.txt"); 
             
         }catch (Throwable e) {
             e.printStackTrace();

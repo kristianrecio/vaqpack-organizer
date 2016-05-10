@@ -232,17 +232,17 @@ public class Database {
         try{
             String addEvent = "INSERT INTO event(user_id, name, startTime, endTime, place, date, day, reminder, description)"
                     +"VALUES (?,?,?,?,?,?,?,?,?)";
-            sl = conn.prepareStatement(addEvent);
-            sl.setInt(1, Main_FX.person.getUserId());
-            sl.setString(2, event.getName());
-            sl.setString(3, event.getStartTime());
-            sl.setString(4, event.getEndTime());
-            sl.setString(5, event.getPlace());
-            sl.setString(6, event.getDate());
-            sl.setString(7, event.getDay());
-            sl.setString(8, event.getReminder());
-            sl.setString(9, event.getDescription());
-            sl.executeUpdate();
+            ps = conn.prepareStatement(addEvent);
+            ps.setInt(1, Main_FX.person.getUserId());
+            ps.setString(2, event.getName());
+            ps.setString(3, event.getStartTime());
+            ps.setString(4, event.getEndTime());
+            ps.setString(5, event.getPlace());
+            ps.setString(6, event.getDate());
+            ps.setString(7, event.getDay());
+            ps.setString(8, event.getReminder());
+            ps.setString(9, event.getDescription());
+            ps.executeUpdate();
                   
         }catch (SQLException e) {
             Fn.showError(e);

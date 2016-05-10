@@ -2,17 +2,14 @@ package vaqpackorganizer;
 
 
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
@@ -25,12 +22,16 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -50,6 +51,13 @@ public class MonthlySchedule {
     private SendEMail sendMail = new SendEMail();
     private PieChartAnimation pieChartAnimation = new PieChartAnimation();
     private PieChart pieChart;
+    private String fileType;
+    private TextArea listEvents;
+    private BorderPane pane = new BorderPane();
+    
+    public MonthlySchedule() {
+        showReminder();
+    }
     
     String eventTextArea = "";
     public void setCalendarTab() {
@@ -57,11 +65,25 @@ public class MonthlySchedule {
         tab.setText("Calendar");
         setCalendar();
         setPieChart();
+        setListEvents();
         
-        HBox hBox = new HBox();
-        hBox.getChildren().addAll(rootPane, pieChart);
-        tab.setContent(hBox);
-    } 
+        pane.setLeft(rootPane);
+        pane.setCenter(listEvents);
+        pane.setRight(pieChart);
+        tab.setContent(pane);
+    }
+    
+    public void setListEvents() {
+        listEvents = new TextArea();
+        
+        String text = "";
+        
+        ArrayList<Event> events = Main_FX.person.getEvents();
+        for (int i = 0; i < events.size(); i++)
+            text += String.format(events.get(i).getEventInfo() + "\n\n");
+        
+        listEvents.setText(text);
+    }
     
     public void setPieChart() {
         pieChartAnimation.setChart();
@@ -117,8 +139,6 @@ public class MonthlySchedule {
             cb.setTooltip(new Tooltip("Select Yes or No"));
             //end
             
-            
-            
             Button eventBtn = new Button();
             eventBtn.setMinSize(200, 30);
             eventBtn.setText("Add Event");
@@ -151,6 +171,8 @@ public class MonthlySchedule {
                             Main_FX.Database.addEvent(event);
                             success();
                             updatePieChart();
+                            setListEvents();
+                            pane.setCenter(listEvents);
                         }
                     
                 
@@ -159,55 +181,7 @@ public class MonthlySchedule {
             Button sendEmail = new Button();
             sendEmail.setText("Send reminder e-mail");
             sendEmail.setOnAction((ActionEvent e) -> {
-                    Alert alertSendEMail = new Alert(AlertType.CONFIRMATION);
-                    alertSendEMail.setTitle("Send reminder via E-mail");
-                    alertSendEMail.setHeaderText("Sed Reminder via E-mail");
-                    alertSendEMail.setContentText("Please select an option: ");
-                  
-                    ArrayList<Event> someEvents = Main_FX.person.getEvents();
-                    ArrayList<String> allEventNames = new ArrayList<>();
-                    ArrayList<String> reminderCheckbox = new ArrayList<>();
-
-                    for (int i = 0; i < Main_FX.person.getEvents().size(); i++) {
-                            allEventNames.add(someEvents.get(i).getName());
-                        }
-                    
-                    VBox reminderChoice = new VBox();
-                    for (int i = 0; i < someEvents.size(); i++) {
-                        reminderChoice.getChildren().add(new CheckBox(someEvents.get(i).getName()));
-                        reminderChoice.getChildren().get(i).isPressed();
-                    }
-                    Button okReminderBtn = new Button();
-                    okReminderBtn.setText("OK");
-                    okReminderBtn.setOnAction((ActionEvent reminder) ->{
-                        
-                    });
-                    
-                    reminderChoice.getChildren().add(okReminderBtn);
-             
-                    alertSendEMail.getDialogPane().setContent(reminderChoice);
-                    
-                    ButtonType sendHTML = new ButtonType("Send HTML file");
-                    ButtonType sendText = new ButtonType("Send text file");
-                    ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
-                    
-                    alertSendEMail.getDialogPane().setContent(reminderChoice);
-                    alertSendEMail.getButtonTypes().setAll(sendHTML, sendText, cancel);
-                    
-                    Optional<ButtonType> result = alertSendEMail.showAndWait();
-                    if(result.get() == sendHTML) {
-                        
-                        
-                        sendMail.writeHTMLFiles();
-                    }
-                    else if(result.get() == sendText) {
-                        sendMail.writeTextFiles();
-                    }
-                    else{
-                        
-                    }
-                
-                
+                sendEmail();
             });
             
             //add textfields and labels to TextFields Pane
@@ -220,53 +194,163 @@ public class MonthlySchedule {
             rootPane.setSpacing(10);
     }
     
+    public void sendEmail() {
+        Dialog dialog = new Dialog();
+        dialog.setTitle("Send Events via E-mail");
+        dialog.setHeaderText("Send Events via E-mail");
+        dialog.setContentText("Please select which file type to: ");
+        dialog.setResizable(true);
+        
+        GridPane pane1 = new GridPane();
+        pane1.setHgap(10);
+        pane1.setPadding(new Insets(10, 10, 10, 10));
+        
+        Button htmlBtn = new Button("HTML");
+        Button textBtn = new Button("Text");
+        
+        pane1.add(htmlBtn, 0, 0);
+        pane1.add(textBtn, 1, 0);
+        
+        dialog.getDialogPane().setContent(pane1);
+        
+        ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+        dialog.getDialogPane().getButtonTypes().add(cancel);
+        
+        VBox vBox = new VBox();
+        vBox.setSpacing(10);
+        vBox.setPadding(new Insets(10, 10, 10, 10));
+        
+        ArrayList<CheckBox> checkBoxes = new ArrayList<>();
+        ArrayList<Event> events = Main_FX.person.getEvents();
+        ArrayList<String> eventNames = new ArrayList<>();
+        
+        for (int i = 0; i < events.size(); i++) {
+            eventNames.add(events.get(i).getName());
+            checkBoxes.add(new CheckBox(eventNames.get(i)));
+        }
+        
+        for (int i = 0; i < checkBoxes.size(); i++) {
+            vBox.getChildren().add(checkBoxes.get(i));
+        }
+        
+        Button ok = new Button("OK");
+        ok.setAlignment(Pos.CENTER_RIGHT);
+        vBox.getChildren().add(ok);
+        
+        GridPane pane2 = new GridPane();
+        dialog.setHeaderText("Choose email to send to: ");
+        
+        RadioButton rb1 = new RadioButton("My Email: ");
+        RadioButton rb2 = new RadioButton("Other Email: ");
+        
+        ToggleGroup group = new ToggleGroup();
+        rb1.setToggleGroup(group);
+        rb2.setToggleGroup(group);
+        
+        Label lb = new Label();
+        TextField tf = new TextField();
+        tf.setDisable(true);
+        
+        if (Main_FX.person.getEmail().isEmpty()) {
+            lb.setText("No personal email saved.");
+            rb1.setDisable(true);
+            rb2.setSelected(true);
+        }
+        else {
+            lb.setText(Main_FX.person.getEmail());
+            rb1.setSelected(true);
+        }
+        pane2.add(rb1, 0, 0);
+        pane2.add(rb2, 0, 1);
+        pane2.add(lb, 1, 0);
+        pane2.add(tf, 1, 1);
+        
+        ButtonType send = new ButtonType("Send", ButtonData.OK_DONE);
+        
+        
+        htmlBtn.setOnAction(value -> {
+            dialog.getDialogPane().setContent(vBox);
+            dialog.getDialogPane().autosize();
+            fileType = "HTML";
+        });
+        
+        textBtn.setOnAction(value -> {
+            dialog.getDialogPane().setContent(vBox);
+            dialog.getDialogPane().autosize();
+            fileType = "TEXT";
+        });
+        
+        ArrayList<Event> selectedEvents = new ArrayList<>();
+        
+        ok.setOnAction(value -> {
+            for (int i = 0; i < checkBoxes.size(); i++)
+                if (checkBoxes.get(i).isSelected())
+                    selectedEvents.add(events.get(i));
+            dialog.getDialogPane().setContent(pane2);
+            dialog.getDialogPane().getButtonTypes().add(send);
+        });
+        
+        rb2.setOnAction(value -> {
+            if (rb2.isSelected())
+                tf.setDisable(false);
+            else
+                tf.setDisable(true);
+        });
+        
+        dialog.setResultConverter(button -> {
+            if (button == send) {
+                String email = (rb1.isSelected()) ? Main_FX.person.getEmail() : tf.getText();
+                
+                SendEMail sendEmail = new SendEMail();
+                if (fileType.equals("TEXT"))
+                    sendEmail.writeTextFiles(email, selectedEvents);
+                else {
+                    sendEmail.writeHTMLFiles(email, selectedEvents);
+                }
+            }
+            return null;
+        });
+        
+        dialog.showAndWait();
+    }
+    
     public void success() {
         Alert alert = new Alert(AlertType.INFORMATION, "Event Added Successfully", ButtonType.OK);
         alert.showAndWait();
     }
     
     public void showReminder() {
-        
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"); 
-        Date date = new Date();
-            
-        String todayDate = date.toString();
         ArrayList<Event> events = Main_FX.person.getEvents();
         ArrayList<String> reminderList = new ArrayList<>();
-            
-            
-        for (int i = 0; i < Main_FX.person.getEvents().size(); i++) {
-            String userEventDate = events.get(i).getDate();
-            if (todayDate.charAt(0) == userEventDate.charAt(0)
-                    && todayDate.charAt(1) == userEventDate.charAt(1)
-                    && todayDate.charAt(2) == userEventDate.charAt(2)
-                    && todayDate.charAt(3) == userEventDate.charAt(3)
-                    && todayDate.charAt(5) == userEventDate.charAt(5)
-                    && todayDate.charAt(6) == userEventDate.charAt(6)
-                    && todayDate.charAt(8) == userEventDate.charAt(8)
-                    && todayDate.charAt(9) == userEventDate.charAt(9)){
-                    
-                    reminderList.add(events.get(i).getName() + " " 
-                            + events.get(i).getStartTime() + " " 
-                            + events.get(i).getEndTime());
-                    
-                }
-            }
-            
         
-            Alert reminderAlert = new Alert(AlertType.INFORMATION);
-            reminderAlert.setTitle("Reminder Dialog");
-            reminderAlert.setHeaderText("You have an event!");
-            reminderAlert.setContentText("Check Calendar tab for more info");
-            
-            VBox reminderShowList = new VBox();
-            for (int i = 0; i < reminderList.size(); i++) {
-            
-                Label myLabel = new Label(reminderList.get(i));
-                reminderShowList.getChildren().add(myLabel);
+        for (int i = 0; i < events.size(); i++) {
+            if (events.get(i).getReminder().equals("Yes")){
+                reminderList.add(events.get(i).getEventInfo());
+                reminderList.add("");
             }
-            reminderAlert.getDialogPane().setContent(reminderShowList);
+        }
+            
+        if (reminderList.isEmpty())
+            return;
         
+        Alert reminderAlert = new Alert(AlertType.INFORMATION);
+        reminderAlert.setTitle("Reminder Dialog");
+        
+        if (reminderList.size() > 1)
+            reminderAlert.setHeaderText("You have these upcoming events!");
+        else
+            reminderAlert.setHeaderText("You have an upcoming event!");
+        
+        VBox reminderShowList = new VBox();
+        reminderShowList.setPadding(new Insets(10, 10, 10, 10));
+        reminderShowList.setSpacing(10);
+        for (int i = 0; i < reminderList.size(); i++) {
+            Label myLabel = new Label(reminderList.get(i));
+            reminderShowList.getChildren().add(myLabel);
+        }
+        reminderAlert.getDialogPane().setContent(reminderShowList);
+            
+        reminderAlert.showAndWait();
     }
 
     public Tab getTab() {
