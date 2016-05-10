@@ -7,10 +7,8 @@ package vaqpackorganizer;
 
 
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -35,9 +33,7 @@ import javax.mail.internet.MimeMultipart;
  *
  * @author Roberto
  */
-public class SendEMail { 
-    
-    
+public class SendEMail {
     
     public class GMailAuthenticator extends javax.mail.Authenticator {
         public PasswordAuthentication getPasswordAuthentication() {
@@ -125,6 +121,7 @@ public class SendEMail {
     
     public void writeTextFiles(String email, ArrayList<Event> events) {
         try {
+
             File textFile = new File("Events.txt");
             FileOutputStream stream = new FileOutputStream(textFile, false);
             
@@ -137,6 +134,7 @@ public class SendEMail {
             
             stream.write(myBytes);
             stream.close();
+
         }catch (IOException e) {
             Fn.showError(e);
         }

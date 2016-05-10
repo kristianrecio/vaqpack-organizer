@@ -3,7 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/Kristian%20Recio/Documents/NetBeansProjects/vaqpack-organizer/src/vaqpackorganizer/Information.java</file>
+=======
+<<<<<<< HEAD
+            <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/Major.java</file>
+            <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/MonthlySchedule.java</file>
+            <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/Log_FX.java</file>
+            <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/Information.java</file>
+            <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/Person.java</file>
+            <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/Event.java</file>
+            <file>file:/C:/Users/Carlos/Desktop/GIT/vaqpack-organizer/src/vaqpackorganizer/SendEMail.java</file>
+=======
+            <file>file:/C:/Users/Kristian%20Recio/Documents/NetBeansProjects/vaqpack-organizer/test/vaqpackorganizer/AdminTest.java</file>
+            <file>file:/C:/Users/Kristian%20Recio/Documents/NetBeansProjects/vaqpack-organizer/src/vaqpackorganizer/Admin.java</file>
+>>>>>>> 05cdcd3a397fa26953edb9137c2885f56ad864b2
+>>>>>>> 90e7e0c3c2b878a1baaa1576d2f8cab6c3c72479
         </group>
     </open-files>
 </project-private>

@@ -372,8 +372,13 @@ public class Information {
             addContact();
         });
         BeditContact.setOnAction((ActionEvent event) -> {
-            editContact(LVemer.getSelectionModel().getSelectedIndex());
-        });
+            if(LVemer.getSelectionModel().getSelectedIndex()>= 0){
+                editContact(LVemer.getSelectionModel().getSelectedIndex());
+            }
+            else{
+                editContact(0);
+            }
+            });
         ObservableList<String> emergency = FXCollections.observableArrayList();
         LVemer.setMaxSize(256, 148);
         LVprof.setMaxSize(256, 148);
@@ -381,8 +386,16 @@ public class Information {
         for (int i = 0; i < info.getEList().size(); i++){
                 emergency.add(info.getEList().get(i).getInfoFormat());
             }
+        
             
         LVemer.setItems(emergency);
+        
+        if(emergency.size()<1){
+            BeditContact.setDisable(true);
+        }
+        else{
+            BeditContact.setDisable(false);
+        }
         
         bottom.add(Lemer, 0, 0);
         bottom.add(LVemer, 0, 1);
