@@ -45,8 +45,8 @@ public class Event {
     }
     
     public String getEventInfo() {
-        String info = "Name: " + name + "\nTime: " + startTime + " - " + endTime +
-                "\nPlace: " + place + "\nDate: " + date + "\nDescription: " + description;
+        String info = String.format("Name: " + name + "\nTime: " + startTime + " - " + endTime +
+                "\nPlace: " + place + "\nDate: " + date + "\nDescription: " + description);
         return info;
     }
 

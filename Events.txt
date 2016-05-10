@@ -1,0 +1,14 @@
+Events:
+
+Name: Test Event
+Time: 08:00 AM - 08:30 AM
+Place: Test Location
+Date: 2016-05-08
+Description: Brief
+
+Name: Basketball Practice
+Time: 08:00 AM - 09:45 PM
+Place: Test
+Date: 2016-05-06
+Description: Test
+
