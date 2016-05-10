@@ -33,6 +33,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
+/**
+ *
+ * @author Roberto
+ */
+
 public class MonthlySchedule {
     
     
@@ -161,7 +166,7 @@ public class MonthlySchedule {
                   
                     ArrayList<Event> someEvents = Main_FX.person.getEvents();
                     ArrayList<String> allEventNames = new ArrayList<>();
-
+                    ArrayList<String> reminderCheckbox = new ArrayList<>();
 
                     for (int i = 0; i < Main_FX.person.getEvents().size(); i++) {
                             allEventNames.add(someEvents.get(i).getName());
@@ -170,13 +175,17 @@ public class MonthlySchedule {
                     VBox reminderChoice = new VBox();
                     for (int i = 0; i < someEvents.size(); i++) {
                         reminderChoice.getChildren().add(new CheckBox(someEvents.get(i).getName()));
+                        reminderChoice.getChildren().get(i).isPressed();
                     }
                     Button okReminderBtn = new Button();
                     okReminderBtn.setText("OK");
+                    okReminderBtn.setOnAction((ActionEvent reminder) ->{
+                        
+                    });
                     
                     reminderChoice.getChildren().add(okReminderBtn);
              
-                    alertSendEMail.getDialogPane().setContent(reminderChoice);
+                    //alertSendEMail.getDialogPane().setContent(reminderChoice);
                     
                     ButtonType sendHTML = new ButtonType("Send HTML file");
                     ButtonType sendText = new ButtonType("Send text file");

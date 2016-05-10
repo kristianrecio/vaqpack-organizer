@@ -125,7 +125,6 @@ public class SendEMail {
 
             stream.write(myBytes);
             stream.close();
-
         }catch (IOException e) {
             Fn.showError(e);
         }
