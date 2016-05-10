@@ -119,10 +119,10 @@ public class SendEMail {
         try {
             File textFile = new File("Reminder.txt");
             FileOutputStream stream = new FileOutputStream(textFile, false);
-
-
+            
+            
             byte[] myBytes = "New Contents\n".getBytes();
-
+            
             stream.write(myBytes);
             stream.close();
         }catch (IOException e) {
