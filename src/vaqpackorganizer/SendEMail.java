@@ -110,7 +110,7 @@ public class SendEMail {
             stream.write(myBytes);
             stream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Fn.showError(e);
         }
         
         try{
