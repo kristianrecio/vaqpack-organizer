@@ -191,10 +191,10 @@ public class WeeklySchedule {
         if (!coursesList.isEmpty())
             for (int i = 0; i < coursesList.size(); i++) {
                 label = new Label();
-                label.setText("\t\t\t\t\t\t\t" + coursesList.get(i).getText());
+                label.setText(coursesList.get(i).getText());
                 bottom.getChildren().add(label);
             }
-        bottom.setAlignment(Pos.CENTER_LEFT);
+        bottom.setAlignment(Pos.CENTER);
         bottom.setPadding(new Insets(10, 10, 10, 10));
         pane.setBottom(bottom);
     }

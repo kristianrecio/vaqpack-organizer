@@ -128,13 +128,13 @@ public class SendEMail {
             File textFile = new File("Events.txt");
             FileOutputStream stream = new FileOutputStream(textFile, false);
             
-            String fileContents = "Events:\n\n";
+            String fileContents = String.format("Events:\n\n");
             
             for (int i = 0; i < events.size(); i++)
-                fileContents += events.get(i).getEventInfo() + "\n\n";
+                fileContents += String.format(events.get(i).getEventInfo() + "\n\n");
             
             byte[] myBytes = fileContents.getBytes();
-
+            
             stream.write(myBytes);
             stream.close();
         }catch (IOException e) {
@@ -143,7 +143,7 @@ public class SendEMail {
         
         try{
             sendSimpleMail("Event Reminder", email,
-                    "vaqpackdonotreply@gmail.com", "Your events are in the attached file.", "Reminder.txt"); 
+                    "vaqpackdonotreply@gmail.com", "Your events are in the attached file.", "Events.txt"); 
             
         }catch (Throwable e) {
             e.printStackTrace();
