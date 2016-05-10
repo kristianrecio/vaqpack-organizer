@@ -125,14 +125,12 @@ public class SendEMail {
     
     public void writeTextFiles(String email, ArrayList<Event> events) {
         try {
-<<<<<<< HEAD
-            File textFile = new File("Reminder.txt");
+
+            File textFile = new File("Events.txt");
             
             FileWriter textWriter = new FileWriter(textFile, false);
             textWriter.write(Main_FX.person.getEvents().toString()); //needs to be resolved.
-=======
-            File textFile = new File("Events.txt");
->>>>>>> 05cdcd3a397fa26953edb9137c2885f56ad864b2
+
             FileOutputStream stream = new FileOutputStream(textFile, false);
             
             String fileContents = String.format("Events:\n\n");
@@ -144,10 +142,7 @@ public class SendEMail {
             
             stream.write(myBytes);
             stream.close();
-<<<<<<< HEAD
 
-=======
->>>>>>> 05cdcd3a397fa26953edb9137c2885f56ad864b2
         }catch (IOException e) {
             Fn.showError(e);
         }
