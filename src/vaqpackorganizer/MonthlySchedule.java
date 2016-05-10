@@ -197,8 +197,7 @@ public class MonthlySchedule {
     public void sendEmail() {
         Dialog dialog = new Dialog();
         dialog.setTitle("Send Events via E-mail");
-        dialog.setHeaderText("Send Events via E-mail");
-        dialog.setContentText("Please select which file type to: ");
+        dialog.setHeaderText("Please select which file type to send:");
         dialog.setResizable(true);
         
         GridPane pane1 = new GridPane();
@@ -238,7 +237,6 @@ public class MonthlySchedule {
         vBox.getChildren().add(ok);
         
         GridPane pane2 = new GridPane();
-        dialog.setHeaderText("Choose email to send to: ");
         
         RadioButton rb1 = new RadioButton("My Email: ");
         RadioButton rb2 = new RadioButton("Other Email: ");
@@ -251,7 +249,7 @@ public class MonthlySchedule {
         TextField tf = new TextField();
         tf.setDisable(true);
         
-        if (Main_FX.person.getEmail().isEmpty()) {
+        if (Main_FX.person.getEmail() == null) {
             lb.setText("No personal email saved.");
             rb1.setDisable(true);
             rb2.setSelected(true);
@@ -272,12 +270,15 @@ public class MonthlySchedule {
             dialog.getDialogPane().setContent(vBox);
             dialog.getDialogPane().autosize();
             fileType = "HTML";
+            dialog.setHeaderText("Choose which events to send: ");
         });
         
         textBtn.setOnAction(value -> {
             dialog.getDialogPane().setContent(vBox);
             dialog.getDialogPane().autosize();
             fileType = "TEXT";
+            
+            dialog.setHeaderText("Choose which events to send: ");
         });
         
         ArrayList<Event> selectedEvents = new ArrayList<>();
@@ -288,6 +289,7 @@ public class MonthlySchedule {
                     selectedEvents.add(events.get(i));
             dialog.getDialogPane().setContent(pane2);
             dialog.getDialogPane().getButtonTypes().add(send);
+            dialog.setHeaderText("Choose which email to send to: ");
         });
         
         rb2.setOnAction(value -> {

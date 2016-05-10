@@ -22,7 +22,6 @@ import javafx.scene.control.ButtonType;
 public class Database {
     private final Connection conn;
     private PreparedStatement ps = null;
-    private PreparedStatement sl;
     private ResultSet rs;
     
     public Database(Connection conn){
