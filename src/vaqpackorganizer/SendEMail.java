@@ -95,20 +95,27 @@ public class SendEMail {
             multipart.addBodyPart(attachmentPart);
         }
     
-    public void writeHTMLFiles() {
-        String html = "<title> Event Reminder</title><p>" + Main_FX.person.getEvents() + "our html page</p></div>";//here we should put the event information between <p></p>
-        File htmlFile = new File("C:\\template.html");//i don't know where it has to go 
+    public void writeHTMLFiles(String email, ArrayList<Event> events) {
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(htmlFile));
-            bw.write(html);
-            bw.close();
+            File htmlFile = new File("template.html");
+            FileOutputStream stream = new FileOutputStream(htmlFile, false);
+            
+            String fileContents = "<html><p>Events:\n\n</p></html>";
+            
+            for (int i = 0; i < events.size(); i++)
+                fileContents += events.get(i).getEventInfo() + "\n\n";
+            
+            byte[] myBytes = fileContents.getBytes();
+
+            stream.write(myBytes);
+            stream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Fn.showError(e);
         }
         
         try{
-            new SendEMail().sendSimpleMail("Event Reminder", Main_FX.person.getEmail(),
-                    "vaqpackdonotreply@gmail.com", "you have an event!", "C:\\template.html");
+            new SendEMail().sendSimpleMail("Event Reminder", email,
+                    "vaqpackdonotreply@gmail.com", "your events are in the attached file.", "template.html");
             
         }catch (Throwable e) {
             e.printStackTrace();

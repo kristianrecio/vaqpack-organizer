@@ -307,7 +307,7 @@ public class MonthlySchedule {
                 if (fileType.equals("TEXT"))
                     sendEmail.writeTextFiles(email, selectedEvents);
                 else {
-                    //sendEmail.writeHTMLFiles(email);
+                    sendEmail.writeHTMLFiles(email, selectedEvents);
                 }
             }
             return null;
