@@ -1,14 +1,26 @@
 Events:
 
-Name: Test Event
-Time: 08:00 AM - 08:30 AM
-Place: Test Location
-Date: 2016-05-08
-Description: Brief
+Name: Another Event
+Time: 06:30 PM - 07:30 PM
+Place: Downtown
+Date: 2016-05-30
+Description: Secret Meeting
 
-Name: Basketball Practice
-Time: 08:00 AM - 09:45 PM
-Place: Test
-Date: 2016-05-06
-Description: Test
+Name: Pumpkin Petting Time
+Time: 09:00 PM - 10:00 PM
+Place: Pumpkin Patch
+Date: 2016-05-31
+Description: Petting Pumpkins in the Pumpkin Path
+
+Name: Tea Time
+Time: 08:00 AM - 10:00 PM
+Place: Teddy Bear's House
+Date: 2016-06-23
+Description: Time for Tea!
+
+Name: Caroling
+Time: 08:00 AM - 10:00 PM
+Place: Random houses
+Date: 2016-06-02
+Description: SINGING!!!
 

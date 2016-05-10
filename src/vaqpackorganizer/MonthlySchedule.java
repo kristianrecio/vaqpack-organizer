@@ -2,12 +2,9 @@ package vaqpackorganizer;
 
 
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,11 +26,12 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
@@ -54,6 +52,8 @@ public class MonthlySchedule {
     private PieChartAnimation pieChartAnimation = new PieChartAnimation();
     private PieChart pieChart;
     private String fileType;
+    private TextArea listEvents;
+    private BorderPane pane = new BorderPane();
     
     public MonthlySchedule() {
         showReminder();
@@ -65,11 +65,25 @@ public class MonthlySchedule {
         tab.setText("Calendar");
         setCalendar();
         setPieChart();
+        setListEvents();
         
-        HBox hBox = new HBox();
-        hBox.getChildren().addAll(rootPane, pieChart);
-        tab.setContent(hBox);
-    } 
+        pane.setLeft(rootPane);
+        pane.setCenter(listEvents);
+        pane.setRight(pieChart);
+        tab.setContent(pane);
+    }
+    
+    public void setListEvents() {
+        listEvents = new TextArea();
+        
+        String text = "";
+        
+        ArrayList<Event> events = Main_FX.person.getEvents();
+        for (int i = 0; i < events.size(); i++)
+            text += String.format(events.get(i).getEventInfo() + "\n\n");
+        
+        listEvents.setText(text);
+    }
     
     public void setPieChart() {
         pieChartAnimation.setChart();
@@ -125,8 +139,6 @@ public class MonthlySchedule {
             cb.setTooltip(new Tooltip("Select Yes or No"));
             //end
             
-            
-            
             Button eventBtn = new Button();
             eventBtn.setMinSize(200, 30);
             eventBtn.setText("Add Event");
@@ -159,6 +171,8 @@ public class MonthlySchedule {
                             Main_FX.Database.addEvent(event);
                             success();
                             updatePieChart();
+                            setListEvents();
+                            pane.setCenter(listEvents);
                         }
                     
                 
@@ -185,8 +199,7 @@ public class MonthlySchedule {
         dialog.setTitle("Send Events via E-mail");
         dialog.setHeaderText("Send Events via E-mail");
         dialog.setContentText("Please select which file type to: ");
-        dialog.getDialogPane().setMinWidth(250);
-        dialog.getDialogPane().setMinHeight(150);
+        dialog.setResizable(true);
         
         GridPane pane1 = new GridPane();
         pane1.setHgap(10);
@@ -275,6 +288,13 @@ public class MonthlySchedule {
                     selectedEvents.add(events.get(i));
             dialog.getDialogPane().setContent(pane2);
             dialog.getDialogPane().getButtonTypes().add(send);
+        });
+        
+        rb2.setOnAction(value -> {
+            if (rb2.isSelected())
+                tf.setDisable(false);
+            else
+                tf.setDisable(true);
         });
         
         dialog.setResultConverter(button -> {
