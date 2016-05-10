@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -115,13 +116,17 @@ public class SendEMail {
         
     }
     
-    public void writeTextFiles() {
+    public void writeTextFiles(String email, ArrayList<Event> events) {
         try {
-            File textFile = new File("Reminder.txt");
+            File textFile = new File("Events.txt");
             FileOutputStream stream = new FileOutputStream(textFile, false);
             
+            String fileContents = "Events:\n\n";
             
-            byte[] myBytes = "New Contents\n".getBytes();
+            for (int i = 0; i < events.size(); i++)
+                fileContents += events.get(i).getEventInfo() + "\n\n";
+            
+            byte[] myBytes = fileContents.getBytes();
             
             stream.write(myBytes);
             stream.close();
@@ -130,8 +135,8 @@ public class SendEMail {
         }
         
         try{
-            sendSimpleMail("Event Reminder", Main_FX.person.getEmail(),
-                    "vaqpackdonotreply@gmail.com", "you have an event!", "Reminder.txt"); 
+            sendSimpleMail("Event Reminder", email,
+                    "vaqpackdonotreply@gmail.com", "Your events are in the attached file.", "Reminder.txt"); 
             
         }catch (Throwable e) {
             e.printStackTrace();

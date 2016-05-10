@@ -44,6 +44,13 @@ public class Event {
         this.description = description;
     }
     
+    public String getEventInfo() {
+        String info = "Name: " + name + "\nTime: " + startTime + " - " + endTime +
+                "\nPlace: " + place + "\nDate: " + date + "\nDescription: " + description;
+        return info;
+    }
+
+    
     public String getName() {
         return name;
     }
