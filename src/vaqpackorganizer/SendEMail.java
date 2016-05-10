@@ -114,8 +114,8 @@ public class SendEMail {
         }
         
         try{
-            new SendEMail().sendSimpleMail("Event Reminder", Main_FX.person.getEmail(),
-                    "vaqpackdonotreply@gmail.com", "you have an event!", "template.html");
+            new SendEMail().sendSimpleMail("Event Reminder", email,
+                    "vaqpackdonotreply@gmail.com", "your events are in the attached file.", "template.html");
             
         }catch (Throwable e) {
             e.printStackTrace();
