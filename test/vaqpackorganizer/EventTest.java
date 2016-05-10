@@ -61,19 +61,6 @@ public class EventTest {
     }
 
     /**
-     * Test of setName method, of class Event.
-     */
-    @Test
-    public void testSetName() {
-        System.out.println("setName");
-        String name = "";
-        Event instance = null;
-        instance.setName(name);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of getStartTime method, of class Event.
      */
     @Test
@@ -83,19 +70,6 @@ public class EventTest {
         String expResult = "";
         String result = instance.getStartTime();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setStartTime method, of class Event.
-     */
-    @Test
-    public void testSetStartTime() {
-        System.out.println("setStartTime");
-        String startTime = "";
-        Event instance = null;
-        instance.setStartTime(startTime);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -113,20 +87,6 @@ public class EventTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
-    /**
-     * Test of setEndTime method, of class Event.
-     */
-    @Test
-    public void testSetEndTime() {
-        System.out.println("setEndTime");
-        String endTime = "";
-        Event instance = null;
-        instance.setEndTime(endTime);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
     /**
      * Test of getPlace method, of class Event.
      */
@@ -137,19 +97,6 @@ public class EventTest {
         String expResult = "";
         String result = instance.getPlace();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setPlace method, of class Event.
-     */
-    @Test
-    public void testSetPlace() {
-        System.out.println("setPlace");
-        String place = "";
-        Event instance = null;
-        instance.setPlace(place);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -169,19 +116,6 @@ public class EventTest {
     }
 
     /**
-     * Test of setReminder method, of class Event.
-     */
-    @Test
-    public void testSetReminder() {
-        System.out.println("setReminder");
-        String reminder = "";
-        Event instance = null;
-        instance.setReminder(reminder);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of getDate method, of class Event.
      */
     @Test
@@ -191,19 +125,6 @@ public class EventTest {
         String expResult = "";
         String result = instance.getDate();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setDate method, of class Event.
-     */
-    @Test
-    public void testSetDate() {
-        System.out.println("setDate");
-        String date = "";
-        Event instance = null;
-        instance.setDate(date);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -223,19 +144,6 @@ public class EventTest {
     }
 
     /**
-     * Test of setDescription method, of class Event.
-     */
-    @Test
-    public void testSetDescription() {
-        System.out.println("setDescription");
-        String description = "";
-        Event instance = null;
-        instance.setDescription(description);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of getDay method, of class Event.
      */
     @Test
@@ -248,18 +156,4 @@ public class EventTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
-    /**
-     * Test of setDay method, of class Event.
-     */
-    @Test
-    public void testSetDay() {
-        System.out.println("setDay");
-        String day = "";
-        Event instance = null;
-        instance.setDay(day);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-    
 }

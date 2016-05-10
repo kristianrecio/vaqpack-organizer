@@ -38,7 +38,7 @@ public class Database {
                 Fn.showError(e);
             } 
     }
-        public void insertContact(int user_id, String name, String phone, String email, String address){
+    public void insertContact(int user_id, String name, String phone, String email, String address){
             try{
             String sql = "INSERT INTO emergency_contact (user_id, name, phone, email, address) " +
                             "VALUES (?,?,?,?,?)";
@@ -57,7 +57,7 @@ public class Database {
             }        
         }
     
-        public ResultSet get(String table){
+    public ResultSet get(String table){
         try{
             String sql = "SELECT * FROM "+table;
             ps = conn.prepareStatement(sql);

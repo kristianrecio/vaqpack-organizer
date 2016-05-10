@@ -49,69 +49,36 @@ public class Event {
                 "\nPlace: " + place + "\nDate: " + date + "\nDescription: " + description);
         return info;
     }
-
     
     public String getName() {
         return name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
     public String getEndTime() {
         return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
     }
 
     public String getPlace() {
         return place;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
-    }
-
     public String getReminder() {
         return reminder;
-    }
-
-    public void setReminder(String reminder) {
-        this.reminder = reminder;
     }
 
     public String getDate() {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getDay() {
         return day;
-    }
-
-    public void setDay(String day) {
-        this.day = day;
     }
 }

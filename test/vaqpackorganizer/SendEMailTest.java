@@ -57,7 +57,6 @@ public class SendEMailTest {
     public void testWriteHTMLFiles() {
         System.out.println("writeHTMLFiles");
         SendEMail instance = new SendEMail();
-        instance.writeHTMLFiles();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
